@@ -12,6 +12,7 @@ const roomSchema = mongoose.Schema(
 		roomNumber: {
 			type: String,
 			required: [true, 'Vui lòng nhập số phòng'],
+			unique: true,
 		},
 		maxStudent: {
 			type: Number,
@@ -41,5 +42,5 @@ roomSchema.pre(/^find/, function (next) {
 	next();
 });
 
-const Category = mongoose.model('Room', roomSchema);
-module.exports = Category;
+const Room = mongoose.model('Room', roomSchema);
+module.exports = Room;

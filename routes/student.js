@@ -1,24 +1,15 @@
 const router = require('express').Router();
-const studentController = require(`${__dirname}/../controllers/studentController`);
-const authController = require(`${__dirname}/../controllers/authController`);
+const studentController = require(`../controllers/studentController`);
+const authController = require(`../controllers/authController`);
 
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 router.get('/logout', authController.logout);
 
-router.post(
-	'/updateMyPassword',
-	authController.protect,
-	authController.updateMyPassword,
-);
-router.post('/updateMe', authController.protect, studentController.updateMe);
-router.get(
-	'/me',
-	authController.protect,
-	studentController.getMe,
-	studentController.getStudent,
-);
-router.delete('/deleteMe', authController.protect, studentController.deleteMe);
+router.post('/updateMyPassword', authController.updateMyPassword);
+router.post('/updateMe', studentController.updateMe);
+router.get('/me', studentController.getMe, studentController.getStudent);
+router.delete('/deleteMe', studentController.deleteMe);
 
 router
 	.route('/')

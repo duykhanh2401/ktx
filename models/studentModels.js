@@ -47,17 +47,27 @@ const studentSchema = mongoose.Schema(
 		passwordResetExpires: Date,
 		image: String,
 		gender: {
-			type: Boolean,
+			type: String,
 			enum: ['male', 'female'],
+			required: [true, 'Vui lòng nhập giới tính'],
 		},
-		dateOfBirth: Date,
-		class: String,
-		key: String,
-		address: String,
-		father: String,
-		mother: String,
-		buildingId: String,
-		roomNumber: String,
+		dateOfBirth: {
+			type: String,
+			required: [true, 'Vui lòng nhập ngày sinh'],
+		},
+		class: {
+			type: String,
+			required: [true, 'Vui lòng nhập lớp'],
+		},
+		address: {
+			type: String,
+			required: [true, 'Vui lòng nhập địa chỉ'],
+		},
+		father: { type: String, required: [true, 'Vui lòng nhập tên bố'] },
+		mother: { type: String, required: [true, 'Vui lòng nhập tên mẹ'] },
+		room: {
+			type: mongoose.Schema.ObjectId,
+		},
 		note: String,
 
 		active: {
@@ -75,7 +85,7 @@ const studentSchema = mongoose.Schema(
 // Mã hoá mật khẩu
 studentSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
-
+	console.log(1);
 	this.password = await bcrypt.hash(this.password, 12);
 
 	this.passwordConfirm = undefined;
@@ -100,5 +110,5 @@ studentSchema.methods.correctPassword = async function (userPassword) {
 	return await bcrypt.compare(userPassword, this.password);
 };
 
-const User = mongoose.model('Student', studentSchema);
-module.exports = User;
+const Student = mongoose.model('Student', studentSchema);
+module.exports = Student;

@@ -1,9 +1,9 @@
-const Student = require(`${__dirname}/../models/studentModels`);
-const catchAsync = require(`${__dirname}/../utils/catchAsync`);
-const AppError = require(`${__dirname}/../utils/appError`);
-const factory = require(`${__dirname}/factoryHandle`);
+const Student = require(`./../models/studentModels`);
+const catchAsync = require(`./../utils/catchAsync`);
+const AppError = require(`./../utils/appError`);
+const factory = require(`./factoryHandle`);
 
-// console.log(Student);
+console.log(Student);
 
 const filterObject = (obj, ...fields) => {
 	const objectResult = {};

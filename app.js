@@ -51,6 +51,5 @@ for (var i = 0; i < filesApi.length; i++) {
 	console.log(fileName);
 	app.use('/api/' + fileName, require(filesApi[i]));
 }
-app.use(globalErrorHandler);
 
 module.exports = app;
