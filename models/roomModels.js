@@ -12,7 +12,6 @@ const roomSchema = mongoose.Schema(
 		roomNumber: {
 			type: String,
 			required: [true, 'Vui lòng nhập số phòng'],
-			unique: true,
 		},
 		maxStudent: {
 			type: Number,
@@ -26,12 +25,18 @@ const roomSchema = mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		status: {
+			type: String,
+			default: 'active',
+		},
 	},
 	{
 		toJSON: { virtuals: true },
 		toObject: { virtuals: true },
 	},
 );
+
+roomSchema.index({ building: 1, roomNumber: 1 }, { unique: true });
 
 // Virtual populate
 roomSchema.pre(/^find/, function (next) {

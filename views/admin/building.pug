@@ -1,0 +1,89 @@
+extends base
+
+block content
+
+    .container-title Danh sách toà nhà
+    .container-navigation
+        .container-search
+            .container-find
+            input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
+            // <div class="container-filter">Bộ lọc</div>
+        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Th&ecirc;m m&#x1EDB;i
+    .table#building
+        .table-header
+            .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
+            .table-pagination
+        .table-body
+            table#table
+        
+        .pagination
+                
+    #addNewModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Thêm mới
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    div
+                    label(for='') Tên toà nhà
+                    input.input-text#nameBuilding(type='text' placeholder='Tối đa 20 ký tự...')
+                    div
+                    label(for='') Số lượng phòng
+                    input.input-text#numberOfRooms(type='number' placeholder='Nhập số lượng phòng')
+                    div
+                    label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
+                    input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
+
+                .modal-footer
+                    button.btn.btn-primary.btn-add-new(type='button') Tạo
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+
+    #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Cập nhật
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    div
+                    label(for='') Tên toà nhà
+                    input.input-text#nameBuildingUpdate(type='text' placeholder='Tối đa 20 ký tự...')
+                    div
+                    label(for='') Số lượng phòng
+                    input.input-text#numberOfRoomsUpdate(type='number' placeholder='Nhập số lượng phòng')
+                    div
+                    label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
+                    input.input-text#unitPriceUpdate(type='number' placeholder='Nhập giá phòng')
+
+                .modal-footer
+                    button.btn.btn-primary.btn-update(type='button') Cập nhật
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+    #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Thông tin
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    div
+                    label(for='') Tên toà nhà
+                    input.input-text#nameBuildingInfo(type='text' placeholder='Tối đa 20 ký tự...')
+                    div
+                    label(for='') Số lượng phòng
+                    input.input-text#numberOfRoomsInfo(type='number' placeholder='Nhập số lượng phòng')
+                    div
+                    label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
+                    input.input-text#unitPriceInfo(type='number' placeholder='Nhập giá phòng')
+
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+

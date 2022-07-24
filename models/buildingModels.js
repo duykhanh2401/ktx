@@ -15,6 +15,10 @@ const buildingSchema = mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		status: {
+			type: String,
+			default: 'active',
+		},
 	},
 	{
 		toJSON: { virtuals: true },

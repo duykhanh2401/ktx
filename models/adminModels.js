@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
+const validator = require('validator');
+
 mongoose.plugin(slug);
 
 const adminSchema = mongoose.Schema(
@@ -44,11 +46,6 @@ const adminSchema = mongoose.Schema(
 				messages: 'Vui lòng nhập mật khẩu giống nhau',
 			},
 		},
-		userName: {
-			type: String,
-			unique: true,
-			required: true,
-		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -58,5 +55,5 @@ const adminSchema = mongoose.Schema(
 
 // Virtual populate
 
-const Category = mongoose.model('Building', adminSchema);
+const Category = mongoose.model('Admin', adminSchema);
 module.exports = Category;

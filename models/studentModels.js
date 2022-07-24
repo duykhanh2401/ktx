@@ -6,26 +6,21 @@ const crypto = require('crypto');
 // Name, Email, Password , PasswordConfirm, IMG, PhoneNumber, Address, Role.
 const studentSchema = mongoose.Schema(
 	{
+		studentID: {
+			type: String,
+			unique: true,
+			required: [true, 'Vui lòng nhập mã số sinh viên'],
+		},
 		name: {
 			type: String,
 			require: [true, 'Vui lòng nhập tên của bạn'],
 		},
-		email: {
-			type: String,
-			required: [true, 'Vui lòng nhập email của bạn'],
-			unique: true,
-			lowercase: true,
-			validate: [validator.isEmail, 'Đây không phải là email'],
-		},
 		password: {
 			type: String,
-			require: [true, 'Vui lòng nhập mật khẩu'],
-			minLength: 8,
 			select: false,
 		},
 		passwordConfirm: {
 			type: String,
-			required: [true, 'Vui lòng nhập lại mật khẩu'],
 			validate: {
 				validator: function (el) {
 					return el === this.password;
@@ -37,11 +32,7 @@ const studentSchema = mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
-		userName: {
-			type: String,
-			unique: true,
-			required: true,
-		},
+
 		passwordChangeAt: Date,
 		passwordResetToken: String,
 		passwordResetExpires: Date,
@@ -63,18 +54,16 @@ const studentSchema = mongoose.Schema(
 			type: String,
 			required: [true, 'Vui lòng nhập địa chỉ'],
 		},
+		academic: { type: Number, required: true },
 		father: { type: String, required: [true, 'Vui lòng nhập tên bố'] },
 		mother: { type: String, required: [true, 'Vui lòng nhập tên mẹ'] },
 		room: {
 			type: mongoose.Schema.ObjectId,
 		},
-		note: String,
-
-		active: {
-			type: Boolean,
-			default: true,
-			select: false,
+		status: {
+			type: String,
 		},
+		note: String,
 	},
 	{
 		toJSON: { virtuals: true },
@@ -85,7 +74,6 @@ const studentSchema = mongoose.Schema(
 // Mã hoá mật khẩu
 studentSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
-	console.log(1);
 	this.password = await bcrypt.hash(this.password, 12);
 
 	this.passwordConfirm = undefined;

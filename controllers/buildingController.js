@@ -1,7 +1,7 @@
-const Building = require(`${__dirname}/../models/buildingModels`);
-const catchAsync = require(`${__dirname}/../utils/catchAsync`);
-const AppError = require(`${__dirname}/../utils/appError`);
-const factory = require(`${__dirname}/factoryHandle`);
+const Building = require(`../models/buildingModels`);
+const catchAsync = require(`../utils/catchAsync`);
+const AppError = require(`../utils/appError`);
+const factory = require(`./factoryHandle`);
 
 // console.log(User);
 

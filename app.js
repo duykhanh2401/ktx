@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.set('view engine', 'pug');
 const globalErrorHandler = require(`${__dirname}/controllers/errorController`);
 
+app.use(express.static(`${__dirname}/public`));
+
 app.use(express.json());
 app.use(cookieParser());
 // Data sanitization against NoSQL query injection
@@ -48,8 +50,11 @@ const filesApi = glob.sync(
 console.log(filesApi);
 for (var i = 0; i < filesApi.length; i++) {
 	var fileName = path.basename(filesApi[i], '.js');
-	console.log(fileName);
-	app.use('/api/' + fileName, require(filesApi[i]));
+	if (fileName == 'index') {
+		app.use('/', require(filesApi[i]));
+	} else {
+		app.use('/api/' + fileName, require(filesApi[i]));
+	}
 }
 
 module.exports = app;

@@ -1,0 +1,115 @@
+extends base
+
+block content
+
+    .container-title Danh sách sinh viên
+    .container-navigation
+        .container-search
+            .container-find
+            input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
+            // <div class="container-filter">Bộ lọc</div>
+        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Th&ecirc;m m&#x1EDB;i
+    .table#student
+        .table-header
+            .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
+            .table-pagination
+        .table-body
+            table#table
+        
+        .pagination
+                
+    #addNewModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Thêm mới
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    div.mt-3
+                        label(for='')  Mã sinh viên
+                        input.input-text#studentID(type='text' placeholder='Nhập mã sinh viên')
+                    div.mt-3
+                        label(for='') Họ tên
+                        input.input-text#name(type='text' placeholder='Nhập họ tên sinh viên')
+                    div.mt-3
+                        label(for='') Lớp
+                        input.input-text#class(type='text' placeholder='Nhập lớp sinh viên')
+                    div.mt-3
+                        label(for='') Khoá
+                        input.input-text#academic(type='text' placeholder='Nhập khoá sinh viên')
+                    div.mt-3
+                        label(for='') Địa chỉ
+                        input.input-text#address(type='text' placeholder='Nhập địa chỉ sinh viên')
+                    div.mt-3
+                        label(for='') Ngày sinh
+                        input.input-text#dateOfBirth(type='date' placeholder='Nhập ngày sinh sinh viên')
+                    div.mt-3
+                        label(for='') Giới tính:
+                    div.mt-3
+                        input#maleGender.gender.form-check-input(type='radio'  name='gender' value='male' checked)
+                        label(for='maleGender') Nam
+                        input#femaleGender.gender.form-check-input(type='radio' name='gender' value='female' )
+                        label(for='femaleGender') Nữ
+                    div.mt-3
+                        label(for='') Thông tin bố
+                        input.input-text#father(type='text' placeholder='Nhập thông tin bố sinh viên sinh viên')
+                    div.mt-3
+                        label(for='') Thông tin mẹ
+                        input.input-text#mother(type='text' placeholder='Nhập thông tin mẹ sinh viên sinh viên')
+
+                .modal-footer
+                    button.btn.btn-primary.btn-add-new(type='button') Tạo
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+
+    #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Cập nhật
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    //- label(for='') Toà nhà
+                    //- select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                    //-     option(value='')
+                    //-     each building in buildings
+                    //-         option(value= building.id)= building.name
+                    label(for='') Số phòng
+                    input.input-text#roomNumberUpdate(type='text' placeholder='Nhập số phòng')
+                    label(for='') Sinh viên tối đa
+                    input.input-text#maxStudentUpdate(type='text' placeholder='Nhập số sinh viên tối đa')
+                    label(for='') Sinh viên hiện có
+                    input.input-text#presentStudentUpdate(type='text' placeholder='Nhập số sinh viên hiện có')
+
+                .modal-footer
+                    button.btn.btn-primary.btn-update(type='button') Cập nhật
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+    #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Thông tin
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    //- label(for='') Toà nhà
+                    //- select#buildingNameInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                    //-     option(value='')
+                    //-     each building in buildings
+                    //-         option(value= building.id)= building.name                    
+                    label(for='') Số phòng
+                    input.input-text#roomNumberInfo(type='text' placeholder='Nhập số lượng phòng')
+                    label(for='') Sinh viên tối đa
+                    input.input-text#maxStudentInfo(type='text' placeholder='Nhập giá phòng')
+                    label(for='') Sinh viên hiện có
+                    input.input-text#presentStudentInfo(type='text' placeholder='Nhập giá phòng')
+
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
