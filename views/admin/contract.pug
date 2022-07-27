@@ -1,0 +1,111 @@
+extends base
+
+block content
+
+    .container-title Danh sách hợp đồng
+    .container-navigation
+        .container-search
+            .container-find
+            input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
+            // <div class="container-filter">Bộ lọc</div>
+        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Tạo hợp đồng
+        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#extendModal' type='button') Gia hạn hợp đồng
+    .table#contract
+        .table-header
+            //- .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
+            //- .table-pagination
+        .table-body
+            table#table
+        
+        .pagination
+                
+    #addNewModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title  Tạo hợp đồng
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    label(for='') Sinh viên
+                    select#studentSelect.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                        option(value='')
+                        each student in studentsNoContract
+                            option(value= student.id)= `${student.name} - ${student.studentID}`
+                    label(for='') Ngày bắt đầu
+                    input.input-text#startDate(type='date' placeholder='Nhập số phòng')
+                    label(for='') Ngày kết thúc
+                    input.input-text#dueDate(type='date' placeholder='Nhập số sinh viên tối đa')
+
+                .modal-footer
+                    button.btn.btn-primary.btn-add-new(type='button') Tạo
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+    #extendModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title  Gia hạn hợp đồng
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    label(for='') Sinh viên
+                    select#studentSelectExtend.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                        option(value='')
+                        each student in studentsContract
+                            option(value= student.id)= `${student.name} - ${student.studentID}`
+                    label(for='') Ngày kết thúc
+                    input.input-text#dueDateExtend(type='date' placeholder='Nhập số sinh viên tối đa')
+
+                .modal-footer
+                    button.btn.btn-primary.btn-extend(type='button') Tạo
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+
+
+    //- #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+    //-     .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+    //-         .modal-content
+    //-             .modal-header
+    //-                 h5.modal-title Cập nhật
+    //-                 button.close(type='button' data-dismiss='modal' aria-label='Close')
+    //-                 span(aria-hidden='true') &times;
+    //-             .modal-body
+    //-                 label(for='') Toà nhà
+    //-                 select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+    //-                     option(value='')
+    //-                     each building in buildings
+    //-                         option(value= building.id)= building.name
+    //-                 label(for='') Số phòng
+    //-                 input.input-text#roomNumberUpdate(type='number' placeholder='Nhập số phòng')
+    //-                 label(for='') Sinh viên tối đa
+    //-                 input.input-text#maxStudentUpdate(type='number' placeholder='Nhập số sinh viên tối đa')
+
+    //-             .modal-footer
+    //-                 button.btn.btn-primary.btn-update(type='button') Cập nhật
+    //-                 button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+    #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Thông tin
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    label(for='') Sinh viên
+                    select#studentSelectInfo.custom-select.custom-select-lg.mb-3(disabled data-placeholder='Chọn tên phân loại')
+                        option(value='')
+                        each student in allStudent
+                            option(value= student.id)= `${student.name} - ${student.studentID}`
+                    label(for='') Ngày bắt đầu
+                    input.input-text#startDateInfo(type='date' disabled placeholder='Nhập số phòng')
+                    label(for='') Ngày kết thúc
+                    input.input-text#dueDateInfo(type='date' disabled placeholder='Nhập số sinh viên tối đa')
+
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+

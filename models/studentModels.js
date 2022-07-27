@@ -59,6 +59,7 @@ const studentSchema = mongoose.Schema(
 		mother: { type: String, required: [true, 'Vui lòng nhập tên mẹ'] },
 		room: {
 			type: mongoose.Schema.ObjectId,
+			ref: 'Room',
 		},
 		status: {
 			type: String,

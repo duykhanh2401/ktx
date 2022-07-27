@@ -340,7 +340,8 @@ body.dark .home .text {
 .container-body {
 	width: 100%;
 	background-color: var(--primary-color-light);
-	height: calc(100vh - 80px);
+	min-height: calc(100vh - 80px);
+	height: fit-content;
 	padding: 0 24px;
 }
 .container-title {
@@ -406,7 +407,6 @@ body.dark .home .text {
 	color: #fff;
 	height: 48px;
 	font-size: 16px;
-	width: 132px;
 }
 
 .table-header {
@@ -684,4 +684,45 @@ label {
 }
 .modal-backdrop.show {
 	opacity: 0.5;
+}
+
+.warp-container {
+	display: flex;
+}
+
+.generalInformation {
+	background-color: #fff;
+	padding: 0 16px;
+	width: 320px;
+	margin: 44px;
+}
+
+.generalInformation .header {
+	padding: 16px;
+	font-weight: 600;
+	font-size: 18px;
+	border-bottom: 1px solid #ccc;
+}
+
+.generalInformation .body {
+	padding: 0 16px 16px 16px;
+}
+
+.generalInformation .body .item {
+	font-size: 12px;
+	margin: 16px 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.generalInformation .body .item .value {
+	font-size: 16px;
+	margin-bottom: 4px;
+}
+
+.btn-back {
+	margin-left: 44px;
+}
+
+.modal-center .modal-dialog {
+	margin: 0 auto !important;
 }

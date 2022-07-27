@@ -1,9 +1,14 @@
 const Admin = require(`./../models/adminModels`);
 const Building = require(`./../models/buildingModels`);
 const Room = require(`./../models/roomModels`);
+const Contract = require(`./../models/contractModels`);
+const Student = require(`./../models/studentModels`);
 const catchAsync = require(`./../utils/catchAsync`);
 const AppError = require(`./../utils/appError`);
 const factory = require(`./factoryHandle`);
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
+const { mongoose } = require('mongoose');
 
 const filterObject = (obj, ...fields) => {
 	const objectResult = {};
@@ -55,17 +60,65 @@ exports.getBuilding = async (req, res, next) => {
 	res.status(200).render('admin/building');
 };
 
-exports.getRoom = async (req, res, next) => {
+exports.getContract = async (req, res, next) => {
+	const contract = await Contract.find().select('student');
+	const arrContract = contract.map((el) =>
+		mongoose.Types.ObjectId(el.student.id),
+	);
+	const studentsNoContract = await Student.find({
+		_id: {
+			$nin: arrContract,
+		},
+	});
+
+	const studentsContract = await Student.find({
+		_id: {
+			$in: arrContract,
+		},
+	});
+
+	const allStudent = await Student.find();
+	res.status(200).render('admin/contract', {
+		studentsNoContract,
+		studentsContract,
+		allStudent,
+	});
+};
+
+exports.getRooms = async (req, res, next) => {
 	const buildings = await Building.find();
-	res.status(200).render('admin/room', { buildings });
+	res.status(200).render('admin/rooms', { buildings });
+};
+
+exports.getRoom = async (req, res, next) => {
+	const room = await Room.findById(req.params.id);
+	console.log(room);
+	res.status(200).render('admin/room', { room });
 };
 
 exports.login = async (req, res, next) => {
-	return res.status(200).render('admin/login');
+	try {
+		let token;
+		if (req.cookies.jwt_admin) {
+			token = req.cookies.jwt_admin;
+		}
+		if (!token) {
+			return res.status(200).render('admin/login');
+		}
+		const decode = await promisify(jwt.verify)(
+			token,
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzUxMiJ9',
+		);
+		const currentAdmin = await Admin.findById(decode.id);
+		if (!currentAdmin) {
+			return res.status(200).render('admin/login');
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(200).render('admin/login');
+	}
 
-	// return res.status(200).render('admin/login');
-
-	// res.redirect('/admin');
+	res.redirect('/admin/building');
 };
 
 exports.getAllAdmins = factory.getAll(Admin, '+active');

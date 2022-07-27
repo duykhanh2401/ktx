@@ -6,11 +6,12 @@ head
   link(href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet')
   script(src='https://code.jquery.com/jquery-2.2.4.min.js' integrity='sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=' crossorigin='anonymous')
   link(rel='stylesheet' href='/css/bootstrap.min.css')
+  link(rel='stylesheet' href='/css/toast.css')
 
   link(rel='stylesheet' href='/css/admin/style.css')
   script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js' type='text/javascript')
   title Quản lý sinh viên
-nav.sidebar.close
+nav.sidebar
   header
     .image-text
       span.image
@@ -26,19 +27,19 @@ nav.sidebar.close
             i.bx.bx-bar-chart.icon
             span.text.nav-text Thống kê
         li.nav-link
-          a(href='#')
+          a(href='/admin/contract')
             i.bx.bx-food-menu.icon
             span.text.nav-text Quản lý hợp đồng
         li.nav-link
-          a(href='/api/admin/building')
+          a(href='/admin/building')
             i.bx.bx-buildings.icon
             span.text.nav-text Quản lý toàn nhà
         li.nav-link
-          a(href='/api/admin/room')
+          a(href='/admin/room')
             i.bx.bx-home.icon
             span.text.nav-text Quản lý phòng
         li.nav-link
-          a(href='/api/admin/student')
+          a(href='/admin/student')
             i.bx.bx-male-female.icon
             span.text.nav-text Quản lý sinh viên
         li.nav-link
@@ -58,10 +59,12 @@ section.home
         .user-role Admin
   .container-body
     block content
+
 script(type='text/javascript' src='/js/static/bootstrap.bundle.min.js')
+script(type='text/javascript' src='/js/util/toast.js')
 script(type='text/javascript' src='/js/static/jquery-3.6.0.min.js')
-script(type='text/javascript' src='/js/static/axios.min.js')
-script(type='text/javascript' src='/js/static/chosen.jquery.min.js')
+//- script(type='text/javascript' src='/js/static/axios.min.js')
+//- script(type='text/javascript' src='/js/static/chosen.jquery.min.js')
 //- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-script(type='text/javascript' src='/js/static/bootstrap-select.min.js')
+//- script(type='text/javascript' src='/js/static/bootstrap-select.min.js')
 script(type='text/javascript' src='/js/admin/bundle.js')

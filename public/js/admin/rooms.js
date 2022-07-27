@@ -5,9 +5,9 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
-const addStudent = async (data) => {
+const createRoom = async (data) => {
 	try {
-		const res = await postDataAPI('room/addStudent', data);
+		const res = await postDataAPI('room', data);
 		if (res.data.status === 'success') {
 			return true;
 		}
@@ -19,10 +19,10 @@ const addStudent = async (data) => {
 	}
 };
 
-const removeStudent = async (data) => {
+const deleteRoom = async (id) => {
 	try {
-		const res = await postDataAPI(`room/removeStudent`, data);
-		if (res.data.status === 'success') {
+		const res = await deleteDataAPI(`room/${id}`);
+		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
@@ -47,55 +47,59 @@ const updateRoom = async (id, data) => {
 	}
 };
 
-const renderRoom = async () => {
+const renderRooms = async () => {
 	const tableList = $('#table')[0];
 	const BuildPage = async () => {
-		const id = document.querySelector('#room-child').getAttribute('data-id');
-
 		// const sort = document.querySelector('.filter').value;
 		// let search = document.querySelector('.search').value;
 		// if (!search) {
 		// 	search = '';
 		// }
-		const { data } = await getDataAPI(`room/${id}`);
+		const { data } = await getDataAPI(`room`);
 		const listAuthor = data.data;
 		const listRender = listAuthor;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
                 <tr>
-                <td class="col">MÃ SỐ SINH VIÊN</td>
-                <td class="col">TÊN SINH VIÊN</td>
-                <td class="col">LỚP</td>
-                <td class="col">KHOÁ</td>
-                <td class="col">NGÀY SINH</td>
+                <td class="col">TÊN TÒA NHÀ</td>
+                <td class="col">SỐ PHÒNG</td>
+                <td class="col">SINH VIÊN TỐI ĐA</td>
+                <td class="col">SINH VIÊN HIỆN CÓ</td>
+                <td class="col">TRẠNG THÁI</td>
                 <td class="col"></td>
             </tr>
 				</thead>
 		<tbody >` +
 				listRender
 					.slice(min, max)
-					.map((student) => {
+					.map((room) => {
 						return `
 				<tr class="item-list" data-id=${
-					student._id
+					room._id
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
-                    <td class="building" data-id="${student.studentID}">${
-							student.studentID
+                    <td class="building" data-id="${room.building.id}">${
+							room.building.name
 						}</td>
-                    <td class="studentNumber">${student.name}</td>
-                    <td class="maxStudent">${student.class}</td>
-                    <td class="presentStudent">${student.academic}</td>
-                    <td>${new Date(
-											student.dateOfBirth,
-										).toLocaleDateString()}</td>
+                    <td class="roomNumber">${room.roomNumber}</td>
+                    <td class="maxStudent">${room.maxStudent}</td>
+                    <td class="presentStudent">${room.presentStudent}</td>
+                    <td>${
+											room.presentStudent == 0
+												? 'Trống'
+												: room.maxStudent > room.presentStudent
+												? 'Còn chỗ'
+												: 'Đã đầy'
+										}</td>
           
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-											student._id
+											room._id
 										}"></i>
-					<div class="dropdown-menu" aria-labelledby="${student._id}">
-						<div class="dropdown-item" data-toggle='modal' data-target='#removeModal' >Xoá khỏi phòng</div>
+					<div class="dropdown-menu" aria-labelledby="${room._id}">
+						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
+						<a class="dropdown-item" href="/admin/room/${room._id}" >Chi tiết</a>
+						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
 				  </div>
 					</td>
 			
@@ -111,28 +115,23 @@ const renderRoom = async () => {
 		pagination(buildList);
 	};
 
-	$('#addNewModal').on('shown.bs.modal', async function (e) {
-		const id = document.querySelector('#room-child').getAttribute('data-id');
-
-		const { data } = await getDataAPI(`student/no-room`);
-		const studentSelectElement = document.querySelector('#studentSelect');
-		console.log(studentSelectElement, data);
-		studentSelectElement.innerHTML =
-			`<option value="">------Chọn Sinh Viên---------</option>` +
-			data.data.map((el) => {
-				return `<option value="${el.id}">${el.name} - ${el.studentID}</option>`;
-			});
+	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addRoom = $('.btn-add-new')[0];
 
 		addRoom.onclick = async (e) => {
-			const studentSelect = document.querySelector('#studentSelect').value;
+			const buildingName = document.querySelector('#buildingName').value;
+			const roomNumber = document.querySelector('#roomNumber').value;
+			const maxStudent = document.querySelector('#maxStudent').value;
 
-			const isSuccess = await addStudent({
-				room: id,
-				student: studentSelect,
+			const isSuccess = await createRoom({
+				building: buildingName,
+				roomNumber,
+				maxStudent,
 			});
 			if (isSuccess) {
-				document.querySelector('#studentSelect').value = '';
+				document.querySelector('#buildingName').value = '';
+				document.querySelector('#roomNumber').value = '';
+				document.querySelector('#maxStudent').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
 				new Toast({
@@ -182,31 +181,22 @@ const renderRoom = async () => {
 		};
 	});
 
-	$('#removeModal').on('show.bs.modal', function (e) {
+	$('#infoModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		const studentId = item.attr('data-id');
-		const room = document.querySelector('#room-child').getAttribute('data-id');
-		const btnRemove = $('.btn-remove')[0];
+		const itemBuildingName = item.find('.building').attr('data-id');
+		const itemRoomNumber = item.find('.roomNumber')[0].innerText;
+		const itemMaxStudent = item.find('.maxStudent')[0].innerText;
+		const itemPresentStudent = item.find('.presentStudent')[0].innerText;
 
-		btnRemove.setAttribute('update-id', studentId);
-
-		btnRemove.onclick = async () => {
-			const removeId = btnRemove.getAttribute('update-id');
-
-			const isSuccess = await removeStudent({ room, student: removeId });
-			if (isSuccess) {
-				$('#removeModal').modal('hide');
-				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
-			}
-		};
+		// Set giá trị khi hiện modal update
+		$('#buildingNameInfo')[0].value = itemBuildingName;
+		$('#roomNumberInfo')[0].value = itemRoomNumber;
+		$('#maxStudentInfo')[0].value = itemMaxStudent;
+		$('#presentStudentInfo')[0].value = itemPresentStudent;
 	});
 
 	BuildPage();
 };
 
-export { renderRoom };
+export { renderRooms };

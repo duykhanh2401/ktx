@@ -47,11 +47,12 @@ const filesApi = glob.sync(
 	},
 );
 
-console.log(filesApi);
 for (var i = 0; i < filesApi.length; i++) {
 	var fileName = path.basename(filesApi[i], '.js');
 	if (fileName == 'index') {
 		app.use('/', require(filesApi[i]));
+	} else if (fileName == 'admin') {
+		app.use('/' + fileName, require(filesApi[i]));
 	} else {
 		app.use('/api/' + fileName, require(filesApi[i]));
 	}

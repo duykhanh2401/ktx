@@ -45,7 +45,7 @@ exports.updateOne = (Model) =>
 		}
 
 		if (!data) {
-			return next(AppError('Not found document in Database', 404));
+			return next(new AppError('Not found document in Database', 404));
 		}
 	});
 

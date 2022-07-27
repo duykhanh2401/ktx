@@ -1,10 +1,9 @@
 const Student = require(`./../models/studentModels`);
+const Contract = require(`./../models/contractModels`);
 const catchAsync = require(`./../utils/catchAsync`);
 const AppError = require(`./../utils/appError`);
 const factory = require(`./factoryHandle`);
-
-console.log(Student);
-
+const mongoose = require('mongoose');
 const filterObject = (obj, ...fields) => {
 	const objectResult = {};
 
@@ -47,6 +46,28 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 	await Student.findByIdAndUpdate(req.Student.id, { active: false });
 	res.status(204).json({
 		status: 'success',
+	});
+});
+
+exports.getStudentNoRoom = catchAsync(async (req, res, next) => {
+	const contract = await Contract.find().select('student');
+	const arrContract = contract.map((el) =>
+		mongoose.Types.ObjectId(el.student.id),
+	);
+	const studentsContract = await Student.find({
+		$and: [
+			{ room: null },
+			{
+				_id: {
+					$in: arrContract,
+				},
+			},
+		],
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: studentsContract,
 	});
 });
 

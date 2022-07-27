@@ -11,6 +11,8 @@ router.post('/updateMe', studentController.updateMe);
 router.get('/me', studentController.getMe, studentController.getStudent);
 router.delete('/deleteMe', studentController.deleteMe);
 
+router.get('/no-room', studentController.getStudentNoRoom);
+
 router
 	.route('/')
 	.get(studentController.getAllStudents)

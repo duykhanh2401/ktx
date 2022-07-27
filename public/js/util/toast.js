@@ -1,41 +1,113 @@
-export const toast = (status, message) => {
-	// data
-	var clear;
-	var msgDuration = 3000;
-	var $msg = $('.msg');
-	function timer() {
-		clearTimeout(clear);
-		clear = setTimeout(function () {
-			hide();
-		}, msgDuration);
+function Toast(options) {
+	console.log(options);
+	if (!options.message) {
+		throw new Error('Toast.js - You need to set a message to display');
+		return;
 	}
 
-	function hide() {
-		$msg.removeClass('msg-success msg-danger msg-warning msg-info active');
+	this.options = options;
+	this.options.type = options.type || 'default';
+
+	this.toastContainerEl = document.querySelector('.toastjs-container');
+	this.toastEl = document.querySelector('.toastjs');
+
+	this._init();
+}
+
+Toast.prototype._createElements = function () {
+	return new Promise((resolve, reject) => {
+		this.toastContainerEl = document.createElement('div');
+		this.toastContainerEl.classList.add('toastjs-container');
+		this.toastContainerEl.setAttribute('role', 'alert');
+		this.toastContainerEl.setAttribute('aria-hidden', true);
+
+		this.toastEl = document.createElement('div');
+		this.toastEl.classList.add('toastjs');
+
+		this.toastContainerEl.appendChild(this.toastEl);
+		document.body.appendChild(this.toastContainerEl);
+
+		setTimeout(() => resolve(), 500);
+	});
+};
+
+Toast.prototype._addEventListeners = function () {
+	document
+		.querySelector('.toastjs-btn--close')
+		.addEventListener('click', () => {
+			this._close();
+		});
+
+	if (this.options.customButtons) {
+		const customButtonsElArray = Array.prototype.slice.call(
+			document.querySelectorAll('.toastjs-btn--custom'),
+		);
+		customButtonsElArray.map((el, index) => {
+			el.addEventListener('click', (event) =>
+				this.options.customButtons[index].onClick(event),
+			);
+		});
 	}
-	// 2 seconds
-	hide();
+};
 
-	// cache DOM
+Toast.prototype._close = function () {
+	return new Promise((resolve, reject) => {
+		this.toastContainerEl.setAttribute('aria-hidden', true);
+		setTimeout(() => {
+			this.toastEl.innerHTML = '';
+			this.toastEl.classList.remove('default', 'success', 'warning', 'danger');
 
-	// render message
+			if (this.focusedElBeforeOpen) {
+				this.focusedElBeforeOpen.focus();
+			}
 
-	switch (status) {
-		case 'success':
-			$msg.addClass('msg-success active').text(message);
-			break;
-		case 'danger':
-			$msg.addClass('msg-danger active').text(message);
-			break;
-		case 'warning':
-			$msg.addClass('msg-warning active').text(message);
-			break;
-		case 'info':
-			$msg.addClass('msg-info active').text(message);
-			break;
+			resolve();
+		}, 1000);
+	});
+};
+
+Toast.prototype._open = function () {
+	this.toastEl.classList.add(this.options.type);
+	this.toastContainerEl.setAttribute('aria-hidden', false);
+
+	let customButtons = '';
+	if (this.options.customButtons) {
+		customButtons = this.options.customButtons.map((customButton, index) => {
+			return `<button type="button" class="toastjs-btn toastjs-btn--custom">${customButton.text}</button>`;
+		});
+		customButtons = customButtons.join('');
 	}
 
-	// bind events
+	this.toastEl.innerHTML = `
+        <p>${this.options.message}</p>
+        <button type="button" class="toastjs-btn toastjs-btn--close">Close</button>
+        ${customButtons}
+    `;
 
-	$msg.on('transitionend', timer);
+	this.focusedElBeforeOpen = document.activeElement;
+
+	setTimeout(() => {
+		this._close();
+	}, 3000);
+	document.querySelector('.toastjs-btn--close').focus();
+};
+
+Toast.prototype._init = function () {
+	Promise.resolve()
+		.then(() => {
+			if (this.toastContainerEl) {
+				return Promise.resolve();
+			}
+			return this._createElements();
+		})
+		.then(() => {
+			if (this.toastContainerEl.getAttribute('aria-hidden') == 'false') {
+				return this._close();
+			}
+			return Promise.resolve();
+		})
+		.then(() => {
+			this._open();
+			this._addEventListeners();
+		});
 };

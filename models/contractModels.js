@@ -22,6 +22,14 @@ const contractSchema = mongoose.Schema(
 			ref: 'Admin',
 			required: [true, 'Vui lòng nhập quản lý'],
 		},
+		createdAt: {
+			type: Date,
+			default: Date.now,
+		},
+		info: {
+			type: String,
+			default: 'Hợp đồng',
+		},
 	},
 	{
 		toJSON: { virtuals: true },

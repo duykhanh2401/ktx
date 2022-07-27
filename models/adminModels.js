@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
 const validator = require('validator');
+const bcrypt = require('bcrypt');
 
 mongoose.plugin(slug);
 
@@ -9,7 +10,6 @@ const adminSchema = mongoose.Schema(
 		name: {
 			type: String,
 			required: [true, 'Nhập tên toà nhà'],
-			unique: true,
 		},
 		position: {
 			type: String,
@@ -33,18 +33,7 @@ const adminSchema = mongoose.Schema(
 		password: {
 			type: String,
 			require: [true, 'Vui lòng nhập mật khẩu'],
-			minLength: 8,
 			select: false,
-		},
-		passwordConfirm: {
-			type: String,
-			required: [true, 'Vui lòng nhập lại mật khẩu'],
-			validate: {
-				validator: function (el) {
-					return el === this.password;
-				},
-				messages: 'Vui lòng nhập mật khẩu giống nhau',
-			},
 		},
 	},
 	{
@@ -53,7 +42,13 @@ const adminSchema = mongoose.Schema(
 	},
 );
 
-// Virtual populate
+adminSchema.pre('save', async function (next) {
+	if (!this.isModified('password')) return next();
+	this.password = await bcrypt.hash(this.password, 12);
+});
 
-const Category = mongoose.model('Admin', adminSchema);
-module.exports = Category;
+adminSchema.methods.correctPassword = async function (userPassword) {
+	return await bcrypt.compare(userPassword, this.password);
+};
+const Admin = mongoose.model('Admin', adminSchema);
+module.exports = Admin;

@@ -17,10 +17,10 @@ const roomSchema = mongoose.Schema(
 			type: Number,
 			required: [true, 'Vui lòng nhập số lượng sinh viên'],
 		},
-		presentStudent: {
-			type: Number,
-			default: 0,
-		},
+		// presentStudent: {
+		// 	type: Number,
+		// 	default: 0,
+		// },
 		createdAt: {
 			type: Date,
 			default: Date.now,
@@ -38,10 +38,20 @@ const roomSchema = mongoose.Schema(
 
 roomSchema.index({ building: 1, roomNumber: 1 }, { unique: true });
 
+roomSchema.virtual('presentStudent', {
+	ref: 'Student',
+	localField: '_id',
+	foreignField: 'room',
+	justOne: false,
+	count: true,
+});
+
 // Virtual populate
 roomSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'building',
+	}).populate({
+		path: 'presentStudent',
 	});
 
 	next();

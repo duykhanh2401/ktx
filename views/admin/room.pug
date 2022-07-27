@@ -2,90 +2,82 @@ extends base
 
 block content
 
-    .container-title Danh sách phòng
+    .container-title=`Thông tin phòng ${room.roomNumber} - ${room.building.name}`
     .container-navigation
-        .container-search
-            .container-find
-            input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
-            // <div class="container-filter">Bộ lọc</div>
-        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Th&ecirc;m m&#x1EDB;i
-    .table#room
-        .table-header
-            .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
-            .table-pagination
-        .table-body
-            table#table
-        
-        .pagination
-                
+
+        a.btn.btn-primary.btn-back(href='/admin/room' type='button') Quay lại
+        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Thêm sinh viên
+   
+    .warp-container#room-child(data-id=`${room.id}`)
+        .generalInformation
+            .header Thông tin chung
+
+            .body 
+                .item Số phòng *
+                    .value=`${room.roomNumber}`
+                .item Tên toà nhà *
+                    .value=`${room.building.name}`
+                .item Giá *
+                    .value=`${room.building.unitPrice}`
+                .item Số sinh viên *
+                    .value=`${room.presentStudent}`        
+                .item Số sinh viên tối đa *
+                    .value=`${room.maxStudent}` 
+        .table
+            .table-header
+                 .table-header-title=`Thông tin sinh viên (${room.presentStudent} sinh viên)`
+            .table-body
+                table#table
+            
+                    
     #addNewModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
         .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
             .modal-content
                 .modal-header
-                    h5.modal-title Thêm mới
+                    h5.modal-title Thêm sinh viên
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    label(for='') Toà nhà
-                    select#buildingName.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each building in buildings
-                            option(value= building.id)= building.name
-                    label(for='') Số phòng
-                    input.input-text#roomNumber(type='number' placeholder='Nhập số phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudent(type='number' placeholder='Nhập số sinh viên tối đa')
+                    label(for='') Sinh viên
+                    select#studentSelect.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
 
                 .modal-footer
-                    button.btn.btn-primary.btn-add-new(type='button') Tạo
+                    button.btn.btn-primary.btn-add-new(type='button') Thêm
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
 
 
 
-    #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
-        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+    //- #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+    //-     .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+    //-         .modal-content
+    //-             .modal-header
+    //-                 h5.modal-title Cập nhật
+    //-                 button.close(type='button' data-dismiss='modal' aria-label='Close')
+    //-                 span(aria-hidden='true') &times;
+    //-             .modal-body
+    //-                 label(for='') Toà nhà
+    //-                 select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+    //-                     option(value='')
+    //-                     each building in buildings
+    //-                         option(value= building.id)= building.name
+    //-                 label(for='') Số phòng
+    //-                 input.input-text#roomNumberUpdate(type='number' placeholder='Nhập số phòng')
+    //-                 label(for='') Sinh viên tối đa
+    //-                 input.input-text#maxStudentUpdate(type='number' placeholder='Nhập số sinh viên tối đa')
+
+    //-             .modal-footer
+    //-                 button.btn.btn-primary.btn-update(type='button') Cập nhật
+    //-                 button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+
+
+    #removeModal.modal.modal-center.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
             .modal-content
                 .modal-header
-                    h5.modal-title Cập nhật
+                    h5#exampleModalLabel.modal-title Bạn có muốn xoá sinh viên này ra khỏi phòng
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
-                .modal-body
-                    label(for='') Toà nhà
-                    select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each building in buildings
-                            option(value= building.id)= building.name
-                    label(for='') Số phòng
-                    input.input-text#roomNumberUpdate(type='number' placeholder='Nhập số phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudentUpdate(type='number' placeholder='Nhập số sinh viên tối đa')
 
                 .modal-footer
-                    button.btn.btn-primary.btn-update(type='button') Cập nhật
-                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
-
-
-    #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
-        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
-            .modal-content
-                .modal-header
-                    h5.modal-title Thông tin
-                    button.close(type='button' data-dismiss='modal' aria-label='Close')
-                    span(aria-hidden='true') &times;
-                .modal-body
-                    label(for='') Toà nhà
-                    select#buildingNameInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each building in buildings
-                            option(value= building.id)= building.name                    
-                    label(for='') Số phòng
-                    input.input-text#roomNumberInfo(type='number' placeholder='Nhập số lượng phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudentInfo(type='number' placeholder='Nhập giá phòng')
-                    label(for='') Sinh viên hiện có
-                    input.input-text#presentStudentInfo(type='number' placeholder='Nhập giá phòng')
-
-                .modal-footer
-                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
-
-
+                    button.btn.btn-primary.btn-remove(type='button') Xoá
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Close

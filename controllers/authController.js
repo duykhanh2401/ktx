@@ -1,3 +1,4 @@
+const Admin = require(`${__dirname}/../models/adminModels`);
 const Student = require(`${__dirname}/../models/studentModels`);
 const catchAsync = require(`${__dirname}/../utils/catchAsync`);
 const AppError = require(`${__dirname}/../utils/appError`);
@@ -5,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
 const createToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_SECRET, {
-		expiresIn: process.env.JWT_EXPIRES_IN,
+	return jwt.sign({ id }, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzUxMiJ9', {
+		expiresIn: '30d',
 	});
 };
 
@@ -16,9 +17,7 @@ const createSendToken = (student, statusCode, res) => {
 	res.cookie('jwt', token, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
-		expires: new Date(
-			Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 60 * 24 * 60 * 1000,
-		),
+		expires: new Date(Date.now() + 30 * 60 * 24 * 60 * 1000),
 	});
 
 	student.password = undefined;
@@ -91,7 +90,10 @@ exports.protect = catchAsync(async (req, res, next) => {
 		);
 
 	// Verification token
-	const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+	const decode = await promisify(jwt.verify)(
+		token,
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzUxMiJ9',
+	);
 
 	// Check if Student still exists || Kiểm tra người dùng tồn tại hay k
 	const currentStudent = await Student.findById(decode.id);
@@ -104,15 +106,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 		);
 	}
 
-	// Kiểm tra người dùng thay đổi mật khẩu sau khi token được tạo
-	// if (currentStudent.changedPasswordAfter(decode.iat)) {
-	// 	return next(
-	// 		new AppError(
-	// 			'Student recently changed password! Please log in again',
-	// 			401,
-	// 		),
-	// 	);
-	// }
 	req.Student = currentStudent;
 	res.locals.Student = currentStudent;
 	next();
@@ -147,66 +140,54 @@ exports.loginAdmin = catchAsync(async function (req, res, next) {
 
 	// 1) Check Email Password nhập vào
 	if (!email || !password)
-		return next(new AppError('Please provide email or password', 400));
+		return next(new AppError('Vui lòng nhập email và mật khẩu', 400));
 
 	// 2) Check Email Password đúng hay k
-	const Student = await Student.findOne({ email }).select('+password');
-	// console.log(Student);
-	if (!Student || !(await Student.correctPassword(password))) {
-		return next(new AppError('Incorrect email or password', 400));
-	}
-	if (Student.role !== 'admin') {
-		return next(new AppError('Bạn không có quyền truy cập đường dẫn này', 400));
-	}
+	const admin = await Admin.findOne({ email }).select('+password');
 
-	const token = createToken(Student._id);
+	if (!admin || !(await admin.correctPassword(password))) {
+		return next(new AppError('Email hoặc mật khẩu không đúng', 400));
+	}
+	console.log(admin);
+
+	const token = createToken(admin._id);
 
 	res.cookie('jwt_admin', token, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
-		expires: new Date(
-			Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 60 * 24 * 60 * 1000,
-		),
+		expires: new Date(Date.now() + 30 * 60 * 24 * 60 * 1000),
 	});
 
-	Student.password = undefined;
+	admin.password = undefined;
 	res.status(200).json({
 		status: 'success',
 		token,
 	});
 });
 
-exports.isLoggedIn = async (req, res, next) => {
-	const category = await Category.find().select('slug name');
-	res.locals.category = category;
+exports.protectAdmin = async (req, res, next) => {
 	try {
-		if (req.cookies.jwt) {
-			// Verification token
-			const decode = await promisify(jwt.verify)(
-				req.cookies.jwt,
-				process.env.JWT_SECRET,
-			);
-
-			// Check if Student still exists || Kiểm tra người dùng tồn tại hay k
-			const currentStudent = await Student.findById(decode.id);
-			if (!currentStudent) {
-				return next();
-			}
-
-			if (currentStudent.role === 'admin') {
-				res.cookie('jwt', 'logouttoken', {
-					httpOnly: true,
-					expires: new Date(Date.now() + 5000),
-				});
-				return next();
-			}
-
-			res.locals.Student = currentStudent;
-			req.Student = currentStudent;
-			return next();
+		let token;
+		if (req.cookies.jwt_admin) {
+			token = req.cookies.jwt_admin;
 		}
-	} catch (err) {
+		if (!token) {
+			return res.redirect(`/admin/login`);
+		}
+
+		const decode = await promisify(jwt.verify)(
+			token,
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzUxMiJ9',
+		);
+		const currentAdmin = await Admin.findById(decode.id);
+		if (!currentAdmin) {
+			return res.redirect(`/admin/login`);
+		}
+		req.admin = currentAdmin;
+		res.locals.admin = currentAdmin;
 		return next();
+	} catch (error) {
+		return res.redirect(`/admin/login`);
+		// return res.status(200).render('admin/login');
 	}
-	next();
 };

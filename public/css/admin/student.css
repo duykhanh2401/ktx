@@ -1,10 +1,10 @@
 /* Google Font Import - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: "Roboto", sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -258,7 +258,7 @@ body.dark .mode .sun-moon i.moon {
 }
 
 .switch::before {
-	content: "";
+	content: '';
 	position: absolute;
 	height: 15px;
 	width: 15px;
@@ -406,7 +406,6 @@ body.dark .home .text {
 	color: #fff;
 	height: 48px;
 	font-size: 16px;
-	width: 132px;
 }
 
 .table-header {
@@ -656,7 +655,8 @@ label {
 	font-size: 1rem;
 	line-height: 1.5;
 	border-radius: 0.25rem;
-	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .btn-primary {

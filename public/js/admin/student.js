@@ -74,7 +74,7 @@ const renderStudent = async () => {
                     <td class="building" ">${student.studentID}</td>
                     <td class="StudentNumber">${student.name}</td>
                     <td class="maxStudent" data-id="${student.room || ''}">${
-							student?.room?.name || 'Chưa có phòng'
+							student.room ? 'Đã có phòng' : 'Chưa có phòng'
 						}</td>
                     <td class="presentStudent">${student.class}</td>
                     <td>${student.academic}</td>
