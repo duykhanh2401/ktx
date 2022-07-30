@@ -61,8 +61,9 @@ const studentSchema = mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: 'Room',
 		},
-		status: {
-			type: String,
+		discipline: {
+			type: Boolean,
+			default: false,
 		},
 		note: String,
 	},

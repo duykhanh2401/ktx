@@ -5,6 +5,11 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+
+const formatter = new Intl.NumberFormat('vi-VN', {
+	style: 'currency',
+	currency: 'VND',
+});
 const createBuilding = async (data) => {
 	try {
 		const res = await postDataAPI('building', data);
@@ -71,7 +76,9 @@ const renderBuilding = async () => {
 				
                     <td class="name">${building.name}</td>
                     <td class="numberOfRooms">${building.numberOfRooms}</td>
-                    <td class="unitPrice">${building.unitPrice}</td>
+                    <td class="unitPrice">${formatter.format(
+											building.unitPrice,
+										)}</td>
                     <td>${
 											building.status == 'active'
 												? 'Đang hoạt động'

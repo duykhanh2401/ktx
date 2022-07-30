@@ -18,6 +18,14 @@ import { renderStudent } from './student';
 import { renderLogin } from './login';
 import { renderContract } from './contract';
 $(document).ready(function () {
+	const path = window.location.pathname;
+	document.querySelectorAll('.sidebar li a').forEach((el) => {
+		console.log(el.pathname, path, el);
+		if (el.pathname == path) {
+			el.classList.add('active');
+		}
+	});
+
 	const building = document.querySelector('#building');
 	const room = document.querySelector('#room-child');
 	const rooms = document.querySelector('#room');

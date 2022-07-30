@@ -16,17 +16,6 @@ const createStudent = async (data) => {
 	}
 };
 
-const deleteStudent = async (id) => {
-	try {
-		const res = await deleteDataAPI(`student/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		toast('danger', error.response.data.message);
-	}
-};
-
 const updateStudent = async (id, data) => {
 	try {
 		const res = await patchDataAPI(`student/${id}`, data);
@@ -55,7 +44,6 @@ const renderStudent = async () => {
                 <tr>
                 <td class="col">MÃ SỐ SINH VIÊN</td>
                 <td class="col">HỌ TÊN</td>
-                <td class="col">PHÒNG</td>
                 <td class="col">LỚP</td>
                 <td class="col">KHOÁ</td>
                 <td class="col">TRẠNG THÁI</td>
@@ -73,9 +61,6 @@ const renderStudent = async () => {
 				
                     <td class="building" ">${student.studentID}</td>
                     <td class="StudentNumber">${student.name}</td>
-                    <td class="maxStudent" data-id="${student.room || ''}">${
-							student.room ? 'Đã có phòng' : 'Chưa có phòng'
-						}</td>
                     <td class="presentStudent">${student.class}</td>
                     <td>${student.academic}</td>
                     <td>${student.status || ''}</td>

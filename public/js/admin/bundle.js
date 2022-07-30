@@ -2477,6 +2477,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 
 
+
+const formatter = new Intl.NumberFormat('vi-VN', {
+	style: 'currency',
+	currency: 'VND',
+});
 const createBuilding = async (data) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('building', data);
@@ -2543,7 +2548,9 @@ const renderBuilding = async () => {
 				
                     <td class="name">${building.name}</td>
                     <td class="numberOfRooms">${building.numberOfRooms}</td>
-                    <td class="unitPrice">${building.unitPrice}</td>
+                    <td class="unitPrice">${formatter.format(
+											building.unitPrice,
+										)}</td>
                     <td>${
 											building.status == 'active'
 												? 'Đang hoạt động'
@@ -3402,17 +3409,6 @@ const createStudent = async (data) => {
 	}
 };
 
-const deleteStudent = async (id) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`student/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		toast('danger', error.response.data.message);
-	}
-};
-
 const updateStudent = async (id, data) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`student/${id}`, data);
@@ -3441,7 +3437,6 @@ const renderStudent = async () => {
                 <tr>
                 <td class="col">MÃ SỐ SINH VIÊN</td>
                 <td class="col">HỌ TÊN</td>
-                <td class="col">PHÒNG</td>
                 <td class="col">LỚP</td>
                 <td class="col">KHOÁ</td>
                 <td class="col">TRẠNG THÁI</td>
@@ -3459,9 +3454,6 @@ const renderStudent = async () => {
 				
                     <td class="building" ">${student.studentID}</td>
                     <td class="StudentNumber">${student.name}</td>
-                    <td class="maxStudent" data-id="${student.room || ''}">${
-							student.room ? 'Đã có phòng' : 'Chưa có phòng'
-						}</td>
                     <td class="presentStudent">${student.class}</td>
                     <td>${student.academic}</td>
                     <td>${student.status || ''}</td>
@@ -3847,6 +3839,14 @@ toggle?.addEventListener('click', () => {
 
 
 $(document).ready(function () {
+	const path = window.location.pathname;
+	document.querySelectorAll('.sidebar li a').forEach((el) => {
+		console.log(el.pathname, path, el);
+		if (el.pathname == path) {
+			el.classList.add('active');
+		}
+	});
+
 	const building = document.querySelector('#building');
 	const room = document.querySelector('#room-child');
 	const rooms = document.querySelector('#room');
