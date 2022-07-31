@@ -148,7 +148,6 @@ exports.loginAdmin = catchAsync(async function (req, res, next) {
 	if (!admin || !(await admin.correctPassword(password))) {
 		return next(new AppError('Email hoặc mật khẩu không đúng', 400));
 	}
-	console.log(admin);
 
 	const token = createToken(admin._id);
 

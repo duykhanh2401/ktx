@@ -7,7 +7,7 @@ const catchAsync = require(`./../utils/catchAsync`);
 const AppError = require(`./../utils/appError`);
 const factory = require(`./factoryHandle`);
 const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
+const { promisify, isBuffer } = require('util');
 const { mongoose } = require('mongoose');
 
 const filterObject = (obj, ...fields) => {
@@ -60,6 +60,10 @@ exports.getBuilding = async (req, res, next) => {
 	res.status(200).render('admin/building');
 };
 
+exports.getInvoice = async (req, res, next) => {
+	res.status(200).render('admin/invoice');
+};
+
 exports.getContract = async (req, res, next) => {
 	const contract = await Contract.find().select('student');
 	const arrContract = contract.map((el) =>
@@ -88,6 +92,10 @@ exports.getContract = async (req, res, next) => {
 exports.getRooms = async (req, res, next) => {
 	const buildings = await Building.find();
 	res.status(200).render('admin/rooms', { buildings });
+};
+
+exports.getAdminClient = async (req, res, next) => {
+	res.status(200).render('admin/admin');
 };
 
 exports.getRoom = async (req, res, next) => {
@@ -121,8 +129,24 @@ exports.login = async (req, res, next) => {
 	res.redirect('/admin/building');
 };
 
+exports.updateAdmin = catchAsync(async (req, res, next) => {
+	let data;
+	if (req.body.password == '') {
+		delete req.body.password;
+		data = await Admin.findByIdAndUpdate(req.params.id, req.body);
+	} else {
+		data = await Admin.findByIdAndUpdate(req.params.id, req.body);
+
+		data.password = req.body.password;
+		await data.save();
+	}
+
+	res.status(200).json({
+		status: 'success',
+	});
+});
+
 exports.getAllAdmins = factory.getAll(Admin, '+active');
 exports.getAdmin = factory.getOne(Admin);
 exports.createAdmin = factory.createOne(Admin);
-exports.updateAdmin = factory.updateOne(Admin);
 exports.deleteAdmin = factory.deleteOne(Admin);

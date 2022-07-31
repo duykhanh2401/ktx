@@ -4,5 +4,7 @@ const authController = require(`../controllers/authController`);
 
 router.post('/admin/login', authController.loginAdmin);
 
-router.post('/admin/create', adminController.createAdmin);
+router.post('/admin', adminController.createAdmin);
+router.patch('/admin/:id', adminController.updateAdmin);
+router.get('/admin', adminController.getAllAdmins);
 module.exports = router;

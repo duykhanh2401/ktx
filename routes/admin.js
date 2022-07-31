@@ -14,5 +14,6 @@ router.get('/building', adminController.getBuilding);
 router.get('/room', adminController.getRooms);
 router.get('/room/:id', adminController.getRoom);
 router.get('/contract', adminController.getContract);
-
+router.get('/admin', adminController.getAdminClient);
+router.get('/invoice', adminController.getInvoice);
 module.exports = router;

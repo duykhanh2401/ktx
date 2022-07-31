@@ -17,6 +17,8 @@ import { renderRoom } from './room';
 import { renderStudent } from './student';
 import { renderLogin } from './login';
 import { renderContract } from './contract';
+import { renderAdmin } from './admin';
+import { renderInvoice } from './invoice';
 $(document).ready(function () {
 	const path = window.location.pathname;
 	document.querySelectorAll('.sidebar li a').forEach((el) => {
@@ -32,6 +34,8 @@ $(document).ready(function () {
 	const student = document.querySelector('#student');
 	const login = document.querySelector('#login');
 	const contract = document.querySelector('#contract');
+	const admin = document.querySelector('#admin');
+	const invoice = document.querySelector('#invoice');
 
 	if (building) {
 		renderBuilding();
@@ -54,5 +58,13 @@ $(document).ready(function () {
 
 	if (contract) {
 		renderContract();
+	}
+
+	if (admin) {
+		renderAdmin();
+	}
+
+	if (invoice) {
+		renderInvoice();
 	}
 });

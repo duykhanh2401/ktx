@@ -26,15 +26,18 @@ block content
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    label(for='') Toà nhà
-                    select#buildingName.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each building in buildings
-                            option(value= building.id)= building.name
-                    label(for='') Số phòng
-                    input.input-text#roomNumber(type='number' placeholder='Nhập số phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudent(type='number' placeholder='Nhập số sinh viên tối đa')
+                    div.mt-3
+                        label(for='') Toà nhà
+                        select#buildingName.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                            option(value='')
+                            each building in buildings
+                                option(value= building.id)= building.name
+                    div.mt-3
+                        label(for='') Số phòng
+                        input.input-text#roomNumber(type='number' placeholder='Nhập số phòng')
+                    div.mt-3
+                        label(for='') Sinh viên tối đa
+                        input.input-text#maxStudent(type='number' placeholder='Nhập số sinh viên tối đa')
 
                 .modal-footer
                     button.btn.btn-primary.btn-add-new(type='button') Tạo
@@ -50,15 +53,18 @@ block content
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    label(for='') Toà nhà
-                    select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each building in buildings
-                            option(value= building.id)= building.name
-                    label(for='') Số phòng
-                    input.input-text#roomNumberUpdate(type='number' placeholder='Nhập số phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudentUpdate(type='number' placeholder='Nhập số sinh viên tối đa')
+                    div.mt-3
+                        label(for='') Toà nhà
+                        select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                            option(value='')
+                            each building in buildings
+                                option(value= building.id)= building.name
+                    div.mt-3
+                        label(for='') Số phòng
+                        input.input-text#roomNumberUpdate(type='number' placeholder='Nhập số phòng')
+                    div.mt-3
+                        label(for='') Sinh viên tối đa
+                        input.input-text#maxStudentUpdate(type='number' placeholder='Nhập số sinh viên tối đa')
 
                 .modal-footer
                     button.btn.btn-primary.btn-update(type='button') Cập nhật
@@ -73,17 +79,21 @@ block content
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    label(for='') Toà nhà
-                    select#buildingNameInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each building in buildings
-                            option(value= building.id)= building.name                    
-                    label(for='') Số phòng
-                    input.input-text#roomNumberInfo(type='number' placeholder='Nhập số lượng phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudentInfo(type='number' placeholder='Nhập giá phòng')
-                    label(for='') Sinh viên hiện có
-                    input.input-text#presentStudentInfo(type='number' placeholder='Nhập giá phòng')
+                    div.mt-3
+                        label(for='') Toà nhà
+                        select#buildingNameInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                            option(value='')
+                            each building in buildings
+                                option(value= building.id)= building.name                    
+                    div.mt-3
+                        label(for='') Số phòng
+                        input.input-text#roomNumberInfo(type='number' placeholder='Nhập số lượng phòng')
+                    div.mt-3
+                        label(for='') Sinh viên tối đa
+                        input.input-text#maxStudentInfo(type='number' placeholder='Nhập giá phòng')
+                    div.mt-3
+                        label(for='') Sinh viên hiện có
+                        input.input-text#presentStudentInfo(type='number' placeholder='Nhập giá phòng')
 
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng

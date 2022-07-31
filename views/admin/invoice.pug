@@ -2,14 +2,14 @@ extends base
 
 block content
 
-    .container-title Danh sách quản lý
+    .container-title Danh sách hoá đơn
     .container-navigation
         .container-search
             .container-find
             input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
-   
+            // <div class="container-filter">Bộ lọc</div>
         button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Th&ecirc;m m&#x1EDB;i
-    .table#admin
+    .table#invoice
         .table-header
             .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
             .table-pagination
@@ -22,25 +22,31 @@ block content
         .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
             .modal-content
                 .modal-header
-                    h5.modal-title Thêm mới quản lý
+                    h5.modal-title Thêm mới
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        label(for='') Tên quản lý
-                        input.input-text#name(type='text' placeholder='Tối đa 20 ký tự...')
+                        label(for='') Chọn phòng
+                        input.input-text#nameBuilding(type='text' placeholder='Tối đa 20 ký tự...')
                     div.mt-3
-                        label(for='') Chức vụ
-                        input.input-text#position(type='text' placeholder='Nhập vị trí')
+                        label(for='') Tháng
+                        input.input-text#numberOfRooms(type='number' placeholder='Nhập số lượng phòng')
                     div.mt-3
-                        label(for='') Số điện thoại
-                        input.input-text#phone(type='text' placeholder='Nhập số điện thoại')
+                        label(for='') Năm
+                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
                     div.mt-3
-                        label(for='') Email
-                        input.input-text#email(type='email' placeholder='Nhập Email')
+                        label(for='') Chỉ số điện cũ
+                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
                     div.mt-3
-                        label(for='') Mật khẩu
-                        input.input-text#password(type='password' placeholder='Nhập mật khẩu')
+                        label(for='') Chỉ số điện mới
+                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
+                    div.mt-3
+                        label(for='') Chỉ số nước cũ
+                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
+                    div.mt-3
+                        label(for='') Chỉ số nước mới
+                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
 
                 .modal-footer
                     button.btn.btn-primary.btn-add-new(type='button') Tạo
@@ -57,20 +63,14 @@ block content
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        label(for='') Tên quản lý
-                        input.input-text#nameUpdate(type='text' placeholder='Tối đa 20 ký tự...')
+                        label(for='') Tên toà nhà
+                        input.input-text#nameBuildingUpdate(type='text' placeholder='Tối đa 20 ký tự...')
                     div.mt-3
-                        label(for='') Chức vụ
-                        input.input-text#positionUpdate(type='text' placeholder='Nhập vị trí')
+                        label(for='') Số lượng phòng
+                        input.input-text#numberOfRoomsUpdate(type='number' placeholder='Nhập số lượng phòng')
                     div.mt-3
-                        label(for='') Số điện thoại
-                        input.input-text#phoneUpdate(type='text' placeholder='Nhập số điện thoại')
-                    div.mt-3
-                        label(for='') Email
-                        input.input-text#emailUpdate(type='email' placeholder='Nhập Email')
-                    div.mt-3
-                        label(for='') Mật khẩu
-                        input.input-text#passwordUpdate(type='text' placeholder='Nhập mật khẩu')
+                        label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
+                        input.input-text#unitPriceUpdate(type='number' placeholder='Nhập giá phòng')
 
                 .modal-footer
                     button.btn.btn-primary.btn-update(type='button') Cập nhật
@@ -86,17 +86,14 @@ block content
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        label(for='') Tên quản lý
-                        input.input-text#nameInfo(type='text' placeholder='Tối đa 20 ký tự...' disabled)
+                        label(for='') Tên toà nhà
+                        input.input-text#nameBuildingInfo(type='text' placeholder='Tối đa 20 ký tự...')
                     div.mt-3
-                        label(for='') Chức vụ
-                        input.input-text#positionInfo(type='text' placeholder='Nhập vị trí' disabled)
+                        label(for='') Số lượng phòng
+                        input.input-text#numberOfRoomsInfo(type='number' placeholder='Nhập số lượng phòng')
                     div.mt-3
-                        label(for='') Số điện thoại
-                        input.input-text#phoneInfo(type='text' placeholder='Nhập số điện thoại' disabled)
-                    div.mt-3
-                        label(for='') Email
-                        input.input-text#emailInfo(type='email' placeholder='Nhập Email' disabled)
+                        label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
+                        input.input-text#unitPriceInfo(type='number' placeholder='Nhập giá phòng')
 
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng

@@ -2462,6 +2462,200 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./public/js/admin/admin.js":
+/*!**********************************!*\
+  !*** ./public/js/admin/admin.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "renderAdmin": () => (/* binding */ renderAdmin)
+/* harmony export */ });
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+
+
+
+const createAdmin = async (data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('auth/admin', data);
+		if (res.data.status === 'success') {
+			return true;
+		}
+	} catch (error) {
+		new Toast({
+			type: 'danger',
+			message: error.response.data.message || 'Tạo mới thất bại',
+		});
+	}
+};
+
+const updateAdmin = async (id, data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`auth/admin/${id}`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const renderAdmin = async () => {
+	const tableList = $('#table')[0];
+	const BuildPage = async () => {
+		// const sort = document.querySelector('.filter').value;
+		// let search = document.querySelector('.search').value;
+		// if (!search) {
+		// 	search = '';
+		// }
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`auth/admin`);
+		const listAuthor = data.data;
+		const listRender = listAuthor;
+		const buildList = async (buildPagination, min, max) => {
+			tableList.innerHTML =
+				`<thead>
+                <tr>
+                <td class="col">TÊN QUẢN LÝ</td>
+                <td class="col">CHỨC VỤ</td>
+                <td class="col">SỐ ĐIỆN THOẠI</td>
+                <td class="col">EMAIL</td>
+                <td class="col"></td>
+            </tr>
+				</thead>
+		<tbody >` +
+				listRender
+					.slice(min, max)
+					.map((admin) => {
+						return `
+				<tr class="item-list" data-id=${admin._id} data-bs-toggle="modal" data-bs-target="#infoModal">
+				
+                    <td class="name">${admin.name}</td>
+                    <td class="position">${admin.position}</td>
+                    <td class="phone">${admin.phone}</td>
+                    <td class="email">${admin.email}</td>
+          
+                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${admin._id}"></i>
+					<div class="dropdown-menu" aria-labelledby="${admin._id}">
+						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
+						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
+				  </div>
+					</td>
+			
+			</tr>
+				`;
+					})
+					.join('') +
+				`</tbody>`;
+
+			buildPagination(listRender.length);
+		};
+
+		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
+	};
+
+	$('#addNewModal').on('shown.bs.modal', function (e) {
+		const addBuilding = $('.btn-add-new')[0];
+
+		addBuilding.onclick = async (e) => {
+			const name = document.querySelector('#name').value;
+			const position = document.querySelector('#position').value;
+			const phone = document.querySelector('#phone').value;
+			const email = document.querySelector('#email').value;
+			const password = document.querySelector('#password').value;
+
+			const isSuccess = await createAdmin({
+				name,
+				password,
+				email,
+				position,
+				phone,
+			});
+			if (isSuccess) {
+				document.querySelector('#name').value = '';
+				document.querySelector('#position').value = '';
+				document.querySelector('#phone').value = '';
+				document.querySelector('#email').value = '';
+				document.querySelector('#password').value = '';
+				$('#addNewModal').modal('hide');
+				BuildPage();
+				toast('success', 'Thêm mới thành công');
+			}
+		};
+	});
+
+	$('#updateModal').on('show.bs.modal', function (e) {
+		// get row
+
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.name')[0].innerText;
+		const itemPosition = item.find('.position')[0].innerText;
+		const itemPhone = item.find('.phone')[0].innerText;
+		const itemEmail = item.find('.email')[0].innerText;
+
+		// Set giá trị khi hiện modal update
+		$('#nameUpdate')[0].value = itemName;
+		$('#positionUpdate')[0].value = itemPosition;
+		$('#phoneUpdate')[0].value = itemPhone;
+		$('#emailUpdate')[0].value = itemEmail;
+		const btnUpdate = $('.btn-update')[0];
+
+		btnUpdate.setAttribute('update-id', itemId);
+		btnUpdate.onclick = async (e) => {
+			const updateId = btnUpdate.getAttribute('update-id');
+			const name = $('#nameUpdate')[0].value;
+			const position = $('#positionUpdate')[0].value;
+			const phone = $('#phoneUpdate')[0].value;
+			const email = $('#emailUpdate')[0].value;
+			const password = $('#passwordUpdate')[0].value;
+
+			const isSuccess = await updateAdmin(updateId, {
+				name,
+				position,
+				phone,
+				email,
+				password,
+			});
+
+			if (isSuccess) {
+				$('#updateModal').modal('hide');
+				$('#nameUpdate')[0].value = '';
+				$('#positionUpdate')[0].value = '';
+				$('#phoneUpdate')[0].value = '';
+				$('#emailUpdate')[0].value = '';
+				$('#passwordUpdate')[0].value = '';
+				BuildPage();
+				toast('success', 'Cập nhật thành công');
+			}
+		};
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemName = item.find('.name')[0].innerText;
+		const itemPosition = item.find('.position')[0].innerText;
+		const itemPhone = item.find('.phone')[0].innerText;
+		const itemEmail = item.find('.email')[0].innerText;
+
+		// Set giá trị khi hiện modal update
+		$('#nameInfo')[0].value = itemName;
+		$('#positionInfo')[0].value = itemPosition;
+		$('#phoneInfo')[0].value = itemPhone;
+		$('#emailInfo')[0].value = itemEmail;
+	});
+
+	BuildPage();
+};
+
+
+
+
+/***/ }),
+
 /***/ "./public/js/admin/building.js":
 /*!*************************************!*\
   !*** ./public/js/admin/building.js ***!
@@ -2870,6 +3064,207 @@ const renderContract = async () => {
 		$('#studentSelectInfo')[0].value = itemStudentName;
 		$('#startDateInfo')[0].value = convertStrToDate(itemStartDate);
 		$('#dueDateInfo')[0].value = convertStrToDate(itemDueDate);
+	});
+
+	BuildPage();
+};
+
+
+
+
+/***/ }),
+
+/***/ "./public/js/admin/invoice.js":
+/*!************************************!*\
+  !*** ./public/js/admin/invoice.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "renderInvoice": () => (/* binding */ renderInvoice)
+/* harmony export */ });
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+
+
+
+const formatter = new Intl.NumberFormat('vi-VN', {
+	style: 'currency',
+	currency: 'VND',
+});
+const createBuilding = async (data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('building', data);
+		if (res.data.status === 'success') {
+			return true;
+		}
+	} catch (error) {
+		toast('danger', error.response.data.message);
+	}
+};
+
+const deleteBuilding = async (id) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`building/${id}`);
+		if (res.status === 204) {
+			return true;
+		}
+	} catch (error) {
+		toast('danger', error.response.data.message);
+	}
+};
+
+const updateBuilding = async (id, data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`building/${id}`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const renderInvoice = async () => {
+	const tableList = $('#table')[0];
+	const BuildPage = async () => {
+		// const sort = document.querySelector('.filter').value;
+		// let search = document.querySelector('.search').value;
+		// if (!search) {
+		// 	search = '';
+		// }
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building`);
+		const listAuthor = data.data;
+		const listRender = listAuthor;
+		const buildList = async (buildPagination, min, max) => {
+			tableList.innerHTML =
+				`<thead>
+                <tr>
+                <td class="col">TÊN TÒA NHÀ</td>
+                <td class="col">SỐ PHÒNG</td>
+                <td class="col">KỲ THANH TOÁN</td>
+                <td class="col">TỔNG TIỀN ĐIỆN</td>
+                <td class="col">TỔNG TIỀN NƯỚC</td>
+                <td class="col"></td>
+            </tr>
+				</thead>
+		<tbody >` +
+				listRender
+					.slice(min, max)
+					.map((building) => {
+						return `
+				<tr class="item-list" data-id=${
+					building._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
+				
+                    <td class="name">${building.name}</td>
+                    <td class="numberOfRooms">${building.numberOfRooms}</td>
+                    <td class="unitPrice">${formatter.format(
+											building.unitPrice,
+										)}</td>
+                    <td>${
+											building.status == 'active'
+												? 'Đang hoạt động'
+												: 'Tạm ngưng'
+										}</td>
+          
+                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
+											building._id
+										}"></i>
+					<div class="dropdown-menu" aria-labelledby="${building._id}">
+						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
+						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
+				  </div>
+					</td>
+			
+			</tr>
+				`;
+					})
+					.join('') +
+				`</tbody>`;
+
+			buildPagination(listRender.length);
+		};
+
+		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
+	};
+
+	$('#addNewModal').on('shown.bs.modal', function (e) {
+		const addBuilding = $('.btn-add-new')[0];
+
+		addBuilding.onclick = async (e) => {
+			const nameBuilding = document.querySelector('#nameBuilding').value;
+			const numberOfRooms = document.querySelector('#numberOfRooms').value;
+			const unitPrice = document.querySelector('#unitPrice').value;
+			if (!nameBuilding) {
+				return toast('danger', 'Vui lòng nhập tên toà nhà');
+			}
+			const isSuccess = await createBuilding({
+				name: nameBuilding,
+				numberOfRooms,
+				unitPrice,
+			});
+			if (isSuccess) {
+				document.querySelector('#nameBuilding').value = '';
+				document.querySelector('#numberOfRooms').value = '';
+				document.querySelector('#unitPrice').value = '';
+				$('#addNewModal').modal('hide');
+				BuildPage();
+				toast('success', 'Thêm mới thành công');
+			}
+		};
+	});
+
+	$('#updateModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		console.log(item);
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.name')[0].innerText;
+		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
+		const itemUnitPrice = item.find('.unitPrice')[0].innerText;
+
+		// Set giá trị khi hiện modal update
+		$('#nameBuildingUpdate')[0].value = itemName;
+		$('#numberOfRoomsUpdate')[0].value = itemNumberOfRooms;
+		$('#unitPriceUpdate')[0].value = itemUnitPrice;
+
+		const btnUpdate = $('.btn-update')[0];
+
+		btnUpdate.setAttribute('update-id', itemId);
+		btnUpdate.onclick = async (e) => {
+			const updateId = btnUpdate.getAttribute('update-id');
+			const name = $('#nameBuildingUpdate')[0].value;
+			const numberOfRooms = $('#numberOfRoomsUpdate')[0].value;
+			const unitPrice = $('#unitPriceUpdate')[0].value;
+
+			const isSuccess = await updateBuilding(updateId, {
+				name,
+				numberOfRooms,
+				unitPrice,
+			});
+
+			if (isSuccess) {
+				$('#updateModal').modal('hide');
+				BuildPage();
+				toast('success', 'Cập nhật thành công');
+			}
+		};
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemName = item.find('.name')[0].innerText;
+		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
+		const itemUnitPrice = item.find('.unitPrice')[0].innerText;
+
+		// Set giá trị khi hiện modal update
+		$('#nameBuildingInfo')[0].value = itemName;
+		$('#numberOfRoomsInfo')[0].value = itemNumberOfRooms;
+		$('#unitPriceInfo')[0].value = itemUnitPrice;
 	});
 
 	BuildPage();
@@ -3819,6 +4214,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _student__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./student */ "./public/js/admin/student.js");
 /* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./login */ "./public/js/admin/login.js");
 /* harmony import */ var _contract__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./contract */ "./public/js/admin/contract.js");
+/* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./admin */ "./public/js/admin/admin.js");
+/* harmony import */ var _invoice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./invoice */ "./public/js/admin/invoice.js");
 const body = document.querySelector('body'),
 	sidebar = body.querySelector('nav'),
 	toggle = body.querySelector('.toggle');
@@ -3831,6 +4228,8 @@ toggle?.addEventListener('click', () => {
 // searchBtn.addEventListener('click', () => {
 // 	sidebar.classList.remove('close');
 // });
+
+
 
 
 
@@ -3853,6 +4252,8 @@ $(document).ready(function () {
 	const student = document.querySelector('#student');
 	const login = document.querySelector('#login');
 	const contract = document.querySelector('#contract');
+	const admin = document.querySelector('#admin');
+	const invoice = document.querySelector('#invoice');
 
 	if (building) {
 		(0,_building__WEBPACK_IMPORTED_MODULE_0__.renderBuilding)();
@@ -3875,6 +4276,14 @@ $(document).ready(function () {
 
 	if (contract) {
 		(0,_contract__WEBPACK_IMPORTED_MODULE_5__.renderContract)();
+	}
+
+	if (admin) {
+		(0,_admin__WEBPACK_IMPORTED_MODULE_6__.renderAdmin)();
+	}
+
+	if (invoice) {
+		(0,_invoice__WEBPACK_IMPORTED_MODULE_7__.renderInvoice)();
 	}
 });
 
