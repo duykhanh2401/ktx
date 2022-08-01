@@ -5,7 +5,7 @@ const factory = require(`./factoryHandle`);
 
 // console.log(User);
 
-exports.getAllCategories = factory.getAll(Building);
+exports.getAllBuildings = factory.getAll(Building);
 exports.getBuilding = factory.getOne(Building);
 exports.createBuilding = factory.createOne(Building);
 exports.updateBuilding = factory.updateOne(Building);

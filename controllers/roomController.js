@@ -6,7 +6,7 @@ const factory = require(`./factoryHandle`);
 const mongoose = require('mongoose');
 // console.log(User);
 
-exports.getAllCategories = factory.getAll(Room);
+exports.getAllRooms = factory.getAll(Room);
 exports.getRoom = catchAsync(async (req, res, next) => {
 	const student = await Student.find({
 		room: req.params.id,

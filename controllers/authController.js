@@ -165,13 +165,19 @@ exports.loginAdmin = catchAsync(async function (req, res, next) {
 });
 
 exports.protectAdmin = async (req, res, next) => {
+	const checkAPI = req.originalUrl.startsWith('/api');
 	try {
 		let token;
 		if (req.cookies.jwt_admin) {
 			token = req.cookies.jwt_admin;
 		}
 		if (!token) {
-			return res.redirect(`/admin/login`);
+			return checkAPI
+				? res.status(401).json({
+						status: 'failed',
+						message: 'Bạn không có quyền truy cập vào đường dẫn này',
+				  })
+				: res.redirect(`/admin/login`);
 		}
 
 		const decode = await promisify(jwt.verify)(
@@ -180,13 +186,23 @@ exports.protectAdmin = async (req, res, next) => {
 		);
 		const currentAdmin = await Admin.findById(decode.id);
 		if (!currentAdmin) {
-			return res.redirect(`/admin/login`);
+			return checkAPI
+				? res.status(401).json({
+						status: 'failed',
+						message: 'Bạn không có quyền truy cập vào đường dẫn này',
+				  })
+				: res.redirect(`/admin/login`);
 		}
 		req.admin = currentAdmin;
 		res.locals.admin = currentAdmin;
 		return next();
 	} catch (error) {
-		return res.redirect(`/admin/login`);
+		return checkAPI
+			? res.status(401).json({
+					status: 'failed',
+					message: 'Bạn không có quyền truy cập vào đường dẫn này',
+			  })
+			: res.redirect(`/admin/login`);
 		// return res.status(200).render('admin/login');
 	}
 };

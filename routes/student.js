@@ -3,14 +3,13 @@ const studentController = require(`../controllers/studentController`);
 const authController = require(`../controllers/authController`);
 
 router.post('/login', authController.login);
-router.post('/register', authController.register);
 router.get('/logout', authController.logout);
 
 router.post('/updateMyPassword', authController.updateMyPassword);
 router.post('/updateMe', studentController.updateMe);
 router.get('/me', studentController.getMe, studentController.getStudent);
-router.delete('/deleteMe', studentController.deleteMe);
 
+router.use(authController.protectAdmin);
 router.get('/no-room', studentController.getStudentNoRoom);
 
 router

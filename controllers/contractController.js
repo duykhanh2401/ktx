@@ -3,6 +3,7 @@ const Room = require(`../models/roomModels`);
 const catchAsync = require(`../utils/catchAsync`);
 const AppError = require(`../utils/appError`);
 const factory = require(`./factoryHandle`);
+const Student = require('../models/studentModels');
 
 // console.log(User);
 exports.createContract = catchAsync(async (req, res, next) => {
@@ -90,6 +91,24 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 			data: newContract,
 		});
 	}
+});
+
+exports.cancelContract = catchAsync(async (req, res, next) => {
+	const { student } = req.body;
+	await Contract.updateMany(
+		{ student },
+		{
+			info: 'Đã huỷ',
+		},
+	);
+
+	const studentSelect = await Student.findById(student);
+	studentSelect.room = undefined;
+	await studentSelect.save();
+	return res.status(200).json({
+		status: 'success',
+		data: 'Hợp đồng đã được huỷ',
+	});
 });
 
 exports.getAllContracts = factory.getAll(Contract);

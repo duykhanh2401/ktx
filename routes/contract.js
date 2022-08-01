@@ -15,7 +15,7 @@ router.post(
 router
 	.route('/:id')
 	.get(contractController.getContract)
-	.patch(contractController.updateContract)
-	.delete(contractController.deleteContract);
+	.patch(authController.protectAdmin, contractController.updateContract)
+	.delete(authController.protectAdmin, contractController.deleteContract);
 
 module.exports = router;

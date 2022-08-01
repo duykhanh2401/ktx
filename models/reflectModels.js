@@ -37,5 +37,5 @@ const reflectSchema = mongoose.Schema(
 	},
 );
 
-const Category = mongoose.model('Contract', reflectSchema);
+const Category = mongoose.model('Reflect', reflectSchema);
 module.exports = Category;

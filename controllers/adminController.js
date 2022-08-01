@@ -7,7 +7,7 @@ const catchAsync = require(`./../utils/catchAsync`);
 const AppError = require(`./../utils/appError`);
 const factory = require(`./factoryHandle`);
 const jwt = require('jsonwebtoken');
-const { promisify, isBuffer } = require('util');
+const { promisify } = require('util');
 const { mongoose } = require('mongoose');
 
 const filterObject = (obj, ...fields) => {

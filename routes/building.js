@@ -1,9 +1,11 @@
 const router = require('express').Router();
-const buildingController = require(`${__dirname}/../controllers/buildingController`);
+const buildingController = require('../controllers/buildingController');
+const authController = require('../controllers/authController');
 
+router.use(authController.protectAdmin);
 router
 	.route('/')
-	.get(buildingController.getAllCategories)
+	.get(buildingController.getAllBuildings)
 	.post(buildingController.createBuilding);
 
 router
