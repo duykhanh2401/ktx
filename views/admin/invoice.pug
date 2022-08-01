@@ -1,5 +1,9 @@
 extends base
 
+block head 
+    title Quản lý điện nước
+
+
 block content
 
     .container-title Danh sách hoá đơn
@@ -27,8 +31,10 @@ block content
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        label(for='') Chọn phòng
-                        input.input-text#nameBuilding(type='text' placeholder='Tối đa 20 ký tự...')
+                        select#buildingName.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                            option(value='') -----------Chọn Phòng-----------
+                            each room in rooms
+                                option(value= room.id)= `${room.roomNumber} - ${room.building.name}`
                     div.mt-3
                         label(for='') Tháng
                         input.input-text#numberOfRooms(type='number' placeholder='Nhập số lượng phòng')
@@ -36,13 +42,7 @@ block content
                         label(for='') Năm
                         input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
                     div.mt-3
-                        label(for='') Chỉ số điện cũ
-                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
-                    div.mt-3
                         label(for='') Chỉ số điện mới
-                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
-                    div.mt-3
-                        label(for='') Chỉ số nước cũ
                         input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
                     div.mt-3
                         label(for='') Chỉ số nước mới

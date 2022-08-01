@@ -24,12 +24,16 @@ const invoiceSchema = mongoose.Schema(
 			required: [true, 'Vui lòng nhập thông tin nước'],
 		},
 		month: {
-			type: 'Number',
+			type: Number,
 			min: 1,
 			max: 12,
 		},
 		year: {
-			type: 'Number',
+			type: Number,
+		},
+		status: {
+			type: String,
+			default: 'Chưa thanh toán',
 		},
 	},
 	{
@@ -38,7 +42,15 @@ const invoiceSchema = mongoose.Schema(
 	},
 );
 
-// Virtual populate
+invoiceSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'electricity',
+	}).populate({
+		path: 'water',
+	});
+
+	next();
+});
 
 const Invoice = mongoose.model('Invoice', invoiceSchema);
 module.exports = Invoice;

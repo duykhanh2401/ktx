@@ -1,5 +1,9 @@
 extends base
 
+block head 
+    title Thông tin phòng #{`${room.roomNumber} - ${room.building.name}`}
+
+
 block content
 
     .container-title=`Thông tin phòng ${room.roomNumber} - ${room.building.name}`

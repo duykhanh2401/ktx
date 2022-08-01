@@ -13,7 +13,6 @@ const reflectSchema = mongoose.Schema(
 		admin: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Admin',
-			required: [true, 'Vui lòng nhập quản lý'],
 		},
 		createdAt: {
 			type: Date,
@@ -37,20 +36,6 @@ const reflectSchema = mongoose.Schema(
 		toObject: { virtuals: true },
 	},
 );
-
-reflectSchema.virtual('status').get(function () {
-	return this.dueDate - Date.now() > 0 ? true : false;
-});
-
-reflectSchema.pre(/^find/, function (next) {
-	this.populate({
-		path: 'admin',
-	}).populate({
-		path: 'student',
-	});
-
-	next();
-});
 
 const Category = mongoose.model('Contract', reflectSchema);
 module.exports = Category;

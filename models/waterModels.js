@@ -6,7 +6,7 @@ const waterSchema = mongoose.Schema(
 	{
 		startNumber: {
 			type: 'Number',
-			required: [true, 'Vui lòng nhập chỉ số cũ'],
+			default: 0,
 		},
 		endNumber: {
 			type: 'Number',
