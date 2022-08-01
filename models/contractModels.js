@@ -26,10 +26,6 @@ const contractSchema = mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
-		info: {
-			type: String,
-			default: 'Hợp đồng',
-		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -38,7 +34,14 @@ const contractSchema = mongoose.Schema(
 );
 
 contractSchema.virtual('status').get(function () {
-	return this.dueDate - Date.now() > 0 ? true : false;
+	const today = Date.now();
+	if (this.startDate < today && today < this.dueDate) {
+		return 'active';
+	} else if (this.startDate > today) {
+		return 'extend';
+	} else if (this.dueDate < today) {
+		return 'inactive';
+	}
 });
 
 contractSchema.pre(/^find/, function (next) {

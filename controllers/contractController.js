@@ -17,10 +17,8 @@ exports.createContract = catchAsync(async (req, res, next) => {
 
 	const contract = await Contract.find({
 		student,
-		dueDate: { $gte: Date.now() },
-		startDate: { $lte: Date.now() },
+		status: 'active',
 	});
-
 	if (contract.length == 0) {
 		const newContract = await Contract.create({
 			student,
@@ -45,17 +43,16 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 
 	const contract = await Contract.find({
 		student,
-		dueDate: { $gte: Date.now() },
-		startDate: { $lte: Date.now() },
+		$or: [{ status: 'active' }, { status: 'extend' }],
 	});
-
+	console.log(contract);
 	if (contract.length == 0) {
 		return res.status(400).json({
 			message: 'Sinh viên chưa có hợp đồng',
 		});
 	}
 
-	if (contract.length == 1) {
+	if (contract.length == 2) {
 		if (contract[0].dueDate > new Date(dueDate)) {
 			return res.status(400).json({
 				message: 'Thời gian kết thúc không hợp lệ, hợp đồng vẫn còn hạn',
