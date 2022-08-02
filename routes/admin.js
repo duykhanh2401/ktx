@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { request } = require('express');
 const adminController = require(`../controllers/adminController`);
 const authController = require(`../controllers/authController`);
 
@@ -6,6 +7,9 @@ router.get('/login', adminController.login);
 
 router.use(authController.protectAdmin);
 
+router.get('/', (req, res) => {
+	res.redirect('/building');
+});
 router.post('/updateMe', adminController.updateMe);
 router.delete('/deleteMe', adminController.deleteMe);
 

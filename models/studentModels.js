@@ -73,7 +73,12 @@ const studentSchema = mongoose.Schema(
 	},
 );
 
-// Mã hoá mật khẩu
+studentSchema.virtual('contract', {
+	ref: 'Contract',
+	localField: '_id',
+	foreignField: 'student',
+});
+
 studentSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
 	this.password = await bcrypt.hash(this.password, 12);

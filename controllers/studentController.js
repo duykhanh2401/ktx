@@ -72,24 +72,17 @@ exports.getStudentNoRoom = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllStudents = catchAsync(async (req, res, next) => {
-	const allStudent = await Student.find({});
-	const data = allStudent.map((student) => {
-		if (student.discipline) {
-			student.status = 'Kỉ luật';
-		} else if (student.room) {
-			student.status = 'Đã có phòng';
-		} else if (!student.room) {
-			student.status = 'Chưa có phòng';
-		} else if (studentContract.dueDate < Date.now()) {
-			student.status = 'Đã dọn ra';
-		}
-		console.log(student);
-		return student;
+	const allStudent = await Student.find().populate({
+		path: 'contract',
+		match: {
+			dueDate: { $gte: Date.now() },
+			startDate: { $lte: Date.now() },
+		},
 	});
 
 	res.status(200).json({
 		status: 'success',
-		data,
+		data: allStudent,
 	});
 });
 exports.getStudent = factory.getOne(Student);

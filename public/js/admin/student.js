@@ -63,7 +63,15 @@ const renderStudent = async () => {
                     <td class="StudentNumber">${student.name}</td>
                     <td class="presentStudent">${student.class}</td>
                     <td>${student.academic}</td>
-                    <td>${student.status || ''}</td>
+                    <td>${
+											student.discipline
+												? 'Kỉ luật'
+												: student.contract.length == 0
+												? 'Đã dọn ra'
+												: student.room
+												? 'Đã có phòng'
+												: 'Chưa có phòng'
+										}</td>
                         
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
 											student._id

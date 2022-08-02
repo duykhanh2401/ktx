@@ -6,9 +6,9 @@ import {
 } from '../util/fetchAPI';
 
 const renderLogin = async () => {
-	const btnSubmit = document.querySelector('#submit');
-
-	btnSubmit.addEventListener('click', async (e) => {
+	const form = document.querySelector('form');
+	console.log(form);
+	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
 
 		const email = document.querySelector('#email').value;

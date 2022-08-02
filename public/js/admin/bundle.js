@@ -2954,7 +2954,6 @@ const renderContract = async () => {
                 <td class="col">NGÀY BẮT ĐẦU</td>
                 <td class="col">NGÀY HẾT HẠN</td>
                 <td class="col">TRẠNG THÁI</td>
-                <td class="col"></td>
             </tr>
 				</thead>
 		<tbody >` +
@@ -2980,13 +2979,7 @@ const renderContract = async () => {
 										).toLocaleDateString()}</td>
                     <td>${contract.info}</td>
           
-                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-											contract._id
-										}"></i>
-					<div class="dropdown-menu" aria-labelledby="${contract._id}">
-						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
-						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
-				  </div>
+             
 					</td>
 			
 			</tr>
@@ -3290,9 +3283,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const renderLogin = async () => {
-	const btnSubmit = document.querySelector('#submit');
-
-	btnSubmit.addEventListener('click', async (e) => {
+	const form = document.querySelector('form');
+	console.log(form);
+	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
 
 		const email = document.querySelector('#email').value;
@@ -3851,7 +3844,15 @@ const renderStudent = async () => {
                     <td class="StudentNumber">${student.name}</td>
                     <td class="presentStudent">${student.class}</td>
                     <td>${student.academic}</td>
-                    <td>${student.status || ''}</td>
+                    <td>${
+											student.discipline
+												? 'Kỉ luật'
+												: student.contract.length == 0
+												? 'Đã dọn ra'
+												: student.room
+												? 'Đã có phòng'
+												: 'Chưa có phòng'
+										}</td>
                         
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
 											student._id
@@ -4216,6 +4217,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _contract__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./contract */ "./public/js/admin/contract.js");
 /* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./admin */ "./public/js/admin/admin.js");
 /* harmony import */ var _invoice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./invoice */ "./public/js/admin/invoice.js");
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 const body = document.querySelector('body'),
 	sidebar = body.querySelector('nav'),
 	toggle = body.querySelector('.toggle');
@@ -4228,6 +4230,7 @@ toggle?.addEventListener('click', () => {
 // searchBtn.addEventListener('click', () => {
 // 	sidebar.classList.remove('close');
 // });
+
 
 
 
@@ -4255,6 +4258,17 @@ $(document).ready(function () {
 	const admin = document.querySelector('#admin');
 	const invoice = document.querySelector('#invoice');
 
+	if (!login) {
+		document
+			.querySelector('.logout-btn')
+			.addEventListener('click', async () => {
+				const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_8__.getDataAPI)('auth/admin/logout');
+
+				if (res.status === 200) {
+					location.reload();
+				}
+			});
+	}
 	if (building) {
 		(0,_building__WEBPACK_IMPORTED_MODULE_0__.renderBuilding)();
 	}

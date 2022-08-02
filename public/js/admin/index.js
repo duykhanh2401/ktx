@@ -19,6 +19,7 @@ import { renderLogin } from './login';
 import { renderContract } from './contract';
 import { renderAdmin } from './admin';
 import { renderInvoice } from './invoice';
+import { getDataAPI } from './../util/fetchAPI';
 $(document).ready(function () {
 	const path = window.location.pathname;
 	document.querySelectorAll('.sidebar li a').forEach((el) => {
@@ -37,6 +38,17 @@ $(document).ready(function () {
 	const admin = document.querySelector('#admin');
 	const invoice = document.querySelector('#invoice');
 
+	if (!login) {
+		document
+			.querySelector('.logout-btn')
+			.addEventListener('click', async () => {
+				const res = await getDataAPI('auth/admin/logout');
+
+				if (res.status === 200) {
+					location.reload();
+				}
+			});
+	}
 	if (building) {
 		renderBuilding();
 	}

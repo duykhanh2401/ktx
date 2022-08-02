@@ -135,6 +135,17 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 	createSendToken(Student, 200, res);
 });
 
+exports.logoutAdmin = (req, res, next) => {
+	res.cookie('jwt_admin', 'logouttoken', {
+		httpOnly: true,
+		expires: new Date(Date.now() + 5000),
+	});
+
+	res.status(200).json({
+		status: 'success',
+	});
+};
+
 exports.loginAdmin = catchAsync(async function (req, res, next) {
 	const { email, password } = req.body;
 

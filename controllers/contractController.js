@@ -45,14 +45,11 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 		student,
 		$or: [{ status: 'active' }, { status: 'extend' }],
 	});
-	console.log(contract);
 	if (contract.length == 0) {
 		return res.status(400).json({
 			message: 'Sinh viên chưa có hợp đồng',
 		});
-	}
-
-	if (contract.length == 2) {
+	} else if (contract.length == 1) {
 		if (contract[0].dueDate > new Date(dueDate)) {
 			return res.status(400).json({
 				message: 'Thời gian kết thúc không hợp lệ, hợp đồng vẫn còn hạn',
@@ -86,6 +83,10 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 		return res.status(200).json({
 			status: 'success',
 			data: newContract,
+		});
+	} else if (contract.length == 2) {
+		return res.status(400).json({
+			message: 'Hợp đồng đã được gia hạn',
 		});
 	}
 });

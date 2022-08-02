@@ -88,7 +88,6 @@ const renderContract = async () => {
                 <td class="col">NGÀY BẮT ĐẦU</td>
                 <td class="col">NGÀY HẾT HẠN</td>
                 <td class="col">TRẠNG THÁI</td>
-                <td class="col"></td>
             </tr>
 				</thead>
 		<tbody >` +
@@ -114,13 +113,7 @@ const renderContract = async () => {
 										).toLocaleDateString()}</td>
                     <td>${contract.info}</td>
           
-                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-											contract._id
-										}"></i>
-					<div class="dropdown-menu" aria-labelledby="${contract._id}">
-						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
-						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
-				  </div>
+             
 					</td>
 			
 			</tr>
