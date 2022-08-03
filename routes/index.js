@@ -6,7 +6,7 @@ const viewController = require(`../controllers/viewController`);
 router.get('/', (req, res) => {
 	res.redirect('/contract');
 });
-
+router.get('/login', viewController.login);
 router.get('/contract', viewController.getContract);
 
 module.exports = router;

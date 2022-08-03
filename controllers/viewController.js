@@ -2,6 +2,9 @@ exports.getContract = async (req, res, next) => {
 	res.status(200).render('student/contract');
 };
 
+exports.login = async (req, res, next) => {
+	res.status(200).render('student/login');
+};
 // exports.getBuilding = async (req, res, next) => {
 // 	res.status(200).render('admin/building');
 // };

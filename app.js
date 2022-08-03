@@ -49,13 +49,13 @@ const filesApi = glob.sync(
 
 for (var i = 0; i < filesApi.length; i++) {
 	var fileName = path.basename(filesApi[i], '.js');
-	if (fileName == 'index') {
-		app.use('/', require(filesApi[i]));
-	} else if (fileName == 'admin') {
+
+	if (fileName == 'admin') {
 		app.use('/' + fileName, require(filesApi[i]));
-	} else {
+	} else if (fileName != 'index') {
 		app.use('/api/' + fileName, require(filesApi[i]));
 	}
 }
 
+app.use('/', require('./routes/index'));
 module.exports = app;

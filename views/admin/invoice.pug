@@ -31,22 +31,25 @@ block content
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        select#buildingName.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
+                        select#roomID.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
                             option(value='') -----------Chọn Phòng-----------
                             each room in rooms
-                                option(value= room.id)= `${room.roomNumber} - ${room.building.name}`
+                                option(value= room.id)= `Phòng ${room.roomNumber} - Toà ${room.building.name}`
                     div.mt-3
                         label(for='') Tháng
-                        input.input-text#numberOfRooms(type='number' placeholder='Nhập số lượng phòng')
+                        select.input-text#month(type='number' placeholder='Nhập số lượng phòng')
+                            option(value='') Chọn tháng
+                            each n in [1,2,3,4,5,6,7,8,9,10,11,12]
+                                option(value=n)= `Tháng ${n}`
                     div.mt-3
                         label(for='') Năm
-                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
+                        input.input-text#year(type='number' placeholder='Nhập năm')
                     div.mt-3
                         label(for='') Chỉ số điện mới
-                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
+                        input.input-text#electricity(type='number' placeholder='Nhập chỉ số điện mới')
                     div.mt-3
                         label(for='') Chỉ số nước mới
-                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
+                        input.input-text#water(type='number' placeholder='Nhập chỉ số điện cũ')
 
                 .modal-footer
                     button.btn.btn-primary.btn-add-new(type='button') Tạo

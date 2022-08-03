@@ -9,14 +9,15 @@ const factory = require(`./factoryHandle`);
 exports.createInvoice = catchAsync(async (req, res, next) => {
 	const { room, month, year, electricity, water } = req.body;
 
-	const currentMonth = await Invoice.find({ room, month, year });
+	const currentMonth = await Invoice.findOne({ room, month, year });
 	if (currentMonth)
 		return next(new AppError('Hoá đơn tháng này đã tồn tại', 400));
 
-	const lastMonth = await Invoice.find({ room, month: month - 1, year });
+	const lastMonth = await Invoice.findOne({ room, month: month - 1, year });
 	let totalElectricity = 0,
-		totalWater = 0;
-	(startElectricity = 0), (startWater = 0);
+		totalWater = 0,
+		startElectricity = 0,
+		startWater = 0;
 	if (!lastMonth) {
 		totalElectricity = electricity * 2000;
 		totalWater = water * 8000;
@@ -42,8 +43,7 @@ exports.createInvoice = catchAsync(async (req, res, next) => {
 	});
 
 	const waterCreate = await Water.create({
-		startNumber,
-		startWater,
+		startNumber: startWater,
 		endNumber: water * 1,
 		total: totalWater,
 	});
@@ -54,6 +54,7 @@ exports.createInvoice = catchAsync(async (req, res, next) => {
 		water: waterCreate._id,
 		month,
 		year,
+		admin: req.admin._id,
 	});
 	res.status(200).json({
 		status: 'success',

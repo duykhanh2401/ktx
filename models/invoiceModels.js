@@ -45,9 +45,13 @@ const invoiceSchema = mongoose.Schema(
 invoiceSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'electricity',
-	}).populate({
-		path: 'water',
-	});
+	})
+		.populate({
+			path: 'water',
+		})
+		.populate({
+			path: 'room',
+		});
 
 	next();
 });

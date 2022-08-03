@@ -2977,7 +2977,13 @@ const renderContract = async () => {
                     <td class="dueDate">${new Date(
 											contract.dueDate,
 										).toLocaleDateString()}</td>
-                    <td>${contract.info}</td>
+                    <td>${
+											contract.status == 'active'
+												? 'Hợp Đồng'
+												: contract.status == 'inactive'
+												? 'Hết Hạn'
+												: 'Gia Hạn'
+										}</td>
           
              
 					</td>
@@ -3087,9 +3093,9 @@ const formatter = new Intl.NumberFormat('vi-VN', {
 	style: 'currency',
 	currency: 'VND',
 });
-const createBuilding = async (data) => {
+const createInvoice = async (data) => {
 	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('building', data);
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('invoice', data);
 		if (res.data.status === 'success') {
 			return true;
 		}
@@ -3128,7 +3134,7 @@ const renderInvoice = async () => {
 		// if (!search) {
 		// 	search = '';
 		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building`);
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
 		const listAuthor = data.data;
 		const listRender = listAuthor;
 		const buildList = async (buildPagination, min, max) => {
@@ -3146,27 +3152,24 @@ const renderInvoice = async () => {
 		<tbody >` +
 				listRender
 					.slice(min, max)
-					.map((building) => {
+					.map((invoice) => {
 						return `
 				<tr class="item-list" data-id=${
-					building._id
+					invoice._id
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
-                    <td class="name">${building.name}</td>
-                    <td class="numberOfRooms">${building.numberOfRooms}</td>
-                    <td class="unitPrice">${formatter.format(
-											building.unitPrice,
-										)}</td>
-                    <td>${
-											building.status == 'active'
-												? 'Đang hoạt động'
-												: 'Tạm ngưng'
-										}</td>
+                    <td class="name">${invoice.room.building.name}</td>
+                    <td class="numberOfRooms">${invoice.room.roomNumber}</td>
+                    <td class="unitPrice">Tháng ${invoice.month} - Năm ${
+							invoice.year
+						}</td>
+                    <td>${formatter.format(invoice.electricity.total)}</td>
+										<td>${formatter.format(invoice.water.total)}</td>
           
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-											building._id
+											invoice._id
 										}"></i>
-					<div class="dropdown-menu" aria-labelledby="${building._id}">
+					<div class="dropdown-menu" aria-labelledby="${invoice._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
 						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
 				  </div>
@@ -3188,21 +3191,25 @@ const renderInvoice = async () => {
 		const addBuilding = $('.btn-add-new')[0];
 
 		addBuilding.onclick = async (e) => {
-			const nameBuilding = document.querySelector('#nameBuilding').value;
-			const numberOfRooms = document.querySelector('#numberOfRooms').value;
-			const unitPrice = document.querySelector('#unitPrice').value;
-			if (!nameBuilding) {
-				return toast('danger', 'Vui lòng nhập tên toà nhà');
-			}
-			const isSuccess = await createBuilding({
-				name: nameBuilding,
-				numberOfRooms,
-				unitPrice,
+			const room = document.querySelector('#roomID').value;
+			const month = document.querySelector('#month').value;
+			const year = document.querySelector('#year').value;
+			const electricity = document.querySelector('#electricity').value;
+			const water = document.querySelector('#water').value;
+
+			const isSuccess = await createInvoice({
+				room,
+				month,
+				year,
+				electricity,
+				water,
 			});
 			if (isSuccess) {
-				document.querySelector('#nameBuilding').value = '';
-				document.querySelector('#numberOfRooms').value = '';
-				document.querySelector('#unitPrice').value = '';
+				document.querySelector('#roomID').value = '';
+				document.querySelector('#month').value = '';
+				document.querySelector('#year').value = '';
+				document.querySelector('#electricity').value = '';
+				document.querySelector('#water').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
 				toast('success', 'Thêm mới thành công');

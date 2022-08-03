@@ -38,24 +38,20 @@ exports.register = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async function (req, res, next) {
-	const { email, password } = req.body;
+	const { studentID, password } = req.body;
 
 	// 1) Check Email Password nhập vào
 	if (!email || !password)
 		return next(new AppError('Please provide email or password', 400));
 
 	// 2) Check Email Password đúng hay k
-	const student = await Student.findOne({ email }).select('+password');
+	const student = await Student.findOne({ studentID }).select('+password');
 
 	if (
 		!student ||
 		!(await student.correctPassword(password, student.password))
 	) {
 		return next(new AppError('Email hoặc mật khẩu không đúng', 400));
-	}
-
-	if (student.role === 'admin') {
-		return next(new AppError('Tài khoản không tồn tại', 400));
 	}
 
 	createSendToken(student, 200, res);

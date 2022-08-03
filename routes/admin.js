@@ -8,7 +8,7 @@ router.get('/login', adminController.login);
 router.use(authController.protectAdmin);
 
 router.get('/', (req, res) => {
-	res.redirect('/building');
+	res.redirect('/admin/building');
 });
 router.post('/updateMe', adminController.updateMe);
 router.delete('/deleteMe', adminController.deleteMe);

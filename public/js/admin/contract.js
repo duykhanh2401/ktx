@@ -111,7 +111,13 @@ const renderContract = async () => {
                     <td class="dueDate">${new Date(
 											contract.dueDate,
 										).toLocaleDateString()}</td>
-                    <td>${contract.info}</td>
+                    <td>${
+											contract.status == 'active'
+												? 'Hợp Đồng'
+												: contract.status == 'inactive'
+												? 'Hết Hạn'
+												: 'Gia Hạn'
+										}</td>
           
              
 					</td>

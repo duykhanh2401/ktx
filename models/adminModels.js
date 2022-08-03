@@ -21,7 +21,7 @@ const adminSchema = mongoose.Schema(
 		},
 		createdAt: {
 			type: Date,
-			default: Date.now,
+			default: new Date().toISOString(),
 		},
 		email: {
 			type: String,
