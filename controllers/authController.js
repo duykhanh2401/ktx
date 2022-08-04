@@ -41,7 +41,7 @@ exports.login = catchAsync(async function (req, res, next) {
 	const { studentID, password } = req.body;
 
 	// 1) Check Email Password nhập vào
-	if (!email || !password)
+	if (!studentID || !password)
 		return next(new AppError('Please provide email or password', 400));
 
 	// 2) Check Email Password đúng hay k
@@ -70,6 +70,7 @@ exports.logout = (req, res, next) => {
 
 // Kiểm tra đăng nhập chưa với token
 exports.protect = catchAsync(async (req, res, next) => {
+	const checkAPI = req.originalUrl.startsWith('/api');
 	let token;
 	if (
 		req.headers.authorization &&
@@ -81,9 +82,12 @@ exports.protect = catchAsync(async (req, res, next) => {
 	}
 
 	if (!token)
-		return next(
-			new AppError('You are not logged in! Please log in to get access', 401),
-		);
+		return checkAPI
+			? res.status(401).json({
+					status: 'failed',
+					message: 'Bạn không có quyền truy cập vào đường dẫn này',
+			  })
+			: res.redirect(`/login`);
 
 	// Verification token
 	const decode = await promisify(jwt.verify)(
@@ -94,16 +98,16 @@ exports.protect = catchAsync(async (req, res, next) => {
 	// Check if Student still exists || Kiểm tra người dùng tồn tại hay k
 	const currentStudent = await Student.findById(decode.id);
 	if (!currentStudent) {
-		return next(
-			new AppError(
-				'The Student belonging to this token does no longer exists',
-				401,
-			),
-		);
+		return checkAPI
+			? res.status(401).json({
+					status: 'failed',
+					message: 'Bạn không có quyền truy cập vào đường dẫn này',
+			  })
+			: res.redirect(`/login`);
 	}
 
-	req.Student = currentStudent;
-	res.locals.Student = currentStudent;
+	req.student = currentStudent;
+	res.locals.student = currentStudent;
 	next();
 });
 

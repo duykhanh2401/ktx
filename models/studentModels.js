@@ -79,6 +79,12 @@ studentSchema.virtual('contract', {
 	foreignField: 'student',
 });
 
+studentSchema.virtual('allContract', {
+	ref: 'Contract',
+	localField: '_id',
+	foreignField: 'student',
+});
+
 studentSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
 	this.password = await bcrypt.hash(this.password, 12);

@@ -11,12 +11,12 @@ const renderLogin = async () => {
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
 
-		const email = document.querySelector('#email').value;
+		const studentID = document.querySelector('#studentID').value;
 		const password = document.querySelector('#password').value;
-		console.log(email, password);
-		if (!email) {
+		console.log(studentID, password);
+		if (!studentID) {
 			new Toast({
-				message: 'Vui lòng nhập email',
+				message: 'Vui lòng nhập mã sinh viên',
 				type: 'danger',
 			});
 		}
@@ -29,8 +29,8 @@ const renderLogin = async () => {
 		}
 
 		try {
-			const isSuccess = await postDataAPI('auth/admin/login', {
-				email,
+			const isSuccess = await postDataAPI('student/login', {
+				studentID,
 				password,
 			});
 

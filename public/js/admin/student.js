@@ -66,11 +66,14 @@ const renderStudent = async () => {
                     <td>${
 											student.discipline
 												? 'Kỉ luật'
-												: student.contract.length == 0
-												? 'Đã dọn ra'
+												: (student.contract.length == 0 &&
+														student.allContract == 0) ||
+												  (!student.room &&
+														new Date(student.contract[0]?.dueDate) > Date.now())
+												? 'Chưa có phòng'
 												: student.room
 												? 'Đã có phòng'
-												: 'Chưa có phòng'
+												: 'Đã dọn ra'
 										}</td>
                         
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
