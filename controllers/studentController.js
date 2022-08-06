@@ -89,7 +89,25 @@ exports.getAllStudents = catchAsync(async (req, res, next) => {
 		data: allStudent,
 	});
 });
+exports.updateStudent = catchAsync(async (req, res, next) => {
+	let data;
+	console.log(req.body);
+
+	if (req.body.password == '') {
+		delete req.body.password;
+		data = await Student.findByIdAndUpdate(req.params.id, req.body);
+	} else {
+		data = await Student.findByIdAndUpdate(req.params.id, req.body);
+
+		data.password = req.body.password;
+		await data.save();
+	}
+
+	res.status(200).json({
+		status: 'success',
+	});
+});
+
 exports.getStudent = factory.getOne(Student);
 exports.createStudent = factory.createOne(Student);
-exports.updateStudent = factory.updateOne(Student);
 exports.deleteStudent = factory.deleteOne(Student);

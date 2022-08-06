@@ -59,11 +59,11 @@ const renderStudent = async () => {
 					student._id
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
-                    <td class="building" ">${student.studentID}</td>
-                    <td class="StudentNumber">${student.name}</td>
-                    <td class="presentStudent">${student.class}</td>
-                    <td>${student.academic}</td>
-                    <td>${
+                    <td class="studentID" ">${student.studentID}</td>
+                    <td class="name">${student.name}</td>
+                    <td class="class">${student.class}</td>
+                    <td class="academic">${student.academic}</td>
+                    <td class="status">${
 											student.discipline
 												? 'Kỉ luật'
 												: (student.contract.length == 0 &&
@@ -75,7 +75,13 @@ const renderStudent = async () => {
 												? 'Đã có phòng'
 												: 'Đã dọn ra'
 										}</td>
-                        
+                    <td class="d-none gender">${student.gender}</td>   
+                    <td class="d-none dateOfBirth">${
+											student.dateOfBirth
+										}</td>   
+                    <td class="d-none address">${student.address}</td>   
+                    <td class="d-none father">${student.father}</td>   
+                    <td class="d-none mother">${student.mother}</td>   
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
 											student._id
 										}"></i>
@@ -145,32 +151,71 @@ const renderStudent = async () => {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		const itemBuildingName = item.find('.building').attr('data-id');
-		const itemStudentNumber = item.find('.StudentNumber')[0].innerText;
-		const itemMaxStudent = item.find('.maxStudent')[0].innerText;
-		const itemPresentStudent = item.find('.presentStudent')[0].innerText;
+		const studentID = item.find('.studentID')[0].innerText;
+		const name = item.find('.name')[0].innerText;
+		const classStudent = item.find('.class')[0].innerText;
+		const academic = item.find('.academic')[0].innerText;
+		const address = item.find('.address')[0].innerText;
+		const dateOfBirth = item.find('.dateOfBirth')[0].innerText;
+		const father = item.find('.father')[0].innerText;
+		const mother = item.find('.mother')[0].innerText;
+		const gender = item.find('.gender')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#buildingNameUpdate')[0].value = itemBuildingName;
-		$('#StudentNumberUpdate')[0].value = itemStudentNumber;
-		$('#maxStudentUpdate')[0].value = itemMaxStudent;
-		$('#presentStudentUpdate')[0].value = itemPresentStudent;
+		if (gender == 'male') {
+			$('#maleGenderUpdate')[0].checked = true;
+		} else if (gender == 'female') {
+			$('#femaleGenderUpdate')[0].checked = true;
+		}
+		$('#studentIDUpdate')[0].value = studentID;
+		$('#nameUpdate')[0].value = name;
+		$('#classUpdate')[0].value = classStudent;
+		$('#academicUpdate')[0].value = academic;
+		$('#addressUpdate')[0].value = address;
+		$('#dateOfBirthUpdate')[0].value = dateOfBirth;
+		$('#fatherUpdate')[0].value = father;
+		$('#motherUpdate')[0].value = mother;
 
 		const btnUpdate = $('.btn-update')[0];
 
 		btnUpdate.setAttribute('update-id', itemId);
 		btnUpdate.onclick = async (e) => {
 			const updateId = btnUpdate.getAttribute('update-id');
-			const buildingName = $('#buildingNameUpdate')[0].value;
-			const StudentNumber = $('#StudentNumberUpdate')[0].value;
-			const maxStudent = $('#maxStudentUpdate')[0].value;
-			const presentStudent = $('#presentStudentUpdate')[0].value;
-
+			const studentID = $('#studentIDUpdate')[0].value;
+			const name = $('#nameUpdate')[0].value;
+			const classStudent = $('#classUpdate')[0].value;
+			const academic = $('#academicUpdate')[0].value;
+			const address = $('#addressUpdate')[0].value;
+			const dateOfBirth = $('#dateOfBirthUpdate')[0].value;
+			const father = $('#fatherUpdate')[0].value;
+			const mother = $('#motherUpdate')[0].value;
+			const password = $('#passwordUpdate')[0].value;
+			const gender = document.querySelector(
+				'input[name="genderUpdate"]:checked',
+			).value;
+			console.log({
+				studentID,
+				name,
+				classStudent,
+				academic,
+				address,
+				dateOfBirth,
+				father,
+				mother,
+				password,
+				gender,
+			});
 			const isSuccess = await updateStudent(updateId, {
-				building: buildingName,
-				StudentNumber,
-				maxStudent,
-				presentStudent,
+				studentID,
+				name,
+				classStudent,
+				academic,
+				address,
+				dateOfBirth,
+				father,
+				mother,
+				password,
+				gender,
 			});
 
 			if (isSuccess) {
@@ -184,16 +229,30 @@ const renderStudent = async () => {
 	$('#infoModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		const itemBuildingName = item.find('.building').attr('data-id');
-		const itemStudentNumber = item.find('.StudentNumber')[0].innerText;
-		const itemMaxStudent = item.find('.maxStudent')[0].innerText;
-		const itemPresentStudent = item.find('.presentStudent')[0].innerText;
+		const studentID = item.find('.studentID')[0].innerText;
+		const name = item.find('.name')[0].innerText;
+		const classStudent = item.find('.class')[0].innerText;
+		const academic = item.find('.academic')[0].innerText;
+		const address = item.find('.address')[0].innerText;
+		const dateOfBirth = item.find('.dateOfBirth')[0].innerText;
+		const father = item.find('.father')[0].innerText;
+		const mother = item.find('.mother')[0].innerText;
+		const gender = item.find('.gender')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#buildingNameInfo')[0].value = itemBuildingName;
-		$('#StudentNumberInfo')[0].value = itemStudentNumber;
-		$('#maxStudentInfo')[0].value = itemMaxStudent;
-		$('#presentStudentInfo')[0].value = itemPresentStudent;
+		if (gender == 'male') {
+			$('#maleGenderInfo')[0].checked = true;
+		} else if (gender == 'female') {
+			$('#femaleGenderInfo')[0].checked = true;
+		}
+		$('#studentIDInfo')[0].value = studentID;
+		$('#nameInfo')[0].value = name;
+		$('#classInfo')[0].value = classStudent;
+		$('#academicInfo')[0].value = academic;
+		$('#addressInfo')[0].value = address;
+		$('#dateOfBirthInfo')[0].value = dateOfBirth;
+		$('#fatherInfo')[0].value = father;
+		$('#motherInfo')[0].value = mother;
 	});
 
 	BuildPage();

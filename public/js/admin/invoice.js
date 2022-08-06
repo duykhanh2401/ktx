@@ -63,6 +63,7 @@ const renderInvoice = async () => {
                 <td class="col">KỲ THANH TOÁN</td>
                 <td class="col">TỔNG TIỀN ĐIỆN</td>
                 <td class="col">TỔNG TIỀN NƯỚC</td>
+                <td class="col">TRẠNG THÁI</td>
                 <td class="col"></td>
             </tr>
 				</thead>
@@ -75,20 +76,32 @@ const renderInvoice = async () => {
 					invoice._id
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
-                    <td class="name">${invoice.room.building.name}</td>
-                    <td class="numberOfRooms">${invoice.room.roomNumber}</td>
-                    <td class="unitPrice">Tháng ${invoice.month} - Năm ${
+                    <td class="building">${invoice.room.building.name}</td>
+                    <td class="room" data-id="${invoice.room.id}">${
+							invoice.room.roomNumber
+						}</td>
+                    <td class="payment-cycle">Tháng ${invoice.month} - Năm ${
 							invoice.year
 						}</td>
                     <td>${formatter.format(invoice.electricity.total)}</td>
 										<td>${formatter.format(invoice.water.total)}</td>
-          
+					<td class="d-none electricity-startNumber">${
+						invoice.electricity.startNumber
+					}</td>
+					<td class="status">${invoice.status}</td>
+					<td class="d-none electricity-endNumber">${invoice.electricity.endNumber}</td>
+					<td class="d-none electricity-total">${invoice.electricity.total}</td>
+					<td class="d-none water-startNumber">${invoice.water.startNumber}</td>
+					<td class="d-none water-endNumber">${invoice.water.endNumber}</td>
+					<td class="d-none water-total">${invoice.water.total}</td>
+					<td class="d-none year">${invoice.year}</td>
+					<td class="d-none month">${invoice.month}</td>
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
 											invoice._id
 										}"></i>
 					<div class="dropdown-menu" aria-labelledby="${invoice._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
-						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
+						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Cập nhật</d>
 				  </div>
 					</td>
 			
@@ -174,14 +187,27 @@ const renderInvoice = async () => {
 	$('#infoModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		const itemName = item.find('.name')[0].innerText;
-		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
-		const itemUnitPrice = item.find('.unitPrice')[0].innerText;
+		console.log(item);
+		const itemRoomID = item.find('.room').attr('data-id');
+		const itemMonth = item.find('.month')[0].innerText;
+		const itemYear = item.find('.year')[0].innerText;
+		const electricityStart = item.find('.electricity-startNumber')[0].innerText;
+		const electricityEnd = item.find('.electricity-endNumber')[0].innerText;
+		const electricityTotal = item.find('.electricity-total')[0].innerText;
+		const waterStart = item.find('.water-startNumber')[0].innerText;
+		const waterEnd = item.find('.water-endNumber')[0].innerText;
+		const waterTotal = item.find('.water-total')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#nameBuildingInfo')[0].value = itemName;
-		$('#numberOfRoomsInfo')[0].value = itemNumberOfRooms;
-		$('#unitPriceInfo')[0].value = itemUnitPrice;
+		$('#roomIDInfo')[0].value = itemRoomID;
+		$('#monthInfo')[0].value = itemMonth;
+		$('#yearInfo')[0].value = itemYear;
+		$('#electricity-startInfo')[0].value = electricityStart;
+		$('#electricity-endInfo')[0].value = electricityEnd;
+		$('#electricity-totalInfo')[0].value = formatter.format(electricityTotal);
+		$('#water-startInfo')[0].value = waterStart;
+		$('#water-endInfo')[0].value = waterEnd;
+		$('#water-totalInfo')[0].value = formatter.format(waterTotal);
 	});
 
 	BuildPage();

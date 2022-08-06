@@ -49,9 +49,9 @@ block content
                         input.input-text#dateOfBirth(type='date' placeholder='Nhập ngày sinh sinh viên')
                     div.mt-3
                         label(for='') Giới tính:
-                        input#maleGender.gender.form-check-input(type='radio'  name='gender' value='male' checked)
+                        input#maleGender.gender.form-check-input(type='radio'  name='genderUpdate' value='male' checked)
                         label(for='maleGender') Nam
-                        input#femaleGender.gender.form-check-input(type='radio' name='gender' value='female' )
+                        input#femaleGender.gender.form-check-input(type='radio' name='genderUpdate' value='female' )
                         label(for='femaleGender') Nữ
                     div.mt-3
                         label(for='') Thông tin bố
@@ -74,17 +74,39 @@ block content
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    //- label(for='') Toà nhà
-                    //- select#buildingNameUpdate.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                    //-     option(value='')
-                    //-     each building in buildings
-                    //-         option(value= building.id)= building.name
-                    label(for='') Số phòng
-                    input.input-text#roomNumberUpdate(type='text' placeholder='Nhập số phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudentUpdate(type='text' placeholder='Nhập số sinh viên tối đa')
-                    label(for='') Sinh viên hiện có
-                    input.input-text#presentStudentUpdate(type='text' placeholder='Nhập số sinh viên hiện có')
+                    div.mt-3
+                        label(for='')  Mã sinh viên
+                        input.input-text#studentIDUpdate(type='text' placeholder='Nhập mã sinh viên')
+                    div.mt-3
+                        label(for='') Họ tên
+                        input.input-text#nameUpdate(type='text' placeholder='Nhập họ tên sinh viên')
+                    div.mt-3
+                        label(for='') Lớp
+                        input.input-text#classUpdate(type='text' placeholder='Nhập lớp sinh viên')
+                    div.mt-3
+                        label(for='') Khoá
+                        input.input-text#academicUpdate(type='text' placeholder='Nhập khoá sinh viên')
+                    div.mt-3
+                        label(for='') Địa chỉ
+                        input.input-text#addressUpdate(type='text' placeholder='Nhập địa chỉ sinh viên')
+                    div.mt-3
+                        label(for='') Ngày sinh
+                        input.input-text#dateOfBirthUpdate(type='date' placeholder='Nhập ngày sinh sinh viên')
+                    div.mt-3
+                        label(for='') Giới tính:
+                        input#maleGenderUpdate.gender.form-check-input(type='radio'  name='gender' value='male' checked)
+                        label(for='maleGender') Nam
+                        input#femaleGenderUpdate.gender.form-check-input(type='radio' name='gender' value='female' )
+                        label(for='femaleGender') Nữ
+                    div.mt-3
+                        label(for='') Thông tin bố
+                        input.input-text#fatherUpdate(type='text' placeholder='Nhập thông tin bố sinh viên sinh viên')
+                    div.mt-3
+                        label(for='') Thông tin mẹ
+                        input.input-text#motherUpdate(type='text' placeholder='Nhập thông tin mẹ sinh viên sinh viên')
+                    div.mt-3
+                        label(for='') Mật khẩu
+                        input.input-text#passwordUpdate(type='password' placeholder='Cập nhật mật khẩu sinh viên')
 
                 .modal-footer
                     button.btn.btn-primary.btn-update(type='button') Cập nhật
@@ -99,17 +121,36 @@ block content
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    //- label(for='') Toà nhà
-                    //- select#buildingNameInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                    //-     option(value='')
-                    //-     each building in buildings
-                    //-         option(value= building.id)= building.name                    
-                    label(for='') Số phòng
-                    input.input-text#roomNumberInfo(type='text' placeholder='Nhập số lượng phòng')
-                    label(for='') Sinh viên tối đa
-                    input.input-text#maxStudentInfo(type='text' placeholder='Nhập giá phòng')
-                    label(for='') Sinh viên hiện có
-                    input.input-text#presentStudentInfo(type='text' placeholder='Nhập giá phòng')
+                    div.mt-3
+                        label(for='')  Mã sinh viên
+                        input.input-text#studentIDInfo(type='text' placeholder='Nhập mã sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Họ tên
+                        input.input-text#nameInfo(type='text' placeholder='Nhập họ tên sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Lớp
+                        input.input-text#classInfo(type='text' placeholder='Nhập lớp sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Khoá
+                        input.input-text#academicInfo(type='text' placeholder='Nhập khoá sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Địa chỉ
+                        input.input-text#addressInfo(type='text' placeholder='Nhập địa chỉ sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Ngày sinh
+                        input.input-text#dateOfBirthInfo(type='date' placeholder='Nhập ngày sinh sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Giới tính:
+                        input#maleGenderInfo.gender.form-check-input(type='radio'  name='gender' value='male' disabled)
+                        label(for='maleGender') Nam
+                        input#femaleGenderInfo.gender.form-check-input(type='radio' name='gender' value='female' disabled)
+                        label(for='femaleGender') Nữ
+                    div.mt-3
+                        label(for='') Thông tin bố
+                        input.input-text#fatherInfo(type='text' placeholder='Nhập thông tin bố sinh viên sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Thông tin mẹ
+                        input.input-text#motherInfo(type='text' placeholder='Nhập thông tin mẹ sinh viên sinh viên' disabled)
 
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
