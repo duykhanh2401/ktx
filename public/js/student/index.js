@@ -12,6 +12,8 @@ toggle?.addEventListener('click', () => {
 // });
 
 import { renderLogin } from './login';
+import { renderContract } from './contract';
+import { renderRoom } from './room';
 
 $(document).ready(function () {
 	const path = window.location.pathname;
@@ -23,8 +25,18 @@ $(document).ready(function () {
 	});
 
 	const login = document.querySelector('#login');
+	const contract = document.querySelector('#contract');
+	const room = document.querySelector('#room');
 
 	if (login) {
 		renderLogin();
+	}
+
+	if (contract) {
+		renderContract();
+	}
+
+	if (room) {
+		renderRoom();
 	}
 });

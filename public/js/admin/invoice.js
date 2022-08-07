@@ -52,8 +52,8 @@ const renderInvoice = async () => {
 		// 	search = '';
 		// }
 		const { data } = await getDataAPI(`invoice`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listInvoice = data.data;
+		const listRender = listInvoice;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>

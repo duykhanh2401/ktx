@@ -2,6 +2,8 @@ const router = require('express').Router();
 const roomController = require('../controllers/roomController');
 const authController = require('../controllers/authController');
 
+router.get('/student', authController.protect, roomController.roommates);
+
 router.use(authController.protectAdmin);
 router.post('/addStudent', roomController.addStudent);
 router.post('/removeStudent', roomController.removeStudent);

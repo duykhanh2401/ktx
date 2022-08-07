@@ -64,13 +64,14 @@ exports.getOne = (Model, popOptions) =>
 		});
 	});
 
-exports.getAll = (Model, select) =>
+exports.getAll = (Model, select, popOptions) =>
 	catchAsync(async (req, res, next) => {
 		const features = new APIFeatures(Model.find(), req.query)
 			.filter()
 			.sort()
 			.limitFields()
 			.paginate();
+		if (popOptions) features.query = features.query.populate(popOptions);
 		const data = await features.query.select(select);
 		// 		console.log(features.query);
 

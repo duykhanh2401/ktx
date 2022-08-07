@@ -56,8 +56,8 @@ const renderRooms = async () => {
 		// 	search = '';
 		// }
 		const { data } = await getDataAPI(`room`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listRooms = data.data;
+		const listRender = listRooms;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>

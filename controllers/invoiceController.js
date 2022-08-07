@@ -65,8 +65,7 @@ exports.createInvoice = catchAsync(async (req, res, next) => {
 exports.getAllInvoice = factory.getAll(Invoice);
 
 exports.getInvoiceByRoom = catchAsync(async (req, res, next) => {
-	const room = req.params.id;
-	const invoice = await Invoice.find({ room: room });
+	const invoice = await Invoice.find({ room: req.student.room });
 
 	res.status(200).json({
 		status: 'success',
@@ -74,7 +73,3 @@ exports.getInvoiceByRoom = catchAsync(async (req, res, next) => {
 	});
 });
 exports.updateInvoice = factory.updateOne(Invoice);
-// exports.getAllCategories = factory.getAll(Building);
-// exports.getBuilding = factory.getOne(Building);
-// exports.createBuilding = factory.createOne(Building);
-// exports.deleteBuilding = factory.deleteOne(Building);

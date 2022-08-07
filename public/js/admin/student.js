@@ -36,8 +36,8 @@ const renderStudent = async () => {
 		// 	search = '';
 		// }
 		const { data } = await getDataAPI(`student`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listStudent = data.data;
+		const listRender = listStudent;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -55,36 +55,19 @@ const renderStudent = async () => {
 					.slice(min, max)
 					.map((student) => {
 						return `
-				<tr class="item-list" data-id=${
-					student._id
-				} data-bs-toggle="modal" data-bs-target="#infoModal">
+				<tr class="item-list" data-id=${student._id} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="studentID" ">${student.studentID}</td>
                     <td class="name">${student.name}</td>
                     <td class="class">${student.class}</td>
                     <td class="academic">${student.academic}</td>
-                    <td class="status">${
-											student.discipline
-												? 'Kỉ luật'
-												: (student.contract.length == 0 &&
-														student.allContract == 0) ||
-												  (!student.room &&
-														new Date(student.contract[0]?.dueDate) > Date.now())
-												? 'Chưa có phòng'
-												: student.room
-												? 'Đã có phòng'
-												: 'Đã dọn ra'
-										}</td>
+                    <td class="status">${student.status}</td>
                     <td class="d-none gender">${student.gender}</td>   
-                    <td class="d-none dateOfBirth">${
-											student.dateOfBirth
-										}</td>   
+                    <td class="d-none dateOfBirth">${student.dateOfBirth}</td>   
                     <td class="d-none address">${student.address}</td>   
                     <td class="d-none father">${student.father}</td>   
                     <td class="d-none mother">${student.mother}</td>   
-                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-											student._id
-										}"></i>
+                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${student._id}"></i>
 					<div class="dropdown-menu" aria-labelledby="${student._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
 						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>

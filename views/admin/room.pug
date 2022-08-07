@@ -24,12 +24,12 @@ block content
                 .item Giá *
                     .value=`${room.building.unitPrice}`
                 .item Số sinh viên *
-                    .value=`${room.presentStudent}`        
+                    .value.value-presentStudent        
                 .item Số sinh viên tối đa *
                     .value=`${room.maxStudent}` 
         .table
             .table-header
-                 .table-header-title=`Thông tin sinh viên (${room.presentStudent} sinh viên)`
+                 .table-header-title
             .table-body
                 table#table
             

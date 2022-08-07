@@ -45,6 +45,7 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 		student,
 		$or: [{ status: 'active' }, { status: 'extend' }],
 	});
+
 	if (contract.length == 0) {
 		return res.status(400).json({
 			message: 'Sinh viên chưa có hợp đồng',
@@ -109,7 +110,21 @@ exports.cancelContract = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.getAllContracts = factory.getAll(Contract);
+exports.getAllContracts = factory.getAll(Contract, undefined, {
+	path: 'student',
+});
+
+exports.getAllContractsStudent = catchAsync(async (req, res, next) => {
+	console.log(req.student);
+	const contracts = await Contract.find({ student: req.student.id }).populate(
+		'student',
+	);
+	return res.status(200).json({
+		status: 'success',
+		data: contracts,
+	});
+});
+
 exports.getContract = factory.getOne(Contract);
 exports.updateContract = factory.updateOne(Contract);
 exports.deleteContract = factory.deleteOne(Contract);

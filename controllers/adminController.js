@@ -72,10 +72,16 @@ exports.getContract = async (req, res, next) => {
 		mongoose.Types.ObjectId(el.student.id),
 	);
 	const studentsNoContract = await Student.find({
-		_id: {
-			$nin: arrContract,
-		},
+		$or: [
+			{
+				_id: {
+					$nin: arrContract,
+				},
+			},
+		],
 	});
+
+	console.log(studentsNoContract);
 
 	const studentsContract = await Student.find({
 		_id: {

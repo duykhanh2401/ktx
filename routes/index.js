@@ -10,5 +10,7 @@ router.get('/', (req, res) => {
 router.get('/login', viewController.login);
 router.use(authController.protect);
 router.get('/contract', viewController.getContract);
+router.get('/room', viewController.getRoom);
+router.get('/invoice', viewController.getInvoice);
 
 module.exports = router;

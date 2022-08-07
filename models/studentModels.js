@@ -85,6 +85,42 @@ studentSchema.virtual('allContract', {
 	foreignField: 'student',
 });
 
+studentSchema.virtual('status').get(function () {
+	if (this.discipline) {
+		return 'Kỷ luật';
+	} else if (
+		this.contract.length == 0 ||
+		this.contract[0]?.dueDate < new Date()
+	) {
+		return 'Đã dọn ra';
+	} else if (
+		(this.contract.length == 0 && this.allContract.length == 0) ||
+		!this.room
+	) {
+		return 'Chưa có phòng';
+	} else if (
+		this.contract.length > 0 &&
+		this.contract[0].dueDate > new Date() &&
+		this.room
+	) {
+		return 'Đã có phòng';
+	}
+});
+
+studentSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'contract',
+		match: {
+			dueDate: { $gte: new Date() },
+			startDate: { $lte: new Date() },
+		},
+	}).populate({
+		path: 'allContract',
+	});
+
+	next();
+});
+
 studentSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
 	this.password = await bcrypt.hash(this.password, 12);
@@ -97,12 +133,7 @@ studentSchema.pre('save', async function (next) {
 	// Only run this function if password was actually modified
 	if (!this.isModified('password') || this.isNew) return next();
 
-	this.passwordChangeAt = Date.now() - 1000;
-	next();
-});
-
-studentSchema.pre(/^find/, async function (next) {
-	this.find({ active: { $ne: false } });
+	this.passwordChangeAt = new Date() - 1000;
 	next();
 });
 

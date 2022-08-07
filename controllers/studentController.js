@@ -72,17 +72,7 @@ exports.getStudentNoRoom = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllStudents = catchAsync(async (req, res, next) => {
-	const allStudent = await Student.find()
-		.populate({
-			path: 'contract',
-			match: {
-				dueDate: { $gte: Date.now() },
-				startDate: { $lte: Date.now() },
-			},
-		})
-		.populate({
-			path: 'allContract',
-		});
+	const allStudent = await Student.find();
 
 	res.status(200).json({
 		status: 'success',

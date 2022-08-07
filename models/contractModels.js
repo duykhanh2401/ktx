@@ -47,12 +47,10 @@ contractSchema.virtual('status').get(function () {
 contractSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'admin',
-	}).populate({
-		path: 'student',
 	});
 
 	next();
 });
 
-const Category = mongoose.model('Contract', contractSchema);
-module.exports = Category;
+const Contract = mongoose.model('Contract', contractSchema);
+module.exports = Contract;

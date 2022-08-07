@@ -50,10 +50,7 @@ roomSchema.virtual('presentStudent', {
 roomSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'building',
-	}).populate({
-		path: 'presentStudent',
 	});
-
 	next();
 });
 

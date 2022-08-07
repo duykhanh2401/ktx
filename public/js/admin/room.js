@@ -58,8 +58,12 @@ const renderRoom = async () => {
 		// 	search = '';
 		// }
 		const { data } = await getDataAPI(`room/${id}`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listStudent = data.data;
+		$('.value-presentStudent')[0].innerHTML = listStudent.length;
+		$(
+			'.table-header-title',
+		)[0].innerHTML = `Thông tin sinh viên (${listStudent.length} sinh viên)`;
+		const listRender = listStudent;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>

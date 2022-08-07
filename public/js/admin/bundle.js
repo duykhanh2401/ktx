@@ -2687,17 +2687,6 @@ const createBuilding = async (data) => {
 	}
 };
 
-const deleteBuilding = async (id) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`building/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		toast('danger', error.response.data.message);
-	}
-};
-
 const updateBuilding = async (id, data) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`building/${id}`, data);
@@ -2717,9 +2706,9 @@ const renderBuilding = async () => {
 		// if (!search) {
 		// 	search = '';
 		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building?sort=name`);
+		const listBuilding = data.data;
+		const listRender = listBuilding;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -2941,7 +2930,7 @@ const renderContract = async () => {
 		// if (!search) {
 		// 	search = '';
 		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract`);
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract?sort=studentID`);
 		const listAuthor = data.data;
 		const listRender = listAuthor;
 		const buildList = async (buildPagination, min, max) => {
@@ -3135,8 +3124,8 @@ const renderInvoice = async () => {
 		// 	search = '';
 		// }
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listInvoice = data.data;
+		const listRender = listInvoice;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3434,8 +3423,12 @@ const renderRoom = async () => {
 		// 	search = '';
 		// }
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room/${id}`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listStudent = data.data;
+		$('.value-presentStudent')[0].innerHTML = listStudent.length;
+		$(
+			'.table-header-title',
+		)[0].innerHTML = `Thông tin sinh viên (${listStudent.length} sinh viên)`;
+		const listRender = listStudent;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3656,8 +3649,8 @@ const renderRooms = async () => {
 		// 	search = '';
 		// }
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listRooms = data.data;
+		const listRender = listRooms;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3850,8 +3843,8 @@ const renderStudent = async () => {
 		// 	search = '';
 		// }
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const listStudent = data.data;
+		const listRender = listStudent;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3869,36 +3862,19 @@ const renderStudent = async () => {
 					.slice(min, max)
 					.map((student) => {
 						return `
-				<tr class="item-list" data-id=${
-					student._id
-				} data-bs-toggle="modal" data-bs-target="#infoModal">
+				<tr class="item-list" data-id=${student._id} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="studentID" ">${student.studentID}</td>
                     <td class="name">${student.name}</td>
                     <td class="class">${student.class}</td>
                     <td class="academic">${student.academic}</td>
-                    <td class="status">${
-											student.discipline
-												? 'Kỉ luật'
-												: (student.contract.length == 0 &&
-														student.allContract == 0) ||
-												  (!student.room &&
-														new Date(student.contract[0]?.dueDate) > Date.now())
-												? 'Chưa có phòng'
-												: student.room
-												? 'Đã có phòng'
-												: 'Đã dọn ra'
-										}</td>
+                    <td class="status">${student.status}</td>
                     <td class="d-none gender">${student.gender}</td>   
-                    <td class="d-none dateOfBirth">${
-											student.dateOfBirth
-										}</td>   
+                    <td class="d-none dateOfBirth">${student.dateOfBirth}</td>   
                     <td class="d-none address">${student.address}</td>   
                     <td class="d-none father">${student.father}</td>   
                     <td class="d-none mother">${student.mother}</td>   
-                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-											student._id
-										}"></i>
+                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${student._id}"></i>
 					<div class="dropdown-menu" aria-labelledby="${student._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
 						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>

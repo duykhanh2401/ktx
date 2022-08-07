@@ -1,6 +1,8 @@
 const Student = require('../models/studentModels');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+const Contract = require(`../models/contractModels`);
+
 exports.getContract = async (req, res, next) => {
 	res.status(200).render('student/contract');
 };
@@ -30,12 +32,18 @@ exports.login = async (req, res, next) => {
 
 	res.redirect('/contract');
 };
-// exports.getBuilding = async (req, res, next) => {
-// 	res.status(200).render('admin/building');
-// };
+exports.getBuilding = async (req, res, next) => {
+	res.status(200).render('student/building');
+};
+exports.getContract = async (req, res, next) => {
+	const contracts = await Contract.find({ student: req.student.id });
+	res.status(200).render('student/contract', { contracts });
+};
 
-// exports.getInvoice = async (req, res, next) => {
-// 	const rooms = await Room.find();
-// 	console.log(rooms);
-// 	res.status(200).render('admin/invoice', { rooms });
-// };
+exports.getInvoice = async (req, res, next) => {
+	res.status(200).render('student/invoice');
+};
+
+exports.getRoom = async (req, res, next) => {
+	res.status(200).render('student/room');
+};

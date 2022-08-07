@@ -21,17 +21,6 @@ const createBuilding = async (data) => {
 	}
 };
 
-const deleteBuilding = async (id) => {
-	try {
-		const res = await deleteDataAPI(`building/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		toast('danger', error.response.data.message);
-	}
-};
-
 const updateBuilding = async (id, data) => {
 	try {
 		const res = await patchDataAPI(`building/${id}`, data);
@@ -51,9 +40,9 @@ const renderBuilding = async () => {
 		// if (!search) {
 		// 	search = '';
 		// }
-		const { data } = await getDataAPI(`building`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+		const { data } = await getDataAPI(`building?sort=name`);
+		const listBuilding = data.data;
+		const listRender = listBuilding;
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
