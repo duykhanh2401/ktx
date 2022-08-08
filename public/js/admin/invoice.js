@@ -17,40 +17,38 @@ const createInvoice = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error.response.data.message);
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
-const deleteBuilding = async (id) => {
+const updateInvoice = async (id, data) => {
 	try {
-		const res = await deleteDataAPI(`building/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		toast('danger', error.response.data.message);
-	}
-};
-
-const updateBuilding = async (id, data) => {
-	try {
-		const res = await patchDataAPI(`building/${id}`, data);
+		const res = await patchDataAPI(`invoice/${id}`, data);
 		if (res.status === 200) {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
 const renderInvoice = async () => {
 	const tableList = $('#table')[0];
 	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
 		const { data } = await getDataAPI(`invoice`);
 		const listInvoice = data.data;
 		const listRender = listInvoice;
@@ -142,7 +140,14 @@ const renderInvoice = async () => {
 				document.querySelector('#water').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -150,37 +155,26 @@ const renderInvoice = async () => {
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		console.log(item);
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.name')[0].innerText;
-		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
-		const itemUnitPrice = item.find('.unitPrice')[0].innerText;
-
-		// Set giá trị khi hiện modal update
-		$('#nameBuildingUpdate')[0].value = itemName;
-		$('#numberOfRoomsUpdate')[0].value = itemNumberOfRooms;
-		$('#unitPriceUpdate')[0].value = itemUnitPrice;
-
 		const btnUpdate = $('.btn-update')[0];
 
 		btnUpdate.setAttribute('update-id', itemId);
 		btnUpdate.onclick = async (e) => {
 			const updateId = btnUpdate.getAttribute('update-id');
-			const name = $('#nameBuildingUpdate')[0].value;
-			const numberOfRooms = $('#numberOfRoomsUpdate')[0].value;
-			const unitPrice = $('#unitPriceUpdate')[0].value;
-
-			const isSuccess = await updateBuilding(updateId, {
-				name,
-				numberOfRooms,
-				unitPrice,
+			const isSuccess = await updateInvoice(updateId, {
+				status: 'Đã thanh toán',
 			});
 
-			if (isSuccess) {
-				$('#updateModal').modal('hide');
-				BuildPage();
-				toast('success', 'Cập nhật thành công');
-			}
+			$('#updateModal').modal('hide');
+			BuildPage();
+			Toastify({
+				text: 'Cập nhật thành công',
+				duration: 3000,
+				style: {
+					background: '#5cb85c', //success
+					// background: '#d9534f', // danger
+				},
+			}).showToast();
 		};
 	});
 

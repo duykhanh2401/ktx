@@ -156,3 +156,24 @@ block content
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
 
 
+    #disciplineModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Cập nhật
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    div.mt-3
+                        label(for='')  Mã sinh viên
+                        input.input-text#studentIDDiscipline(type='text' placeholder='Nhập mã sinh viên' disabled)
+                    div.mt-3
+                        label(for='')  Tên sinh viên
+                        input.input-text#nameDiscipline(type='text' placeholder='Nhập mã sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Lý do kỷ luật
+                        textarea.input-text#reasonDiscipline(type='text' placeholder='Nhập họ tên sinh viên')
+                .modal-footer
+                    button.btn.btn-primary.btn-discipline(type='button') Cập nhật
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+

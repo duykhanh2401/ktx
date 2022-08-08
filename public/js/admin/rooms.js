@@ -12,24 +12,14 @@ const createRoom = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
-	}
-};
-
-const deleteRoom = async (id) => {
-	try {
-		const res = await deleteDataAPI(`room/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -40,10 +30,14 @@ const updateRoom = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -134,10 +128,14 @@ const renderRooms = async () => {
 				document.querySelector('#maxStudent').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Thêm mới thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -173,10 +171,14 @@ const renderRooms = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Cập nhật thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});

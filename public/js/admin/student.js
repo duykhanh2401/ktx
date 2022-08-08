@@ -12,7 +12,14 @@ const createStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error.response.data.message);
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -23,7 +30,32 @@ const updateStudent = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'TCập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
+	}
+};
+
+const disciplineStudent = async (data) => {
+	try {
+		const res = await postDataAPI(`student/discipline`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		Toastify({
+			text: 'Kỷ luật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -35,6 +67,7 @@ const renderStudent = async () => {
 		// if (!search) {
 		// 	search = '';
 		// }
+
 		const { data } = await getDataAPI(`student`);
 		const listStudent = data.data;
 		const listRender = listStudent;
@@ -55,7 +88,9 @@ const renderStudent = async () => {
 					.slice(min, max)
 					.map((student) => {
 						return `
-				<tr class="item-list" data-id=${student._id} data-bs-toggle="modal" data-bs-target="#infoModal">
+				<tr class="item-list" data-id=${
+					student._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="studentID" ">${student.studentID}</td>
                     <td class="name">${student.name}</td>
@@ -63,14 +98,25 @@ const renderStudent = async () => {
                     <td class="academic">${student.academic}</td>
                     <td class="status">${student.status}</td>
                     <td class="d-none gender">${student.gender}</td>   
-                    <td class="d-none dateOfBirth">${student.dateOfBirth}</td>   
+                    <td class="d-none dateOfBirth">${
+											student.dateOfBirth
+										}</td>   
                     <td class="d-none address">${student.address}</td>   
                     <td class="d-none father">${student.father}</td>   
                     <td class="d-none mother">${student.mother}</td>   
-                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${student._id}"></i>
+                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
+											student._id
+										}"></i>
 					<div class="dropdown-menu" aria-labelledby="${student._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
-						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
+						
+						${
+							!student.discipline
+								? `
+								<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</div>
+								<div class="dropdown-item" data-toggle='modal' data-target='#disciplineModal' >Kỉ luật</div>`
+								: ''
+						}
 				  </div>
 					</td>
 			
@@ -125,7 +171,14 @@ const renderStudent = async () => {
 				document.querySelector('#mother').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -176,18 +229,7 @@ const renderStudent = async () => {
 			const gender = document.querySelector(
 				'input[name="genderUpdate"]:checked',
 			).value;
-			console.log({
-				studentID,
-				name,
-				classStudent,
-				academic,
-				address,
-				dateOfBirth,
-				father,
-				mother,
-				password,
-				gender,
-			});
+
 			const isSuccess = await updateStudent(updateId, {
 				studentID,
 				name,
@@ -204,7 +246,14 @@ const renderStudent = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				toast('success', 'Cập nhật thành công');
+				Toastify({
+					text: 'Cập nhật thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -236,6 +285,36 @@ const renderStudent = async () => {
 		$('#dateOfBirthInfo')[0].value = dateOfBirth;
 		$('#fatherInfo')[0].value = father;
 		$('#motherInfo')[0].value = mother;
+	});
+
+	$('#disciplineModal').on('show.bs.modal', function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const studentID = item.find('.studentID')[0].innerText;
+		const name = item.find('.name')[0].innerText;
+
+		$('#studentIDDiscipline')[0].value = studentID;
+		$('#nameDiscipline')[0].value = name;
+		const btnUpdate = $('.btn-discipline')[0];
+		btnUpdate.setAttribute('discipline-id', itemId);
+		btnUpdate.onclick = async (e) => {
+			const updateId = btnUpdate.getAttribute('discipline-id');
+			const note = $('#reasonDiscipline')[0].value;
+
+			const isSuccess = await disciplineStudent({ student: updateId, note });
+			if (isSuccess) {
+				$('#disciplineModal').modal('hide');
+				BuildPage();
+				Toastify({
+					text: 'Sinh viên đã bị kỷ luật',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
+			}
+		};
 	});
 
 	BuildPage();

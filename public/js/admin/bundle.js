@@ -2485,10 +2485,14 @@ const createAdmin = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Tạo mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -2499,7 +2503,14 @@ const updateAdmin = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -2581,7 +2592,14 @@ const renderAdmin = async () => {
 				document.querySelector('#password').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -2628,7 +2646,14 @@ const renderAdmin = async () => {
 				$('#emailUpdate')[0].value = '';
 				$('#passwordUpdate')[0].value = '';
 				BuildPage();
-				toast('success', 'Cập nhật thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -2683,7 +2708,14 @@ const createBuilding = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error.response.data.message);
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -2694,7 +2726,14 @@ const updateBuilding = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -2782,7 +2821,14 @@ const renderBuilding = async () => {
 				document.querySelector('#unitPrice').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -2819,7 +2865,14 @@ const renderBuilding = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				toast('success', 'Cập nhật thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -2867,10 +2920,14 @@ const createContract = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -2881,10 +2938,14 @@ const extendContract = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Gia hạn không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -2892,34 +2953,6 @@ const convertStrToDate = (string) => {
 	const [day, month, year] = string.split('/');
 	const date = new Date(+year, +month - 1, +day);
 	return date.toISOString().split('T')[0];
-};
-
-const deleteContract = async (id) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`room/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
-	}
-};
-
-const updateContract = async (id, data) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`room/${id}`, data);
-		if (res.status === 200) {
-			return true;
-		}
-	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
-	}
 };
 
 const renderContract = async () => {
@@ -2971,7 +3004,11 @@ const renderContract = async () => {
 												? 'Hợp Đồng'
 												: contract.status == 'inactive'
 												? 'Hết Hạn'
-												: 'Gia Hạn'
+												: contract.status == 'discipline'
+												? 'Kỷ luật'
+												: contract.status == 'cancel'
+												? 'Đã huỷ'
+												: 'Gia hạn'
 										}</td>
           
              
@@ -3008,10 +3045,14 @@ const renderContract = async () => {
 				document.querySelector('#dueDate').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Tạo hợp đồng thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Tạo hợp đồng thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3032,10 +3073,14 @@ const renderContract = async () => {
 				document.querySelector('#dueDateExtend').value = '';
 				$('#extendModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Gia hạn hợp đồng thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Gia hạn hợp đồng thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3089,40 +3134,38 @@ const createInvoice = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error.response.data.message);
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
-const deleteBuilding = async (id) => {
+const updateInvoice = async (id, data) => {
 	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`building/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		toast('danger', error.response.data.message);
-	}
-};
-
-const updateBuilding = async (id, data) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`building/${id}`, data);
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`invoice/${id}`, data);
 		if (res.status === 200) {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
 const renderInvoice = async () => {
 	const tableList = $('#table')[0];
 	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
 		const listInvoice = data.data;
 		const listRender = listInvoice;
@@ -3214,7 +3257,14 @@ const renderInvoice = async () => {
 				document.querySelector('#water').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3222,37 +3272,26 @@ const renderInvoice = async () => {
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		console.log(item);
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.name')[0].innerText;
-		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
-		const itemUnitPrice = item.find('.unitPrice')[0].innerText;
-
-		// Set giá trị khi hiện modal update
-		$('#nameBuildingUpdate')[0].value = itemName;
-		$('#numberOfRoomsUpdate')[0].value = itemNumberOfRooms;
-		$('#unitPriceUpdate')[0].value = itemUnitPrice;
-
 		const btnUpdate = $('.btn-update')[0];
 
 		btnUpdate.setAttribute('update-id', itemId);
 		btnUpdate.onclick = async (e) => {
 			const updateId = btnUpdate.getAttribute('update-id');
-			const name = $('#nameBuildingUpdate')[0].value;
-			const numberOfRooms = $('#numberOfRoomsUpdate')[0].value;
-			const unitPrice = $('#unitPriceUpdate')[0].value;
-
-			const isSuccess = await updateBuilding(updateId, {
-				name,
-				numberOfRooms,
-				unitPrice,
+			const isSuccess = await updateInvoice(updateId, {
+				status: 'Đã thanh toán',
 			});
 
-			if (isSuccess) {
-				$('#updateModal').modal('hide');
-				BuildPage();
-				toast('success', 'Cập nhật thành công');
-			}
+			$('#updateModal').modal('hide');
+			BuildPage();
+			Toastify({
+				text: 'Cập nhật thành công',
+				duration: 3000,
+				style: {
+					background: '#5cb85c', //success
+					// background: '#d9534f', // danger
+				},
+			}).showToast();
 		};
 	});
 
@@ -3377,10 +3416,14 @@ const addStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -3391,10 +3434,14 @@ const removeStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
+		Toastify({
+			text: 'Xoá sinh viên không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -3504,10 +3551,14 @@ const renderRoom = async () => {
 				document.querySelector('#studentSelect').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Thêm mới thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3543,10 +3594,14 @@ const renderRoom = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Cập nhật thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3567,10 +3622,14 @@ const renderRoom = async () => {
 			if (isSuccess) {
 				$('#removeModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Xoá sinh viên thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3605,24 +3664,14 @@ const createRoom = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
-	}
-};
-
-const deleteRoom = async (id) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`room/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -3633,10 +3682,14 @@ const updateRoom = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -3727,10 +3780,14 @@ const renderRooms = async () => {
 				document.querySelector('#maxStudent').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Thêm mới thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3766,10 +3823,14 @@ const renderRooms = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Cập nhật thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3819,7 +3880,14 @@ const createStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error.response.data.message);
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -3830,7 +3898,32 @@ const updateStudent = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'TCập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
+	}
+};
+
+const disciplineStudent = async (data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)(`student/discipline`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		Toastify({
+			text: 'Kỷ luật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -3842,6 +3935,7 @@ const renderStudent = async () => {
 		// if (!search) {
 		// 	search = '';
 		// }
+
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
 		const listStudent = data.data;
 		const listRender = listStudent;
@@ -3862,7 +3956,9 @@ const renderStudent = async () => {
 					.slice(min, max)
 					.map((student) => {
 						return `
-				<tr class="item-list" data-id=${student._id} data-bs-toggle="modal" data-bs-target="#infoModal">
+				<tr class="item-list" data-id=${
+					student._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="studentID" ">${student.studentID}</td>
                     <td class="name">${student.name}</td>
@@ -3870,14 +3966,25 @@ const renderStudent = async () => {
                     <td class="academic">${student.academic}</td>
                     <td class="status">${student.status}</td>
                     <td class="d-none gender">${student.gender}</td>   
-                    <td class="d-none dateOfBirth">${student.dateOfBirth}</td>   
+                    <td class="d-none dateOfBirth">${
+											student.dateOfBirth
+										}</td>   
                     <td class="d-none address">${student.address}</td>   
                     <td class="d-none father">${student.father}</td>   
                     <td class="d-none mother">${student.mother}</td>   
-                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${student._id}"></i>
+                    <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
+											student._id
+										}"></i>
 					<div class="dropdown-menu" aria-labelledby="${student._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Xem</div>
-						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</d>
+						
+						${
+							!student.discipline
+								? `
+								<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Sửa</div>
+								<div class="dropdown-item" data-toggle='modal' data-target='#disciplineModal' >Kỉ luật</div>`
+								: ''
+						}
 				  </div>
 					</td>
 			
@@ -3932,7 +4039,14 @@ const renderStudent = async () => {
 				document.querySelector('#mother').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -3983,18 +4097,7 @@ const renderStudent = async () => {
 			const gender = document.querySelector(
 				'input[name="genderUpdate"]:checked',
 			).value;
-			console.log({
-				studentID,
-				name,
-				classStudent,
-				academic,
-				address,
-				dateOfBirth,
-				father,
-				mother,
-				password,
-				gender,
-			});
+
 			const isSuccess = await updateStudent(updateId, {
 				studentID,
 				name,
@@ -4011,7 +4114,14 @@ const renderStudent = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				toast('success', 'Cập nhật thành công');
+				Toastify({
+					text: 'Cập nhật thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -4043,6 +4153,36 @@ const renderStudent = async () => {
 		$('#dateOfBirthInfo')[0].value = dateOfBirth;
 		$('#fatherInfo')[0].value = father;
 		$('#motherInfo')[0].value = mother;
+	});
+
+	$('#disciplineModal').on('show.bs.modal', function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const studentID = item.find('.studentID')[0].innerText;
+		const name = item.find('.name')[0].innerText;
+
+		$('#studentIDDiscipline')[0].value = studentID;
+		$('#nameDiscipline')[0].value = name;
+		const btnUpdate = $('.btn-discipline')[0];
+		btnUpdate.setAttribute('discipline-id', itemId);
+		btnUpdate.onclick = async (e) => {
+			const updateId = btnUpdate.getAttribute('discipline-id');
+			const note = $('#reasonDiscipline')[0].value;
+
+			const isSuccess = await disciplineStudent({ student: updateId, note });
+			if (isSuccess) {
+				$('#disciplineModal').modal('hide');
+				BuildPage();
+				Toastify({
+					text: 'Sinh viên đã bị kỷ luật',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
+			}
+		};
 	});
 
 	BuildPage();

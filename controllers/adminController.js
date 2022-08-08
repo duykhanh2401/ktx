@@ -67,7 +67,9 @@ exports.getInvoice = async (req, res, next) => {
 };
 
 exports.getContract = async (req, res, next) => {
-	const contract = await Contract.find().select('student');
+	const contract = await Contract.find({
+		status: { $ne: 'discipline' },
+	}).select('student');
 	const arrContract = contract.map((el) =>
 		mongoose.Types.ObjectId(el.student.id),
 	);
@@ -80,8 +82,6 @@ exports.getContract = async (req, res, next) => {
 			},
 		],
 	});
-
-	console.log(studentsNoContract);
 
 	const studentsContract = await Student.find({
 		_id: {

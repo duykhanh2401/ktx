@@ -10,6 +10,7 @@ router.post('/updateMe', studentController.updateMe);
 router.get('/me', studentController.getMe, studentController.getStudent);
 
 router.use(authController.protectAdmin);
+router.post('/discipline', studentController.disciplineStudent);
 router.get('/no-room', studentController.getStudentNoRoom);
 
 router

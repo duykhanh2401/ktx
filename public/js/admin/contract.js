@@ -12,10 +12,14 @@ const createContract = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -26,10 +30,14 @@ const extendContract = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Gia hạn không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -37,34 +45,6 @@ const convertStrToDate = (string) => {
 	const [day, month, year] = string.split('/');
 	const date = new Date(+year, +month - 1, +day);
 	return date.toISOString().split('T')[0];
-};
-
-const deleteContract = async (id) => {
-	try {
-		const res = await deleteDataAPI(`room/${id}`);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
-	}
-};
-
-const updateContract = async (id, data) => {
-	try {
-		const res = await patchDataAPI(`room/${id}`, data);
-		if (res.status === 200) {
-			return true;
-		}
-	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
-	}
 };
 
 const renderContract = async () => {
@@ -116,7 +96,11 @@ const renderContract = async () => {
 												? 'Hợp Đồng'
 												: contract.status == 'inactive'
 												? 'Hết Hạn'
-												: 'Gia Hạn'
+												: contract.status == 'discipline'
+												? 'Kỷ luật'
+												: contract.status == 'cancel'
+												? 'Đã huỷ'
+												: 'Gia hạn'
 										}</td>
           
              
@@ -153,10 +137,14 @@ const renderContract = async () => {
 				document.querySelector('#dueDate').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Tạo hợp đồng thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Tạo hợp đồng thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -177,10 +165,14 @@ const renderContract = async () => {
 				document.querySelector('#dueDateExtend').value = '';
 				$('#extendModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Gia hạn hợp đồng thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Gia hạn hợp đồng thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});

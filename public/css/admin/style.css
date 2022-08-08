@@ -728,3 +728,6 @@ label {
 .modal-center .modal-dialog {
 	margin: 0 auto !important;
 }
+textarea {
+	min-height: 200px;
+}

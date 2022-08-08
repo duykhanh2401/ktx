@@ -57,29 +57,6 @@ block content
 
 
 
-    #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
-        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
-            .modal-content
-                .modal-header
-                    h5.modal-title Cập nhật
-                    button.close(type='button' data-dismiss='modal' aria-label='Close')
-                    span(aria-hidden='true') &times;
-                .modal-body
-                    div.mt-3
-                        label(for='') Tên toà nhà
-                        input.input-text#nameBuildingUpdate(type='text' placeholder='Tối đa 20 ký tự...')
-                    div.mt-3
-                        label(for='') Số lượng phòng
-                        input.input-text#numberOfRoomsUpdate(type='number' placeholder='Nhập số lượng phòng')
-                    div.mt-3
-                        label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
-                        input.input-text#unitPriceUpdate(type='number' placeholder='Nhập giá phòng')
-
-                .modal-footer
-                    button.btn.btn-primary.btn-update(type='button') Cập nhật
-                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
-
-
     #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
         .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
             .modal-content
@@ -124,3 +101,14 @@ block content
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
 
 
+    #updateModal.modal.modal-center.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#exampleModalLabel.modal-title Bạn có muốn xác nhận thanh toán hoá đơn này
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+
+                .modal-footer
+                    button.btn.btn-primary.btn-update(type='button') Đồng ý
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Đóng

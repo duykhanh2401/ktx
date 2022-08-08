@@ -13,10 +13,14 @@ const createAdmin = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Tạo mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -27,7 +31,14 @@ const updateAdmin = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -109,7 +120,14 @@ const renderAdmin = async () => {
 				document.querySelector('#password').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -156,7 +174,14 @@ const renderAdmin = async () => {
 				$('#emailUpdate')[0].value = '';
 				$('#passwordUpdate')[0].value = '';
 				BuildPage();
-				toast('success', 'Cập nhật thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});

@@ -26,6 +26,10 @@ const contractSchema = mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		isCancel: {
+			type: String,
+			enum: ['cancel', 'discipline'],
+		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -35,7 +39,11 @@ const contractSchema = mongoose.Schema(
 
 contractSchema.virtual('status').get(function () {
 	const today = Date.now();
-	if (this.startDate < today && today < this.dueDate) {
+	if (this.isCancel == 'cancel') {
+		return 'cancel';
+	} else if (this.isCancel == 'discipline') {
+		return 'discipline';
+	} else if (this.startDate < today && today < this.dueDate) {
 		return 'active';
 	} else if (this.startDate > today) {
 		return 'extend';

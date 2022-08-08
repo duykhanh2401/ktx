@@ -17,7 +17,14 @@ const createBuilding = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error.response.data.message);
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -28,7 +35,14 @@ const updateBuilding = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -116,7 +130,14 @@ const renderBuilding = async () => {
 				document.querySelector('#unitPrice').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				toast('success', 'Thêm mới thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -153,7 +174,14 @@ const renderBuilding = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				toast('success', 'Cập nhật thành công');
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});

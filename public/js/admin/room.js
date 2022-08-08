@@ -12,10 +12,14 @@ const addStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			type: 'danger',
-			message: error.response.data.message || 'Tạo mới thất bại',
-		});
+		Toastify({
+			text: 'Thêm mới không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -26,10 +30,14 @@ const removeStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		new Toast({
-			message: error.response.data.message,
-			type: 'danger',
-		});
+		Toastify({
+			text: 'Xoá sinh viên không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
 	}
 };
 
@@ -139,10 +147,14 @@ const renderRoom = async () => {
 				document.querySelector('#studentSelect').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Thêm mới thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Thêm mới thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -178,10 +190,14 @@ const renderRoom = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Cập nhật thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});
@@ -202,10 +218,14 @@ const renderRoom = async () => {
 			if (isSuccess) {
 				$('#removeModal').modal('hide');
 				BuildPage();
-				new Toast({
-					message: 'Cập nhật thành công',
-					type: 'success',
-				});
+				Toastify({
+					text: 'Xoá sinh viên thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		};
 	});

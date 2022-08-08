@@ -98,6 +98,30 @@ exports.updateStudent = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.disciplineStudent = catchAsync(async (req, res, next) => {
+	const { student, note } = req.body;
+	console.log(student, note);
+	const studentCurrent = await Student.findOne({
+		_id: student,
+		// discipline: false,
+	});
+	if (!studentCurrent) {
+		return next(
+			new AppError('Sinh viên không tồn tại hoặc đã bị kỷ luật', 400),
+		);
+	}
+
+	studentCurrent.discipline = true;
+	studentCurrent.note = note;
+	studentCurrent.room = undefined;
+	await studentCurrent.save();
+
+	await Contract.updateMany({ student }, { isCancel: 'discipline' });
+	return res.status(200).json({
+		status: 'success',
+	});
+});
+
 exports.getStudent = factory.getOne(Student);
 exports.createStudent = factory.createOne(Student);
 exports.deleteStudent = factory.deleteOne(Student);

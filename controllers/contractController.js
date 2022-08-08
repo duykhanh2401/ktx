@@ -97,7 +97,7 @@ exports.cancelContract = catchAsync(async (req, res, next) => {
 	await Contract.updateMany(
 		{ student },
 		{
-			info: 'Đã huỷ',
+			isCancel: 'cancel',
 		},
 	);
 
