@@ -3353,17 +3353,25 @@ const renderLogin = async () => {
 		const password = document.querySelector('#password').value;
 		console.log(email, password);
 		if (!email) {
-			new Toast({
-				message: 'Vui lòng nhập email',
-				type: 'danger',
-			});
+			Toastify({
+				text: 'Vui lòng nhập email',
+				duration: 3000,
+				style: {
+					// background: '#5cb85c', //success
+					background: '#d9534f', // danger
+				},
+			}).showToast();
 		}
 
 		if (!password) {
-			new Toast({
-				message: 'Vui lòng nhập mật khẩu',
-				type: 'danger',
-			});
+			Toastify({
+				text: 'Vui lòng nhập mật khẩu',
+				duration: 3000,
+				style: {
+					// background: '#5cb85c', //success
+					background: '#d9534f', // danger
+				},
+			}).showToast();
 		}
 
 		try {
@@ -3373,18 +3381,25 @@ const renderLogin = async () => {
 			});
 
 			if (isSuccess) {
-				new Toast({
-					message: 'Đăng nhập thành công',
-					type: 'success',
-				});
-				window.location.reload();
+				Toastify({
+					text: 'Đăng nhập thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
 			}
 		} catch (error) {
 			console.log(error);
-			new Toast({
-				message: 'Đăng nhập thất bại',
-				type: 'danger',
-			});
+			Toastify({
+				text: 'Đăng nhập thất bại',
+				duration: 3000,
+				style: {
+					// background: '#5cb85c', //success
+					background: '#d9534f', // danger
+				},
+			}).showToast();
 		}
 	});
 };
