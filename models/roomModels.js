@@ -38,14 +38,6 @@ const roomSchema = mongoose.Schema(
 
 roomSchema.index({ building: 1, roomNumber: 1 }, { unique: true });
 
-roomSchema.virtual('presentStudent', {
-	ref: 'Student',
-	localField: '_id',
-	foreignField: 'room',
-	justOne: false,
-	count: true,
-});
-
 // Virtual populate
 roomSchema.pre(/^find/, function (next) {
 	this.populate({

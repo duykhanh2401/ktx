@@ -17,7 +17,6 @@ app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.set('view engine', 'pug');
-const globalErrorHandler = require(`${__dirname}/controllers/errorController`);
 
 app.use(express.static(`${__dirname}/public`));
 

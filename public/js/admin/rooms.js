@@ -13,7 +13,7 @@ const createRoom = async (data) => {
 		}
 	} catch (error) {
 		Toastify({
-			text: 'Thêm mới không thành công',
+			text: error.response.data.message || 'Thêm mới không thành công',
 			duration: 3000,
 			style: {
 				// background: '#5cb85c', //success
@@ -73,7 +73,7 @@ const renderRooms = async () => {
 					room._id
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
-                    <td class="building" data-id="${room.building.id}">${
+                    <td class="building" data-id="${room.building._id}">${
 							room.building.name
 						}</td>
                     <td class="roomNumber">${room.roomNumber}</td>
@@ -147,7 +147,7 @@ const renderRooms = async () => {
 		const itemBuildingName = item.find('.building').attr('data-id');
 		const itemRoomNumber = item.find('.roomNumber')[0].innerText;
 		const itemMaxStudent = item.find('.maxStudent')[0].innerText;
-
+		console.log(itemBuildingName);
 		// Set giá trị khi hiện modal update
 		$('#buildingNameUpdate')[0].value = itemBuildingName;
 		$('#roomNumberUpdate')[0].value = itemRoomNumber;

@@ -2771,7 +2771,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const pagination = (buildList) => {
 	let currentPage = 1;
-	let namesPerPage = 12;
+	let namesPerPage = 10;
 
 	const calcPages = (number) => {
 		return Math.ceil(number / namesPerPage);

@@ -2836,7 +2836,6 @@ const renderBuilding = async () => {
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		console.log(item);
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.name')[0].innerText;
 		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
@@ -2845,7 +2844,9 @@ const renderBuilding = async () => {
 		// Set giá trị khi hiện modal update
 		$('#nameBuildingUpdate')[0].value = itemName;
 		$('#numberOfRoomsUpdate')[0].value = itemNumberOfRooms;
-		$('#unitPriceUpdate')[0].value = itemUnitPrice;
+		$('#unitPriceUpdate')[0].value = Number(
+			itemUnitPrice.replace(/[^0-9]+/g, ''),
+		);
 
 		const btnUpdate = $('.btn-update')[0];
 
@@ -3389,6 +3390,7 @@ const renderLogin = async () => {
 						// background: '#d9534f', // danger
 					},
 				}).showToast();
+				window.location.reload();
 			}
 		} catch (error) {
 			console.log(error);
@@ -3431,8 +3433,9 @@ const addStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
+		console.log(error);
 		Toastify({
-			text: 'Thêm mới không thành công',
+			text: error.response.data.message || 'Thêm mới không thành công',
 			duration: 3000,
 			style: {
 				// background: '#5cb85c', //success
@@ -3680,7 +3683,7 @@ const createRoom = async (data) => {
 		}
 	} catch (error) {
 		Toastify({
-			text: 'Thêm mới không thành công',
+			text: error.response.data.message || 'Thêm mới không thành công',
 			duration: 3000,
 			style: {
 				// background: '#5cb85c', //success
@@ -3740,7 +3743,7 @@ const renderRooms = async () => {
 					room._id
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
-                    <td class="building" data-id="${room.building.id}">${
+                    <td class="building" data-id="${room.building._id}">${
 							room.building.name
 						}</td>
                     <td class="roomNumber">${room.roomNumber}</td>
@@ -3814,7 +3817,7 @@ const renderRooms = async () => {
 		const itemBuildingName = item.find('.building').attr('data-id');
 		const itemRoomNumber = item.find('.roomNumber')[0].innerText;
 		const itemMaxStudent = item.find('.maxStudent')[0].innerText;
-
+		console.log(itemBuildingName);
 		// Set giá trị khi hiện modal update
 		$('#buildingNameUpdate')[0].value = itemBuildingName;
 		$('#roomNumberUpdate')[0].value = itemRoomNumber;
@@ -4267,7 +4270,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const pagination = (buildList) => {
 	let currentPage = 1;
-	let namesPerPage = 12;
+	let namesPerPage = 10;
 
 	const calcPages = (number) => {
 		return Math.ceil(number / namesPerPage);

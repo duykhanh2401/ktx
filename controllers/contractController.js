@@ -6,10 +6,11 @@ const factory = require(`./factoryHandle`);
 const Student = require('../models/studentModels');
 
 // console.log(User);
+// Sửa lại trả lỗi về khi student có hợp đồng
 exports.createContract = catchAsync(async (req, res, next) => {
 	const { student, startDate, dueDate } = req.body;
 
-	if (new Date(dueDate) < Date.now()) {
+	if (new Date(dueDate) <= Date.now()) {
 		return res.status(400).json({
 			message: 'Ngày kết thúc không hợp lệ',
 		});
@@ -78,7 +79,6 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 			startDate: newStartDate,
 			dueDate,
 			admin: req.admin.id,
-			info: 'Gia Hạn',
 		});
 
 		return res.status(200).json({
@@ -115,7 +115,6 @@ exports.getAllContracts = factory.getAll(Contract, undefined, {
 });
 
 exports.getAllContractsStudent = catchAsync(async (req, res, next) => {
-	console.log(req.student);
 	const contracts = await Contract.find({ student: req.student.id }).populate(
 		'student',
 	);

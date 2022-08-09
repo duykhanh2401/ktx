@@ -57,6 +57,7 @@ exports.getStudentNoRoom = catchAsync(async (req, res, next) => {
 	const studentsContract = await Student.find({
 		$and: [
 			{ room: null },
+			{ discipline: false },
 			{
 				_id: {
 					$in: arrContract,
@@ -81,7 +82,6 @@ exports.getAllStudents = catchAsync(async (req, res, next) => {
 });
 exports.updateStudent = catchAsync(async (req, res, next) => {
 	let data;
-	console.log(req.body);
 
 	if (req.body.password == '') {
 		delete req.body.password;

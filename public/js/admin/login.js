@@ -51,6 +51,7 @@ const renderLogin = async () => {
 						// background: '#d9534f', // danger
 					},
 				}).showToast();
+				window.location.reload();
 			}
 		} catch (error) {
 			console.log(error);

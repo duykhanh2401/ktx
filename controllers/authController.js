@@ -27,16 +27,6 @@ const createSendToken = (student, statusCode, res) => {
 	});
 };
 
-exports.register = catchAsync(async (req, res, next) => {
-	const newStudent = await Student.create({
-		name: req.body.name.trim(),
-		email: req.body.email,
-		password: req.body.password,
-		passwordConfirm: req.body.passwordConfirm,
-	});
-	createSendToken(newStudent, 200, res);
-});
-
 exports.login = catchAsync(async function (req, res, next) {
 	const { studentID, password } = req.body;
 
@@ -70,6 +60,9 @@ exports.logout = (req, res, next) => {
 
 // Kiểm tra đăng nhập chưa với token
 exports.protect = catchAsync(async (req, res, next) => {
+	if (req.originalUrl.startsWith('/css') || req.originalUrl.startsWith('/js')) {
+		return next();
+	}
 	const checkAPI = req.originalUrl.startsWith('/api');
 	let token;
 	if (

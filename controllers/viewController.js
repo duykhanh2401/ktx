@@ -13,7 +13,6 @@ exports.login = async (req, res, next) => {
 		if (req.cookies.jwt) {
 			token = req.cookies.jwt;
 		}
-		console.log(token);
 		if (!token) {
 			return res.status(200).render('student/login');
 		}
@@ -26,7 +25,6 @@ exports.login = async (req, res, next) => {
 			return res.status(200).render('student/login');
 		}
 	} catch (error) {
-		console.log(error);
 		return res.status(200).render('student/login');
 	}
 

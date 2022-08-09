@@ -89,15 +89,15 @@ studentSchema.virtual('status').get(function () {
 	if (this.discipline) {
 		return 'Kỷ luật';
 	} else if (
-		this.contract.length == 0 ||
-		this.contract[0]?.dueDate < new Date()
-	) {
-		return 'Đã dọn ra';
-	} else if (
-		(this.contract.length == 0 && this.allContract.length == 0) ||
+		(this.contract?.length == 0 && this.allContract?.length == 0) ||
 		!this.room
 	) {
 		return 'Chưa có phòng';
+	} else if (
+		this.contract?.length == 0 ||
+		this.contract[0]?.dueDate < new Date()
+	) {
+		return 'Đã dọn ra';
 	} else if (
 		this.contract.length > 0 &&
 		this.contract[0].dueDate > new Date() &&

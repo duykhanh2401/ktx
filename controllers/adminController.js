@@ -10,50 +10,8 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const { mongoose } = require('mongoose');
 
-const filterObject = (obj, ...fields) => {
-	const objectResult = {};
-
-	Object.keys(obj).forEach((el) => {
-		if (fields.includes(el)) objectResult[el] = obj[el];
-	});
-
-	return objectResult;
-};
-
-exports.updateMe = catchAsync(async (req, res, next) => {
-	if (req.body.password || req.body.passwordConfirm)
-		return next(
-			new AppError('Cập nhật mật khẩu vui lòng sử dụng /updatePassword', 400),
-		);
-
-	const filterBody = filterObject(req.body, 'name', 'phoneNumber', 'address');
-
-	const updateAdmin = await Admin.findByIdAndUpdate(req.admin.id, filterBody, {
-		new: true,
-		runValidators: true,
-	});
-
-	res.status(200).json({
-		status: 'success',
-		data: updateAdmin,
-	});
-});
-
-exports.getMe = (req, res, next) => {
-	req.params.id = req.Admin.id;
-	next();
-};
-
-exports.deleteMe = catchAsync(async (req, res, next) => {
-	await Admin.findByIdAndUpdate(req.admin.id, { active: false });
-	res.status(204).json({
-		status: 'success',
-	});
-});
-
 exports.getStudent = async (req, res, next) => {
-	const rooms = await Room.find();
-	res.status(200).render('admin/student', { rooms });
+	res.status(200).render('admin/student');
 };
 
 exports.getBuilding = async (req, res, next) => {
@@ -62,7 +20,6 @@ exports.getBuilding = async (req, res, next) => {
 
 exports.getInvoice = async (req, res, next) => {
 	const rooms = await Room.find();
-	console.log(rooms);
 	res.status(200).render('admin/invoice', { rooms });
 };
 
@@ -154,6 +111,4 @@ exports.updateAdmin = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllAdmins = factory.getAll(Admin, '+active');
-exports.getAdmin = factory.getOne(Admin);
 exports.createAdmin = factory.createOne(Admin);
-exports.deleteAdmin = factory.deleteOne(Admin);

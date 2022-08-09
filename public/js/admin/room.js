@@ -12,8 +12,9 @@ const addStudent = async (data) => {
 			return true;
 		}
 	} catch (error) {
+		console.log(error);
 		Toastify({
-			text: 'Thêm mới không thành công',
+			text: error.response.data.message || 'Thêm mới không thành công',
 			duration: 3000,
 			style: {
 				// background: '#5cb85c', //success

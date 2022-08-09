@@ -28,5 +28,13 @@ const buildingSchema = mongoose.Schema(
 
 // Virtual populate
 
-const Category = mongoose.model('Building', buildingSchema);
-module.exports = Category;
+buildingSchema.virtual('presentRoom', {
+	ref: 'Room',
+	localField: '_id',
+	foreignField: 'building',
+	justOne: false,
+	count: true,
+});
+
+const Building = mongoose.model('Building', buildingSchema);
+module.exports = Building;

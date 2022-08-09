@@ -145,7 +145,6 @@ const renderBuilding = async () => {
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		console.log(item);
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.name')[0].innerText;
 		const itemNumberOfRooms = item.find('.numberOfRooms')[0].innerText;
@@ -154,7 +153,9 @@ const renderBuilding = async () => {
 		// Set giá trị khi hiện modal update
 		$('#nameBuildingUpdate')[0].value = itemName;
 		$('#numberOfRoomsUpdate')[0].value = itemNumberOfRooms;
-		$('#unitPriceUpdate')[0].value = itemUnitPrice;
+		$('#unitPriceUpdate')[0].value = Number(
+			itemUnitPrice.replace(/[^0-9]+/g, ''),
+		);
 
 		const btnUpdate = $('.btn-update')[0];
 

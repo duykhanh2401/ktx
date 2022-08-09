@@ -1,4 +1,5 @@
 const Room = require('../models/roomModels');
+const Building = require('../models/buildingModels');
 const Student = require('../models/studentModels');
 const Contract = require('../models/contractModels');
 const catchAsync = require('../utils/catchAsync');
@@ -156,7 +157,39 @@ exports.getRoom = catchAsync(async (req, res, next) => {
 exports.addStudent = catchAsync(async (req, res, next) => {
 	const { room, student } = req.body;
 	const roomSelect = await Room.findById(room);
-	if (roomSelect.presentStudent >= roomSelect.maxStudent) {
+	const studentInRoom = await Student.aggregate([
+		{
+			$match: {
+				room: ObjectId(room),
+			},
+		},
+		{
+			$lookup: {
+				from: 'contracts',
+				localField: '_id',
+				foreignField: 'student',
+				as: 'contract',
+			},
+		},
+		{
+			$unwind: '$contract',
+		},
+		{
+			$match: {
+				$or: [
+					{
+						'contract.dueDate': {
+							$gte: new Date(),
+						},
+						'contract.startDate': {
+							$lte: new Date(),
+						},
+					},
+				],
+			},
+		},
+	]);
+	if (studentInRoom.length >= roomSelect.maxStudent) {
 		return res.status(400).json({
 			message: 'Phòng đã đầy',
 		});
@@ -236,6 +269,24 @@ exports.roommates = catchAsync(async (req, res, next) => {
 		data: student,
 	});
 });
-exports.createRoom = factory.createOne(Room);
+exports.createRoom = catchAsync(async (req, res, next) => {
+	const { building } = req.body;
+
+	const currentBuilding = await Building.findById(building).populate(
+		'presentRoom',
+	);
+	// console.log(building, roomNumber, maxStudent);
+	console.log(currentBuilding);
+	if (currentBuilding.presentRoom >= currentBuilding.numberOfRooms) {
+		return res.status(400).json({
+			message: 'Toà nhà này đã đủ phòng',
+		});
+	}
+	const newRoom = await Room.create(req.body);
+	return res.status(200).json({
+		status: 'success',
+		data: newRoom,
+	});
+});
 exports.updateRoom = factory.updateOne(Room);
 exports.deleteRoom = factory.deleteOne(Room);
