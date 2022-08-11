@@ -1,4 +1,5 @@
 const Student = require('../models/studentModels');
+const Room = require('../models/roomModels');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const Contract = require(`../models/contractModels`);
@@ -30,8 +31,8 @@ exports.login = async (req, res, next) => {
 
 	res.redirect('/contract');
 };
-exports.getBuilding = async (req, res, next) => {
-	res.status(200).render('student/building');
+exports.getReflect = async (req, res, next) => {
+	res.status(200).render('student/reflect');
 };
 exports.getContract = async (req, res, next) => {
 	const contracts = await Contract.find({ student: req.student.id });
@@ -39,9 +40,11 @@ exports.getContract = async (req, res, next) => {
 };
 
 exports.getInvoice = async (req, res, next) => {
-	res.status(200).render('student/invoice');
+	const rooms = await Room.find();
+	res.status(200).render('student/invoice', { rooms });
 };
 
 exports.getRoom = async (req, res, next) => {
+	console.log(req.student);
 	res.status(200).render('student/room');
 };

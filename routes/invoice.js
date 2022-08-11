@@ -9,6 +9,7 @@ router
 
 router
 	.route('/:id')
+	.get(authController.protect, invoiceController.getInvoiceByRoom)
 	.patch(authController.protectAdmin, invoiceController.updateInvoice);
 
 module.exports = router;

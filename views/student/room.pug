@@ -5,7 +5,7 @@ block head
 
 block content
 
-    .container-title Danh sách bạn cùng phòng
+    .container-title= `Danh sách bạn cùng phòng ${student.room ? `${student.room.roomNumber} - ${student.room.building.name}` : ''} `
       
     .table#room
         .table-header

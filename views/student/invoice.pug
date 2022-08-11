@@ -17,47 +17,47 @@ block content
         .pagination
                 
 
-    //- #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
-    //-     .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
-    //-         .modal-content
-    //-             .modal-header
-    //-                 h5.modal-title Thông tin
-    //-                 button.close(type='button' data-dismiss='modal' aria-label='Close')
-    //-                 span(aria-hidden='true') &times;
-    //-             .modal-body
-    //-                 div.mt-3
-    //-                     select#roomIDInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại' disabled)
-    //-                         option(value='') -----------Chọn Phòng-----------
-    //-                         each room in rooms
-    //-                             option(value= room.id)= `Phòng ${room.roomNumber} - Toà ${room.building.name}`
-    //-                 div.mt-3
-    //-                     label(for='') Tháng
-    //-                     select.input-text#monthInfo(type='number' placeholder='Nhập số lượng phòng' disabled)
-    //-                         option(value='') Chọn tháng
-    //-                         each n in [1,2,3,4,5,6,7,8,9,10,11,12]
-    //-                             option(value=n)= `Tháng ${n}`
-    //-                 div.mt-3
-    //-                     label(for='') Năm
-    //-                     input.input-text#yearInfo(type='number' placeholder='Nhập năm' disabled)
-    //-                 div.mt-3
-    //-                     label(for='') Chỉ số điện mới
-    //-                     input.input-text#electricity-startInfo(type='number' placeholder='Nhập chỉ số điện mới' disabled)
-    //-                 div.mt-3
-    //-                     label(for='') Chỉ số điện cũ
-    //-                     input.input-text#electricity-endInfo(type='number' placeholder='Nhập chỉ số điện cũ' disabled)
-    //-                 div.mt-3
-    //-                     label(for='') Tổng tiền điện
-    //-                     input.input-text#electricity-totalInfo(type='text' placeholder='Nhập chỉ số điện cũ' disabled)  
-    //-                 div.mt-3
-    //-                     label(for='') Chỉ số nước mới
-    //-                     input.input-text#water-startInfo(type='number' placeholder='Nhập chỉ số điện mới' disabled)
-    //-                 div.mt-3
-    //-                     label(for='') Chỉ số nước cũ
-    //-                     input.input-text#water-endInfo(type='number' placeholder='Nhập chỉ số điện cũ' disabled)
-    //-                 div.mt-3
-    //-                     label(for='') Tổng tiền nước
-    //-                     input.input-text#water-totalInfo(type='text' placeholder='Nhập chỉ số điện cũ' disabled)
-    //-             .modal-footer
-    //-                 button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
+    #infoModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Thông tin
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    div.mt-3
+                        select#roomIDInfo.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại' disabled)
+                            option(value='') -----------Chọn Phòng-----------
+                            each room in rooms
+                                option(value= room.id)= `Phòng ${room.roomNumber} - Toà ${room.building.name}`
+                    div.mt-3
+                        label(for='') Tháng
+                        select.input-text#monthInfo(type='number' placeholder='Nhập số lượng phòng' disabled)
+                            option(value='') Chọn tháng
+                            each n in [1,2,3,4,5,6,7,8,9,10,11,12]
+                                option(value=n)= `Tháng ${n}`
+                    div.mt-3
+                        label(for='') Năm
+                        input.input-text#yearInfo(type='number' placeholder='Nhập năm' disabled)
+                    div.mt-3
+                        label(for='') Chỉ số điện mới
+                        input.input-text#electricity-startInfo(type='number' placeholder='Nhập chỉ số điện mới' disabled)
+                    div.mt-3
+                        label(for='') Chỉ số điện cũ
+                        input.input-text#electricity-endInfo(type='number' placeholder='Nhập chỉ số điện cũ' disabled)
+                    div.mt-3
+                        label(for='') Tổng tiền điện
+                        input.input-text#electricity-totalInfo(type='text' placeholder='Nhập chỉ số điện cũ' disabled)  
+                    div.mt-3
+                        label(for='') Chỉ số nước mới
+                        input.input-text#water-startInfo(type='number' placeholder='Nhập chỉ số điện mới' disabled)
+                    div.mt-3
+                        label(for='') Chỉ số nước cũ
+                        input.input-text#water-endInfo(type='number' placeholder='Nhập chỉ số điện cũ' disabled)
+                    div.mt-3
+                        label(for='') Tổng tiền nước
+                        input.input-text#water-totalInfo(type='text' placeholder='Nhập chỉ số điện cũ' disabled)
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
 
 

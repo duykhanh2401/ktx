@@ -228,7 +228,9 @@ exports.removeStudent = catchAsync(async (req, res, next) => {
 
 exports.roommates = catchAsync(async (req, res, next) => {
 	if (!req.student.room) {
-		return next(new AppError('Sinh viên chưa có phòng', 400));
+		return res.status(200).json({
+			message: 'Sinh viên chưa có phòng',
+		});
 	}
 
 	const student = await Student.aggregate([

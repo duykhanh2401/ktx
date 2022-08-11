@@ -32,7 +32,6 @@ exports.createInvoice = catchAsync(async (req, res, next) => {
 			return next(new AppError('Chỉ số nước không hợp lệ', 400));
 		}
 
-		console.log(electricity, startElectricity);
 		totalElectricity = (electricity - startElectricity) * 2000;
 		totalWater = (water - startWater) * 8000;
 	}

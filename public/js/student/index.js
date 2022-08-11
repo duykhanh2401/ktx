@@ -14,6 +14,7 @@ toggle?.addEventListener('click', () => {
 import { renderLogin } from './login';
 import { renderContract } from './contract';
 import { renderRoom } from './room';
+import { renderInvoice } from './invoice';
 
 $(document).ready(function () {
 	const path = window.location.pathname;
@@ -27,6 +28,7 @@ $(document).ready(function () {
 	const login = document.querySelector('#login');
 	const contract = document.querySelector('#contract');
 	const room = document.querySelector('#room');
+	const invoice = document.querySelector('#invoice');
 
 	if (login) {
 		renderLogin();
@@ -38,5 +40,9 @@ $(document).ready(function () {
 
 	if (room) {
 		renderRoom();
+	}
+
+	if (invoice) {
+		renderInvoice();
 	}
 });

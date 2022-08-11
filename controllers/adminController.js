@@ -18,6 +18,10 @@ exports.getBuilding = async (req, res, next) => {
 	res.status(200).render('admin/building');
 };
 
+exports.getReflect = async (req, res, next) => {
+	res.status(200).render('admin/reflect');
+};
+
 exports.getInvoice = async (req, res, next) => {
 	const rooms = await Room.find();
 	res.status(200).render('admin/invoice', { rooms });
@@ -86,7 +90,6 @@ exports.login = async (req, res, next) => {
 			return res.status(200).render('admin/login');
 		}
 	} catch (error) {
-		console.log(error);
 		return res.status(200).render('admin/login');
 	}
 

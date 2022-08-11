@@ -89,7 +89,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	);
 
 	// Check if Student still exists || Kiểm tra người dùng tồn tại hay k
-	const currentStudent = await Student.findById(decode.id);
+	const currentStudent = await Student.findById(decode.id).populate('room');
 	if (!currentStudent) {
 		return checkAPI
 			? res.status(401).json({
@@ -98,7 +98,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 			  })
 			: res.redirect(`/login`);
 	}
-
+	console.log(currentStudent);
 	req.student = currentStudent;
 	res.locals.student = currentStudent;
 	next();
@@ -175,6 +175,7 @@ exports.protectAdmin = async (req, res, next) => {
 		if (req.cookies.jwt_admin) {
 			token = req.cookies.jwt_admin;
 		}
+		console.log(token);
 		if (!token) {
 			return checkAPI
 				? res.status(401).json({

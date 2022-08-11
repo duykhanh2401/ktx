@@ -12,5 +12,6 @@ router.use(authController.protect);
 router.get('/contract', viewController.getContract);
 router.get('/room', viewController.getRoom);
 router.get('/invoice', viewController.getInvoice);
+router.get('/reflect', viewController.getReflect);
 
 module.exports = router;
