@@ -39,9 +39,7 @@ const renderRoom = async () => {
                     <td class="studentNumber">${student.name}</td>
                     <td class="maxStudent">${student.class}</td>
                     <td class="presentStudent">${student.academic}</td>
-                    <td>${student.dateOfBirth}</td>
-          
-               
+                    <td>${student.dateOfBirth}</td>     
 					</td>
 			
 			</tr>

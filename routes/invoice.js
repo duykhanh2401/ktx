@@ -7,6 +7,7 @@ router
 	.get(invoiceController.getAllInvoice)
 	.post(authController.protectAdmin, invoiceController.createInvoice);
 
+router.post('/data-dashboard', invoiceController.getDashboardData);
 router
 	.route('/:id')
 	.get(authController.protect, invoiceController.getInvoiceByRoom)

@@ -15,6 +15,7 @@ import { renderLogin } from './login';
 import { renderContract } from './contract';
 import { renderRoom } from './room';
 import { renderInvoice } from './invoice';
+import { renderReflect } from './reflect';
 
 $(document).ready(function () {
 	const path = window.location.pathname;
@@ -29,6 +30,7 @@ $(document).ready(function () {
 	const contract = document.querySelector('#contract');
 	const room = document.querySelector('#room');
 	const invoice = document.querySelector('#invoice');
+	const reflect = document.querySelector('#reflect');
 
 	if (login) {
 		renderLogin();
@@ -44,5 +46,9 @@ $(document).ready(function () {
 
 	if (invoice) {
 		renderInvoice();
+	}
+
+	if (reflect) {
+		renderReflect();
 	}
 });

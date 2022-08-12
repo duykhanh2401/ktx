@@ -72,4 +72,80 @@ exports.getInvoiceByRoom = catchAsync(async (req, res, next) => {
 		data: invoice,
 	});
 });
+
+exports.getDashboardData = catchAsync(async (req, res, next) => {
+	const { month, year } = req.body;
+	const data = await Invoice.aggregate([
+		{
+			$match: {
+				month,
+				year,
+			},
+		},
+		{
+			$lookup: {
+				localField: 'electricity',
+				foreignField: '_id',
+				from: 'electricities',
+				as: 'electricityTotal',
+			},
+		},
+		{
+			$unwind: '$electricityTotal',
+		},
+		{
+			$lookup: {
+				localField: 'water',
+				foreignField: '_id',
+				from: 'waters',
+				as: 'waterTotal',
+			},
+		},
+		{
+			$unwind: '$waterTotal',
+		},
+		{
+			$lookup: {
+				localField: 'room',
+				foreignField: '_id',
+				from: 'rooms',
+				as: 'rooms',
+			},
+		},
+		{
+			$unwind: '$rooms',
+		},
+		{
+			$group: {
+				_id: '$rooms.building',
+				totalWater: { $sum: '$waterTotal.total' },
+				totalElectricity: { $sum: '$electricityTotal.total' },
+			},
+		},
+		{
+			$lookup: {
+				localField: '_id',
+				foreignField: '_id',
+				from: 'buildings',
+				as: 'buildings',
+			},
+		},
+		{
+			$unwind: '$buildings',
+		},
+		{
+			$project: {
+				water: '$totalWater',
+				electricity: '$totalElectricity',
+				building: '$buildings.name',
+			},
+		},
+	]);
+
+	res.status(200).json({
+		status: 'success',
+		data,
+	});
+});
+
 exports.updateInvoice = factory.updateOne(Invoice);

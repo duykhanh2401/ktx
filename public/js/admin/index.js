@@ -19,6 +19,7 @@ import { renderLogin } from './login';
 import { renderContract } from './contract';
 import { renderAdmin } from './admin';
 import { renderInvoice } from './invoice';
+import { renderReflect } from './reflect';
 import { getDataAPI } from './../util/fetchAPI';
 $(document).ready(function () {
 	const path = window.location.pathname;
@@ -37,6 +38,7 @@ $(document).ready(function () {
 	const contract = document.querySelector('#contract');
 	const admin = document.querySelector('#admin');
 	const invoice = document.querySelector('#invoice');
+	const reflect = document.querySelector('#reflect');
 
 	if (!login) {
 		document
@@ -78,5 +80,9 @@ $(document).ready(function () {
 
 	if (invoice) {
 		renderInvoice();
+	}
+
+	if (reflect) {
+		renderReflect();
 	}
 });
