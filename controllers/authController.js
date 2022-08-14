@@ -60,9 +60,9 @@ exports.logout = (req, res, next) => {
 
 // Kiểm tra đăng nhập chưa với token
 exports.protect = catchAsync(async (req, res, next) => {
-	if (req.originalUrl.startsWith('/css') || req.originalUrl.startsWith('/js')) {
-		return next();
-	}
+	// if (req.originalUrl.startsWith('/css') || req.originalUrl.startsWith('/js')) {
+	// 	return next();
+	// }
 	const checkAPI = req.originalUrl.startsWith('/api');
 	let token;
 	if (
@@ -73,14 +73,17 @@ exports.protect = catchAsync(async (req, res, next) => {
 	} else if (req.cookies.jwt) {
 		token = req.cookies.jwt;
 	}
-
-	if (!token)
+	if (!token) {
 		return checkAPI
 			? res.status(401).json({
 					status: 'failed',
 					message: 'Bạn không có quyền truy cập vào đường dẫn này',
 			  })
 			: res.redirect(`/login`);
+	}
+	if (token == 'logouttoken') {
+		return res.redirect(`/login`);
+	}
 
 	// Verification token
 	const decode = await promisify(jwt.verify)(

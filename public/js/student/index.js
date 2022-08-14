@@ -37,7 +37,7 @@ $(document).ready(function () {
 			.querySelector('.logout-btn')
 			.addEventListener('click', async () => {
 				const res = await getDataAPI('student/logout');
-
+				console.log(res.status);
 				if (res.status === 200) {
 					location.reload();
 				}

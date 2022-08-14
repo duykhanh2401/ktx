@@ -47,11 +47,15 @@ const renderReflect = async () => {
 					.slice(min, max)
 					.map((reflect) => {
 						return `
-				<tr class="item-list" data-id=${reflect._id} data-bs-toggle="modal" data-bs-target="#infoModal">
+				<tr class="item-list" data-id=${
+					reflect._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="title">${reflect.title}</td>
                     <td class="status"">${reflect.status}</td>
-                    <td class="status"">${reflect.createdAt}</td>
+                    <td class="status"">${new Date(
+											reflect.createdAt,
+										).toLocaleDateString()}</td>
                     <div>
 					<div class="dropdown-menu" aria-labelledby="${reflect._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Chi tiết</div>
