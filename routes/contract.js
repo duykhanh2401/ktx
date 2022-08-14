@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const contractController = require(`${__dirname}/../controllers/contractController`);
-const authController = require(`${__dirname}/../controllers/authController`);
+const contractController = require('../controllers/contractController');
+const authController = require('../controllers/authController');
 
 router.get(
 	'/student',
@@ -9,6 +9,8 @@ router.get(
 );
 
 router.use(authController.protectAdmin);
+router.post('/data-dashboard', contractController.getDashboardData);
+
 router
 	.route('/')
 	.get(contractController.getAllContracts)

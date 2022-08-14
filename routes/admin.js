@@ -7,10 +7,6 @@ router.get('/login', adminController.login);
 
 router.use(authController.protectAdmin);
 
-router.get('/', (req, res) => {
-	res.redirect('/admin/building');
-});
-
 router.get('/student', adminController.getStudent);
 router.get('/building', adminController.getBuilding);
 router.get('/room', adminController.getRooms);
@@ -19,4 +15,5 @@ router.get('/contract', adminController.getContract);
 router.get('/admin', adminController.getAdminClient);
 router.get('/invoice', adminController.getInvoice);
 router.get('/reflect', adminController.getReflect);
+router.get('/', adminController.getIndex);
 module.exports = router;

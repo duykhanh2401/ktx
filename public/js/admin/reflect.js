@@ -5,7 +5,11 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
-
+const convertStrToDate = (string) => {
+	const [day, month, year] = string.split('/');
+	const date = new Date(+year, +month - 1, +day);
+	return date.toISOString().split('T')[0];
+};
 const renderReflect = async () => {
 	const tableList = $('#table')[0];
 	const BuildPage = async () => {
@@ -27,12 +31,18 @@ const renderReflect = async () => {
 					.slice(min, max)
 					.map((reflect) => {
 						return `
-				<tr class="item-list" data-id=${reflect._id} data-bs-toggle="modal" data-bs-target="#infoModal">
+				<tr class="item-list" data-id=${
+					reflect._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="title">${reflect.title}</td>
                     <td class="status"">${reflect.status}</td>
-                    <td class="status"">${reflect.createdAt}</td>
-					<td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${reflect._id}"></i>
+                    <td class="status"">${new Date(
+											reflect.createdAt,
+										).toLocaleDateString()}</td>
+					<td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
+						reflect._id
+					}"></i>
 					<div class="dropdown-menu" aria-labelledby="${reflect._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Chi tiết</div>
 						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Cập nhật</d>

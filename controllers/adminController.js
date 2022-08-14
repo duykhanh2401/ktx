@@ -72,6 +72,10 @@ exports.getRoom = async (req, res, next) => {
 	res.status(200).render('admin/room', { room });
 };
 
+exports.getIndex = async (req, res, next) => {
+	res.status(200).render('admin/index');
+};
+
 exports.login = async (req, res, next) => {
 	try {
 		let token;

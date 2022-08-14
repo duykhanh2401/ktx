@@ -140,6 +140,11 @@ exports.getDashboardData = catchAsync(async (req, res, next) => {
 				building: '$buildings.name',
 			},
 		},
+		{
+			$sort: {
+				building: 1,
+			},
+		},
 	]);
 
 	res.status(200).json({

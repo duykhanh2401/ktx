@@ -185,7 +185,6 @@ const renderContract = async () => {
 		const itemDueDate = item.find('.dueDate')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		console.log(convertStrToDate(itemStartDate));
 		$('#studentSelectInfo')[0].value = itemStudentName;
 		$('#startDateInfo')[0].value = convertStrToDate(itemStartDate);
 		$('#dueDateInfo')[0].value = convertStrToDate(itemDueDate);

@@ -7,10 +7,15 @@ router
 	.get(invoiceController.getAllInvoice)
 	.post(authController.protectAdmin, invoiceController.createInvoice);
 
+router.get(
+	'/student',
+	authController.protect,
+	invoiceController.getInvoiceByRoom,
+);
+
 router.post('/data-dashboard', invoiceController.getDashboardData);
 router
 	.route('/:id')
-	.get(authController.protect, invoiceController.getInvoiceByRoom)
 	.patch(authController.protectAdmin, invoiceController.updateInvoice);
 
 module.exports = router;

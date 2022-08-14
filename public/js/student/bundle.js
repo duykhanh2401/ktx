@@ -2597,7 +2597,7 @@ const formatter = new Intl.NumberFormat('vi-VN', {
 const renderInvoice = async () => {
 	const tableList = $('#table')[0];
 	const BuildPage = async () => {
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice/student`);
 		const listInvoice = data.data;
 		const listRender = listInvoice;
 		const buildList = async (buildPagination, min, max) => {

@@ -124,6 +124,36 @@ exports.getAllContractsStudent = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.getDashboardData = catchAsync(async (req, res, next) => {
+	const dataFind = await Contract.find();
+	const data = {
+		cancel: 0,
+		discipline: 0,
+		active: 0,
+		extend: 0,
+		inactive: 0,
+	};
+	dataFind.forEach((el) => {
+		if (el.status == 'cancel') {
+			data.cancel++;
+		} else if (el.status == 'discipline') {
+			data.discipline++;
+		} else if (el.status == 'active') {
+			data.active++;
+		} else if (el.status == 'extend') {
+			data.extend++;
+		} else if (el.status == 'inactive') {
+			data.inactive++;
+		}
+	});
+	console.log(data);
+	return res.status(200).json({
+		status: 'success',
+		data,
+		total: dataFind.length,
+	});
+});
+
 exports.getContract = factory.getOne(Contract);
 exports.updateContract = factory.updateOne(Contract);
 exports.deleteContract = factory.deleteOne(Contract);

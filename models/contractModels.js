@@ -38,7 +38,8 @@ const contractSchema = mongoose.Schema(
 );
 
 contractSchema.virtual('status').get(function () {
-	const today = Date.now();
+	const today = new Date();
+
 	if (this.isCancel == 'cancel') {
 		return 'cancel';
 	} else if (this.isCancel == 'discipline') {

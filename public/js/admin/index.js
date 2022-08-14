@@ -20,6 +20,7 @@ import { renderContract } from './contract';
 import { renderAdmin } from './admin';
 import { renderInvoice } from './invoice';
 import { renderReflect } from './reflect';
+import { renderDashboard } from './dashboard';
 import { getDataAPI } from './../util/fetchAPI';
 $(document).ready(function () {
 	const path = window.location.pathname;
@@ -39,6 +40,7 @@ $(document).ready(function () {
 	const admin = document.querySelector('#admin');
 	const invoice = document.querySelector('#invoice');
 	const reflect = document.querySelector('#reflect');
+	const dashboard = document.querySelector('#dashboard');
 
 	if (!login) {
 		document
@@ -84,5 +86,9 @@ $(document).ready(function () {
 
 	if (reflect) {
 		renderReflect();
+	}
+
+	if (dashboard) {
+		renderDashboard();
 	}
 });
