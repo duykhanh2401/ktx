@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { convert } from '../util/convertString';
 
 const formatter = new Intl.NumberFormat('vi-VN', {
 	style: 'currency',
@@ -48,15 +49,16 @@ const updateBuilding = async (id, data) => {
 
 const renderBuilding = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await getDataAPI(`building?sort=name`);
+	const { data } = await getDataAPI(`building?sort=name`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const listBuilding = data.data;
-		const listRender = listBuilding;
+		const listRender = listBuilding.filter((item) =>
+			convert(item.name).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -108,7 +110,9 @@ const renderBuilding = async () => {
 
 		pagination(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addBuilding = $('.btn-add-new')[0];
 
@@ -129,7 +133,9 @@ const renderBuilding = async () => {
 				document.querySelector('#numberOfRooms').value = '';
 				document.querySelector('#unitPrice').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`building?sort=name`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -174,7 +180,9 @@ const renderBuilding = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`building?sort=name`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -200,7 +208,7 @@ const renderBuilding = async () => {
 		$('#unitPriceInfo')[0].value = itemUnitPrice;
 	});
 
-	BuildPage();
+	BuildPage(data);
 };
 
 export { renderBuilding };

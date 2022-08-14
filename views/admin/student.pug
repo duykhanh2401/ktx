@@ -9,12 +9,11 @@ block content
     .container-navigation
         .container-search
             .container-find
-            input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
-            // <div class="container-filter">Bộ lọc</div>
+            input.search(type='text' placeholder='Tìm kiếm theo tên sinh viên')
         button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Th&ecirc;m m&#x1EDB;i
     .table#student
         .table-header
-            .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
+            .table-header-title 
             .table-pagination
         .table-body
             table#table
@@ -47,6 +46,9 @@ block content
                     div.mt-3
                         label(for='') Ngày sinh
                         input.input-text#dateOfBirth(type='date' placeholder='Nhập ngày sinh sinh viên')
+                    div.mt-3
+                        label(for='') Số điện thoại
+                        input.input-text#phone(type='text' placeholder='Nhập số điện thoại')
                     div.mt-3
                         label(for='') Giới tính:
                         input#maleGender.gender.form-check-input(type='radio'  name='genderUpdate' value='male' checked)
@@ -92,6 +94,9 @@ block content
                     div.mt-3
                         label(for='') Ngày sinh
                         input.input-text#dateOfBirthUpdate(type='date' placeholder='Nhập ngày sinh sinh viên')
+                    div.mt-3
+                        label(for='') Số điện thoại
+                        input.input-text#phoneUpdate(type='text' placeholder='Nhập số điện thoại')
                     div.mt-3
                         label(for='') Giới tính:
                         input#maleGenderUpdate.gender.form-check-input(type='radio'  name='gender' value='male' checked)
@@ -139,6 +144,9 @@ block content
                     div.mt-3
                         label(for='') Ngày sinh
                         input.input-text#dateOfBirthInfo(type='date' placeholder='Nhập ngày sinh sinh viên' disabled)
+                    div.mt-3
+                        label(for='') Số điện thoại
+                        input.input-text#phoneInfo(type='text' placeholder='Nhập số điện thoại')
                     div.mt-3
                         label(for='') Giới tính:
                         input#maleGenderInfo.gender.form-check-input(type='radio'  name='gender' value='male' disabled)

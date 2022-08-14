@@ -6,64 +6,32 @@ block head
 
 block content
 
-    .container-title Danh sách toà nhà
+    .container-title Danh sách phản ánh
     .container-navigation
         .container-search
             .container-find
-            input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
-            // <div class="container-filter">Bộ lọc</div>
-        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Th&ecirc;m m&#x1EDB;i
+            input.search(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
     .table#reflect
         .table-header
-            .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
+            .table-header-title 
             .table-pagination
         .table-body
             table#table
         
         .pagination
                 
-    #addNewModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
-        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
-            .modal-content
-                .modal-header
-                    h5.modal-title Thêm mới
-                    button.close(type='button' data-dismiss='modal' aria-label='Close')
-                    span(aria-hidden='true') &times;
-                .modal-body
-                    div.mt-3
-                        label(for='') Tên toà nhà
-                        input.input-text#nameBuilding(type='text' placeholder='Tối đa 20 ký tự...')
-                    div.mt-3
-                        label(for='') Số lượng phòng
-                        input.input-text#numberOfRooms(type='number' placeholder='Nhập số lượng phòng')
-                    div.mt-3
-                        label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
-                        input.input-text#unitPrice(type='number' placeholder='Nhập giá phòng')
-
-                .modal-footer
-                    button.btn.btn-primary.btn-add-new(type='button') Tạo
-                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
-
-
 
     #updateModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
         .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
             .modal-content
                 .modal-header
-                    h5.modal-title Cập nhật
+                    h5.modal-title Cập nhật trạng thái
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        label(for='') Tên toà nhà
-                        input.input-text#nameBuildingUpdate(type='text' placeholder='Tối đa 20 ký tự...')
-                    div.mt-3
-                        label(for='') Số lượng phòng
-                        input.input-text#numberOfRoomsUpdate(type='number' placeholder='Nhập số lượng phòng')
-                    div.mt-3
-                        label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
-                        input.input-text#unitPriceUpdate(type='number' placeholder='Nhập giá phòng')
-
+                        label(for='') Nhập trạng thái
+                        input.input-text#statusUpdate(type='text' placeholder='Nhập trạng thái mới')
                 .modal-footer
                     button.btn.btn-primary.btn-update(type='button') Cập nhật
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
@@ -78,14 +46,21 @@ block content
                     span(aria-hidden='true') &times;
                 .modal-body
                     div.mt-3
-                        label(for='') Tên toà nhà
-                        input.input-text#nameBuildingInfo(type='text' placeholder='Tối đa 20 ký tự...')
+                        label(for='') Tiêu đề
+                        input.input-text#titleInfo(type='text' placeholder='Tối đa 20 ký tự...' disabled)
                     div.mt-3
-                        label(for='') Số lượng phòng
-                        input.input-text#numberOfRoomsInfo(type='number' placeholder='Nhập số lượng phòng')
+                        label(for='') Sinh viên
+                        input.input-text#studentInfo(type='text' placeholder='Nhập số lượng phòng' disabled)
                     div.mt-3
-                        label(for='') Đơn giá phòng (Giá(VNĐ)/Tháng/Sinh Viên)
-                        input.input-text#unitPriceInfo(type='number' placeholder='Nhập giá phòng')
+                        label(for='') Mã sinh viên
+                        input.input-text#studentIDInfo(type='text' placeholder='Nhập số lượng phòng' disabled)
+                    div.mt-3
+                        label(for='') Nội dung
+                        input.input-text#contentInfo(type='text' placeholder='Nhập số lượng phòng' disabled)
+
+                    div.mt-3
+                        label(for='') Trạng thái
+                        input.input-text#statusInfo(type='text' placeholder='Nhập giá phòng' disabled)
 
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng

@@ -3087,6 +3087,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
 
 
 
@@ -3128,15 +3130,16 @@ const updateAdmin = async (id, data) => {
 
 const renderAdmin = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`auth/admin`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`auth/admin`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
+		const listAdmin = data.data;
+		const listRender = listAdmin.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3203,7 +3206,9 @@ const renderAdmin = async () => {
 				document.querySelector('#email').value = '';
 				document.querySelector('#password').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`auth/admin`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -3257,7 +3262,9 @@ const renderAdmin = async () => {
 				$('#phoneUpdate')[0].value = '';
 				$('#emailUpdate')[0].value = '';
 				$('#passwordUpdate')[0].value = '';
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`auth/admin`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -3285,7 +3292,10 @@ const renderAdmin = async () => {
 		$('#emailInfo')[0].value = itemEmail;
 	});
 
-	BuildPage();
+	BuildPage(data);
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 };
 
 
@@ -3306,6 +3316,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
 
 
 
@@ -3351,15 +3363,16 @@ const updateBuilding = async (id, data) => {
 
 const renderBuilding = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building?sort=name`);
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building?sort=name`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const listBuilding = data.data;
-		const listRender = listBuilding;
+		const listRender = listBuilding.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3411,7 +3424,9 @@ const renderBuilding = async () => {
 
 		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addBuilding = $('.btn-add-new')[0];
 
@@ -3432,7 +3447,9 @@ const renderBuilding = async () => {
 				document.querySelector('#numberOfRooms').value = '';
 				document.querySelector('#unitPrice').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building?sort=name`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -3477,7 +3494,9 @@ const renderBuilding = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`building?sort=name`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -3503,7 +3522,7 @@ const renderBuilding = async () => {
 		$('#unitPriceInfo')[0].value = itemUnitPrice;
 	});
 
-	BuildPage();
+	BuildPage(data);
 };
 
 
@@ -3523,7 +3542,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "renderContract": () => (/* binding */ renderContract)
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
-/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+
 
 
 const createContract = async (data) => {
@@ -3562,23 +3583,61 @@ const extendContract = async (data) => {
 	}
 };
 
-const convertStrToDate = (string) => {
-	const [day, month, year] = string.split('/');
-	const date = new Date(+year, +month - 1, +day);
-	return date.toISOString().split('T')[0];
+const cancelContract = async (id) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`contract/${id}`);
+		if (res.data.status === 'success') {
+			return true;
+		}
+	} catch (error) {
+		Toastify({
+			text: 'Huỷ hợp đồng không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
+	}
 };
 
 const renderContract = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract?sort=studentID`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract?sort=studentID`);
+
+	const BuildPage = async (data) => {
+		const dataSelect = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('contract/data');
+		const { studentNoContract, studentContract } = dataSelect.data;
+		const studentSelect = document.querySelector('#studentSelect');
+		studentSelect.innerHTML =
+			`<option value="">------Chọn Sinh Viên---------</option>` +
+			studentNoContract.map((el) => {
+				return `<option value="${el._id}">${el.name} - ${el.studentID}</option>`;
+			});
+
+		const studentSelectExtend = document.querySelector('#studentSelectExtend');
+
+		studentSelectExtend.innerHTML =
+			`<option value="">------Chọn Sinh Viên---------</option>` +
+			studentContract.map((el) => {
+				return `<option value="${el._id}">${el.name} - ${el.studentID}</option>`;
+			});
+
+		const studentSelectCancel = document.querySelector('#studentSelectCancel');
+
+		studentSelectCancel.innerHTML =
+			`<option value="">------Chọn Sinh Viên---------</option>` +
+			studentContract.map((el) => {
+				return `<option value="${el._id}">${el.name} - ${el.studentID}</option>`;
+			});
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
+		const listContract = data.data;
+		const listRender = listContract.filter((item) =>
+			item.student.studentID.includes(search),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -3636,7 +3695,7 @@ const renderContract = async () => {
 			buildPagination(listRender.length);
 		};
 
-		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
+		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_2__.pagination)(buildList);
 	};
 
 	$('#addNewModal').on('shown.bs.modal', function (e) {
@@ -3657,7 +3716,8 @@ const renderContract = async () => {
 				document.querySelector('#startDate').value = '';
 				document.querySelector('#dueDate').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract?sort=studentID`);
+				BuildPage(data);
 				Toastify({
 					text: 'Tạo hợp đồng thành công',
 					duration: 3000,
@@ -3685,7 +3745,9 @@ const renderContract = async () => {
 				document.querySelector('#studentSelectExtend').value = '';
 				document.querySelector('#dueDateExtend').value = '';
 				$('#extendModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract?sort=studentID`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Gia hạn hợp đồng thành công',
 					duration: 3000,
@@ -3698,20 +3760,36 @@ const renderContract = async () => {
 		};
 	});
 
-	$('#infoModal').on('show.bs.modal', function (e) {
+	$('#cancelModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		const itemStudentName = item.find('.student').attr('data-id');
-		const itemStartDate = item.find('.startDate')[0].innerText;
-		const itemDueDate = item.find('.dueDate')[0].innerText;
 
-		// Set giá trị khi hiện modal update
-		$('#studentSelectInfo')[0].value = itemStudentName;
-		$('#startDateInfo')[0].value = convertStrToDate(itemStartDate);
-		$('#dueDateInfo')[0].value = convertStrToDate(itemDueDate);
+		const btnCancel = $('.btn-cancel')[0];
+
+		btnCancel.onclick = async (e) => {
+			const cancelID = document.querySelector('#studentSelectCancel').value;
+			const isSuccess = await cancelContract(cancelID);
+
+			if (isSuccess) {
+				$('#cancelModal').modal('hide');
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`contract?sort=studentID`);
+
+				BuildPage(data);
+				Toastify({
+					text: 'Huỷ hợp đồng thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
+			}
+		};
 	});
-
-	BuildPage();
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
+	BuildPage(data);
 };
 
 
@@ -3841,7 +3919,14 @@ const renderDashboard = async () => {
 	};
 
 	const day = new Date();
-	document.querySelector('#date').value = day;
+	console.log(
+		`${day.getFullYear()} - ${
+			day.getMonth() > 10 ? day.getMonth() : '0' + day.getMonth()
+		}`,
+	);
+	document.querySelector('#date').value = `${day.getFullYear()}-${
+		day.getMonth() > 10 ? day.getMonth() : '0' + day.getMonth()
+	}`;
 	renderInvoice(day.getMonth(), day.getFullYear());
 	renderContract();
 };
@@ -3864,6 +3949,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
 
 
 
@@ -3909,10 +3996,16 @@ const updateInvoice = async (id, data) => {
 
 const renderInvoice = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const listInvoice = data.data;
-		const listRender = listInvoice;
+		const listRender = listInvoice.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(item.room.roomNumber).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -4000,7 +4093,9 @@ const renderInvoice = async () => {
 				document.querySelector('#electricity').value = '';
 				document.querySelector('#water').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -4027,7 +4122,9 @@ const renderInvoice = async () => {
 			});
 
 			$('#updateModal').modal('hide');
-			BuildPage();
+			const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`invoice`);
+
+			BuildPage(data);
 			Toastify({
 				text: 'Cập nhật thành công',
 				duration: 3000,
@@ -4065,7 +4162,10 @@ const renderInvoice = async () => {
 		$('#water-totalInfo')[0].value = formatter.format(waterTotal);
 	});
 
-	BuildPage();
+	BuildPage(data);
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 };
 
 
@@ -4167,26 +4267,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
 
 
-const convertStrToDate = (string) => {
-	const [day, month, year] = string.split('/');
-	const date = new Date(+year, +month - 1, +day);
-	return date.toISOString().split('T')[0];
+
+
+const updateReflect = async (id, data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`reflect/${id}`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
+	}
 };
+
 const renderReflect = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`reflect`);
-		const listInvoice = data.data;
-		const listRender = listInvoice;
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`reflect`);
+	const BuildPage = async (data) => {
+		const listReflect = data.data;
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
+		const listRender = listReflect.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(item.student.studentID).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
                 <tr>
-                <td class="col">TÊN PHẢN ÁNH</td>
-                <td class="col">TRẠNG THÁI</td>
+                <td class="col">TIÊU ĐỀ PHẢN ÁNH</td>
+                <td class="col">TÊN SINH VÊN</td>
+                <td class="col">MÃ SINH VIÊN</td>
                 <td class="col">NGÀY TẠO</td>
+                <td class="col">TRẠNG THÁI</td>
                 <td class="col"></td>
             </tr>
 				</thead>
@@ -4200,13 +4324,16 @@ const renderReflect = async () => {
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="title">${reflect.title}</td>
-                    <td class="status"">${reflect.status}</td>
-                    <td class="status"">${new Date(
+                    <td class="student">${reflect.student.name}</td>
+                    <td class="studentID">${reflect.student.studentID}</td>
+					<td class="d-none content">${reflect.content}</td>
+                    <td class="date">${new Date(
 											reflect.createdAt,
 										).toLocaleDateString()}</td>
-					<td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-						reflect._id
-					}"></i>
+										<td class="status">${reflect.status}</td>
+						<td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
+							reflect._id
+						}"></i>
 					<div class="dropdown-menu" aria-labelledby="${reflect._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Chi tiết</div>
 						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Cập nhật</d>
@@ -4228,49 +4355,42 @@ const renderReflect = async () => {
 	$('#infoModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		console.log(item);
-		const itemRoomID = item.find('.room').attr('data-id');
-		const itemMonth = item.find('.month')[0].innerText;
-		const itemYear = item.find('.year')[0].innerText;
-		const electricityStart = item.find('.electricity-startNumber')[0].innerText;
-		const electricityEnd = item.find('.electricity-endNumber')[0].innerText;
-		const electricityTotal = item.find('.electricity-total')[0].innerText;
-		const waterStart = item.find('.water-startNumber')[0].innerText;
-		const waterEnd = item.find('.water-endNumber')[0].innerText;
-		const waterTotal = item.find('.water-total')[0].innerText;
+		const student = item.find('.student')[0].innerText;
+		const studentID = item.find('.studentID')[0].innerText;
+		const content = item.find('.content')[0].innerText;
+		const status = item.find('.status')[0].innerText;
+		const title = item.find('.title')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#roomIDInfo')[0].value = itemRoomID;
-		$('#monthInfo')[0].value = itemMonth;
-		$('#yearInfo')[0].value = itemYear;
-		$('#electricity-startInfo')[0].value = electricityStart;
-		$('#electricity-endInfo')[0].value = electricityEnd;
-		$('#electricity-totalInfo')[0].value = formatter.format(electricityTotal);
-		$('#water-startInfo')[0].value = waterStart;
-		$('#water-endInfo')[0].value = waterEnd;
-		$('#water-totalInfo')[0].value = formatter.format(waterTotal);
+		$('#titleInfo')[0].value = title;
+		$('#studentInfo')[0].value = student;
+		$('#studentIDInfo')[0].value = studentID;
+		$('#contentInfo')[0].value = content;
+		$('#statusInfo')[0].value = status;
 	});
 
-	$('#addNewModal').on('shown.bs.modal', function (e) {
-		const addReflect = $('.btn-add-new')[0];
+	$('#updateModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
 
-		addReflect.onclick = async (e) => {
-			const title = document.querySelector('#title').value;
-			const content = document.querySelector('#content').value;
+		const btnUpdate = $('.btn-update')[0];
 
-			const isSuccess = await createReflect({
-				title,
-				content,
+		btnUpdate.setAttribute('update-id', itemId);
+		btnUpdate.onclick = async (e) => {
+			const updateId = btnUpdate.getAttribute('update-id');
+			const status = $('#statusUpdate')[0].value;
+
+			const isSuccess = await updateReflect(updateId, {
+				status,
 			});
 
 			if (isSuccess) {
-				document.querySelector('#title').value = '';
-				document.querySelector('#content').value = '';
-
-				$('#addNewModal').modal('hide');
-				BuildPage();
+				$('#updateModal').modal('hide');
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`reflect`);
+				BuildPage(data);
 				Toastify({
-					text: 'Thêm mới thành công',
+					text: 'Cập nhật thành công',
 					duration: 3000,
 					style: {
 						background: '#5cb85c', //success
@@ -4281,7 +4401,10 @@ const renderReflect = async () => {
 		};
 	});
 
-	BuildPage();
+	BuildPage(data);
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 };
 
 
@@ -4360,11 +4483,6 @@ const renderRoom = async () => {
 	const BuildPage = async () => {
 		const id = document.querySelector('#room-child').getAttribute('data-id');
 
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room/${id}`);
 		const listStudent = data.data;
 		$('.value-presentStudent')[0].innerHTML = listStudent.length;
@@ -4428,7 +4546,6 @@ const renderRoom = async () => {
 
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student/no-room`);
 		const studentSelectElement = document.querySelector('#studentSelect');
-		console.log(studentSelectElement, data);
 		studentSelectElement.innerHTML =
 			`<option value="">------Chọn Sinh Viên---------</option>` +
 			data.data.map((el) => {
@@ -4550,7 +4667,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "renderRooms": () => (/* binding */ renderRooms)
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
-/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+
 
 
 const createRoom = async (data) => {
@@ -4591,15 +4710,16 @@ const updateRoom = async (id, data) => {
 
 const renderRooms = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room`);
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const listRooms = data.data;
-		const listRender = listRooms;
+		const listRender = listRooms.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_1__.convert)(item.roomNumber).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_1__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -4654,7 +4774,7 @@ const renderRooms = async () => {
 			buildPagination(listRender.length);
 		};
 
-		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
+		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_2__.pagination)(buildList);
 	};
 
 	$('#addNewModal').on('shown.bs.modal', function (e) {
@@ -4675,7 +4795,9 @@ const renderRooms = async () => {
 				document.querySelector('#roomNumber').value = '';
 				document.querySelector('#maxStudent').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -4718,7 +4840,9 @@ const renderRooms = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`room`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Cập nhật thành công',
 					duration: 3000,
@@ -4745,8 +4869,10 @@ const renderRooms = async () => {
 		$('#maxStudentInfo')[0].value = itemMaxStudent;
 		$('#presentStudentInfo')[0].value = itemPresentStudent;
 	});
-
-	BuildPage();
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
+	BuildPage(data);
 };
 
 
@@ -4767,6 +4893,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
+
 
 
 const createStudent = async (data) => {
@@ -4825,16 +4954,18 @@ const disciplineStudent = async (data) => {
 
 const renderStudent = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
+	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
+	const BuildPage = async (data) => {
 		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
 		const listStudent = data.data;
-		const listRender = listStudent;
+		const listRender = listStudent.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_2__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -4868,6 +4999,7 @@ const renderStudent = async () => {
                     <td class="d-none address">${student.address}</td>   
                     <td class="d-none father">${student.father}</td>   
                     <td class="d-none mother">${student.mother}</td>   
+                    <td class="d-none phone">${student.phone}</td>   
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
 											student._id
 										}"></i>
@@ -4908,6 +5040,7 @@ const renderStudent = async () => {
 			const dateOfBirth = document.querySelector('#dateOfBirth').value;
 			const father = document.querySelector('#father').value;
 			const mother = document.querySelector('#mother').value;
+			const phone = document.querySelector('#phone').value;
 			const gender = document.querySelector(
 				'input[name="gender"]:checked',
 			).value;
@@ -4922,6 +5055,7 @@ const renderStudent = async () => {
 				gender,
 				father,
 				mother,
+				phone,
 				password: studentID,
 			});
 			if (isSuccess) {
@@ -4934,7 +5068,9 @@ const renderStudent = async () => {
 				document.querySelector('#father').value = '';
 				document.querySelector('#mother').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -4959,6 +5095,7 @@ const renderStudent = async () => {
 		const dateOfBirth = item.find('.dateOfBirth')[0].innerText;
 		const father = item.find('.father')[0].innerText;
 		const mother = item.find('.mother')[0].innerText;
+		const phone = item.find('.phone')[0].innerText;
 		const gender = item.find('.gender')[0].innerText;
 
 		// Set giá trị khi hiện modal update
@@ -4975,6 +5112,7 @@ const renderStudent = async () => {
 		$('#dateOfBirthUpdate')[0].value = dateOfBirth;
 		$('#fatherUpdate')[0].value = father;
 		$('#motherUpdate')[0].value = mother;
+		$('#phoneUpdate')[0].value = phone;
 
 		const btnUpdate = $('.btn-update')[0];
 
@@ -4990,6 +5128,7 @@ const renderStudent = async () => {
 			const father = $('#fatherUpdate')[0].value;
 			const mother = $('#motherUpdate')[0].value;
 			const password = $('#passwordUpdate')[0].value;
+			const phone = $('#phoneUpdate')[0].value;
 			const gender = document.querySelector(
 				'input[name="genderUpdate"]:checked',
 			).value;
@@ -5002,6 +5141,7 @@ const renderStudent = async () => {
 				address,
 				dateOfBirth,
 				father,
+				phone,
 				mother,
 				password,
 				gender,
@@ -5009,7 +5149,9 @@ const renderStudent = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Cập nhật thành công',
 					duration: 3000,
@@ -5034,6 +5176,7 @@ const renderStudent = async () => {
 		const father = item.find('.father')[0].innerText;
 		const mother = item.find('.mother')[0].innerText;
 		const gender = item.find('.gender')[0].innerText;
+		const phone = item.find('.phone')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		if (gender == 'male') {
@@ -5049,6 +5192,7 @@ const renderStudent = async () => {
 		$('#dateOfBirthInfo')[0].value = dateOfBirth;
 		$('#fatherInfo')[0].value = father;
 		$('#motherInfo')[0].value = mother;
+		$('#phoneInfo')[0].value = phone;
 	});
 
 	$('#disciplineModal').on('show.bs.modal', function (e) {
@@ -5068,7 +5212,9 @@ const renderStudent = async () => {
 			const isSuccess = await disciplineStudent({ student: updateId, note });
 			if (isSuccess) {
 				$('#disciplineModal').modal('hide');
-				BuildPage();
+				const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`student`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Sinh viên đã bị kỷ luật',
 					duration: 3000,
@@ -5080,10 +5226,53 @@ const renderStudent = async () => {
 			}
 		};
 	});
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 
-	BuildPage();
+	BuildPage(data);
 };
 
+
+
+
+/***/ }),
+
+/***/ "./public/js/util/convertString.js":
+/*!*****************************************!*\
+  !*** ./public/js/util/convertString.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "convert": () => (/* binding */ convert)
+/* harmony export */ });
+const convert = (str) => {
+	var AccentsMap = [
+		'aàảãáạăằẳẵắặâầẩẫấậ',
+		'AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ',
+		'dđ',
+		'DĐ',
+		'eèẻẽéẹêềểễếệ',
+		'EÈẺẼÉẸÊỀỂỄẾỆ',
+		'iìỉĩíị',
+		'IÌỈĨÍỊ',
+		'oòỏõóọôồổỗốộơờởỡớợ',
+		'OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ',
+		'uùủũúụưừửữứự',
+		'UÙỦŨÚỤƯỪỬỮỨỰ',
+		'yỳỷỹýỵ',
+		'YỲỶỸÝỴ',
+	];
+	for (var i = 0; i < AccentsMap.length; i++) {
+		var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+		var char = AccentsMap[i][0];
+		str = str.replace(re, char);
+	}
+	return str.toLowerCase();
+};
 
 
 
@@ -5354,7 +5543,6 @@ toggle?.addEventListener('click', () => {
 $(document).ready(function () {
 	const path = window.location.pathname;
 	document.querySelectorAll('.sidebar li a').forEach((el) => {
-		console.log(el.pathname, path, el);
 		if (el.pathname == path) {
 			el.classList.add('active');
 		}

@@ -29,7 +29,7 @@ exports.createReflect = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.getAllReflects = factory.getAll(Reflect);
+exports.getAllReflects = factory.getAll(Reflect, false, 'student');
 exports.getReflect = factory.getOne(Reflect);
 exports.updateReflect = factory.updateOne(Reflect);
 exports.deleteReflect = factory.deleteOne(Reflect);

@@ -106,7 +106,14 @@ const renderDashboard = async () => {
 	};
 
 	const day = new Date();
-	document.querySelector('#date').value = day;
+	console.log(
+		`${day.getFullYear()} - ${
+			day.getMonth() > 10 ? day.getMonth() : '0' + day.getMonth()
+		}`,
+	);
+	document.querySelector('#date').value = `${day.getFullYear()}-${
+		day.getMonth() > 10 ? day.getMonth() : '0' + day.getMonth()
+	}`;
 	renderInvoice(day.getMonth(), day.getFullYear());
 	renderContract();
 };

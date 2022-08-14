@@ -5,24 +5,47 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
-const convertStrToDate = (string) => {
-	const [day, month, year] = string.split('/');
-	const date = new Date(+year, +month - 1, +day);
-	return date.toISOString().split('T')[0];
+import { convert } from '../util/convertString';
+
+const updateReflect = async (id, data) => {
+	try {
+		const res = await patchDataAPI(`reflect/${id}`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		Toastify({
+			text: 'Cập nhật không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
+	}
 };
+
 const renderReflect = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		const { data } = await getDataAPI(`reflect`);
-		const listInvoice = data.data;
-		const listRender = listInvoice;
+	const { data } = await getDataAPI(`reflect`);
+	const BuildPage = async (data) => {
+		const listReflect = data.data;
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
+		const listRender = listReflect.filter((item) =>
+			convert(item.student.studentID).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
                 <tr>
-                <td class="col">TÊN PHẢN ÁNH</td>
-                <td class="col">TRẠNG THÁI</td>
+                <td class="col">TIÊU ĐỀ PHẢN ÁNH</td>
+                <td class="col">TÊN SINH VÊN</td>
+                <td class="col">MÃ SINH VIÊN</td>
                 <td class="col">NGÀY TẠO</td>
+                <td class="col">TRẠNG THÁI</td>
                 <td class="col"></td>
             </tr>
 				</thead>
@@ -36,13 +59,16 @@ const renderReflect = async () => {
 				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
                     <td class="title">${reflect.title}</td>
-                    <td class="status"">${reflect.status}</td>
-                    <td class="status"">${new Date(
+                    <td class="student">${reflect.student.name}</td>
+                    <td class="studentID">${reflect.student.studentID}</td>
+					<td class="d-none content">${reflect.content}</td>
+                    <td class="date">${new Date(
 											reflect.createdAt,
 										).toLocaleDateString()}</td>
-					<td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
-						reflect._id
-					}"></i>
+										<td class="status">${reflect.status}</td>
+						<td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
+							reflect._id
+						}"></i>
 					<div class="dropdown-menu" aria-labelledby="${reflect._id}">
 						<div class="dropdown-item" data-toggle='modal' data-target='#infoModal' >Chi tiết</div>
 						<div class="dropdown-item" data-toggle='modal' data-target='#updateModal' >Cập nhật</d>
@@ -64,49 +90,42 @@ const renderReflect = async () => {
 	$('#infoModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		console.log(item);
-		const itemRoomID = item.find('.room').attr('data-id');
-		const itemMonth = item.find('.month')[0].innerText;
-		const itemYear = item.find('.year')[0].innerText;
-		const electricityStart = item.find('.electricity-startNumber')[0].innerText;
-		const electricityEnd = item.find('.electricity-endNumber')[0].innerText;
-		const electricityTotal = item.find('.electricity-total')[0].innerText;
-		const waterStart = item.find('.water-startNumber')[0].innerText;
-		const waterEnd = item.find('.water-endNumber')[0].innerText;
-		const waterTotal = item.find('.water-total')[0].innerText;
+		const student = item.find('.student')[0].innerText;
+		const studentID = item.find('.studentID')[0].innerText;
+		const content = item.find('.content')[0].innerText;
+		const status = item.find('.status')[0].innerText;
+		const title = item.find('.title')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#roomIDInfo')[0].value = itemRoomID;
-		$('#monthInfo')[0].value = itemMonth;
-		$('#yearInfo')[0].value = itemYear;
-		$('#electricity-startInfo')[0].value = electricityStart;
-		$('#electricity-endInfo')[0].value = electricityEnd;
-		$('#electricity-totalInfo')[0].value = formatter.format(electricityTotal);
-		$('#water-startInfo')[0].value = waterStart;
-		$('#water-endInfo')[0].value = waterEnd;
-		$('#water-totalInfo')[0].value = formatter.format(waterTotal);
+		$('#titleInfo')[0].value = title;
+		$('#studentInfo')[0].value = student;
+		$('#studentIDInfo')[0].value = studentID;
+		$('#contentInfo')[0].value = content;
+		$('#statusInfo')[0].value = status;
 	});
 
-	$('#addNewModal').on('shown.bs.modal', function (e) {
-		const addReflect = $('.btn-add-new')[0];
+	$('#updateModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
 
-		addReflect.onclick = async (e) => {
-			const title = document.querySelector('#title').value;
-			const content = document.querySelector('#content').value;
+		const btnUpdate = $('.btn-update')[0];
 
-			const isSuccess = await createReflect({
-				title,
-				content,
+		btnUpdate.setAttribute('update-id', itemId);
+		btnUpdate.onclick = async (e) => {
+			const updateId = btnUpdate.getAttribute('update-id');
+			const status = $('#statusUpdate')[0].value;
+
+			const isSuccess = await updateReflect(updateId, {
+				status,
 			});
 
 			if (isSuccess) {
-				document.querySelector('#title').value = '';
-				document.querySelector('#content').value = '';
-
-				$('#addNewModal').modal('hide');
-				BuildPage();
+				$('#updateModal').modal('hide');
+				const { data } = await getDataAPI(`reflect`);
+				BuildPage(data);
 				Toastify({
-					text: 'Thêm mới thành công',
+					text: 'Cập nhật thành công',
 					duration: 3000,
 					style: {
 						background: '#5cb85c', //success
@@ -117,7 +136,10 @@ const renderReflect = async () => {
 		};
 	});
 
-	BuildPage();
+	BuildPage(data);
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 };
 
 export { renderReflect };

@@ -4,6 +4,7 @@ import {
 	patchDataAPI,
 	getDataAPI,
 } from '../util/fetchAPI';
+import { convert } from '../util/convertString';
 import { pagination } from '../util/pagination';
 const createRoom = async (data) => {
 	try {
@@ -43,15 +44,16 @@ const updateRoom = async (id, data) => {
 
 const renderRooms = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await getDataAPI(`room`);
+	const { data } = await getDataAPI(`room`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const listRooms = data.data;
-		const listRender = listRooms;
+		const listRender = listRooms.filter((item) =>
+			convert(item.roomNumber).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -127,7 +129,9 @@ const renderRooms = async () => {
 				document.querySelector('#roomNumber').value = '';
 				document.querySelector('#maxStudent').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`room`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -170,7 +174,9 @@ const renderRooms = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`room`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Cập nhật thành công',
 					duration: 3000,
@@ -197,8 +203,10 @@ const renderRooms = async () => {
 		$('#maxStudentInfo')[0].value = itemMaxStudent;
 		$('#presentStudentInfo')[0].value = itemPresentStudent;
 	});
-
-	BuildPage();
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
+	BuildPage(data);
 };
 
 export { renderRooms };

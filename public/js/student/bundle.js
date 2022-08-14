@@ -3209,6 +3209,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./room */ "./public/js/student/room.js");
 /* harmony import */ var _invoice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./invoice */ "./public/js/student/invoice.js");
 /* harmony import */ var _reflect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reflect */ "./public/js/student/reflect.js");
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 const body = document.querySelector('body'),
 	sidebar = body.querySelector('nav'),
 	toggle = body.querySelector('.toggle');
@@ -3221,6 +3222,7 @@ toggle?.addEventListener('click', () => {
 // searchBtn.addEventListener('click', () => {
 // 	sidebar.classList.remove('close');
 // });
+
 
 
 
@@ -3242,7 +3244,17 @@ $(document).ready(function () {
 	const room = document.querySelector('#room');
 	const invoice = document.querySelector('#invoice');
 	const reflect = document.querySelector('#reflect');
+	if (!login) {
+		document
+			.querySelector('.logout-btn')
+			.addEventListener('click', async () => {
+				const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_5__.getDataAPI)('student/logout');
 
+				if (res.status === 200) {
+					location.reload();
+				}
+			});
+	}
 	if (login) {
 		(0,_login__WEBPACK_IMPORTED_MODULE_0__.renderLogin)();
 	}

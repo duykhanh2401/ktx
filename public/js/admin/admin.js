@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { convert } from '../util/convertString';
 
 const createAdmin = async (data) => {
 	try {
@@ -44,15 +45,16 @@ const updateAdmin = async (id, data) => {
 
 const renderAdmin = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await getDataAPI(`auth/admin`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+	const { data } = await getDataAPI(`auth/admin`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
+		const listAdmin = data.data;
+		const listRender = listAdmin.filter((item) =>
+			convert(item.name).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -119,7 +121,9 @@ const renderAdmin = async () => {
 				document.querySelector('#email').value = '';
 				document.querySelector('#password').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`auth/admin`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -173,7 +177,9 @@ const renderAdmin = async () => {
 				$('#phoneUpdate')[0].value = '';
 				$('#emailUpdate')[0].value = '';
 				$('#passwordUpdate')[0].value = '';
-				BuildPage();
+				const { data } = await getDataAPI(`auth/admin`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -201,7 +207,10 @@ const renderAdmin = async () => {
 		$('#emailInfo')[0].value = itemEmail;
 	});
 
-	BuildPage();
+	BuildPage(data);
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 };
 
 export { renderAdmin };

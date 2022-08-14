@@ -4,6 +4,7 @@ import {
 	patchDataAPI,
 	getDataAPI,
 } from '../util/fetchAPI';
+import { convert } from '../util/convertString';
 import { pagination } from '../util/pagination';
 const createContract = async (data) => {
 	try {
@@ -41,23 +42,61 @@ const extendContract = async (data) => {
 	}
 };
 
-const convertStrToDate = (string) => {
-	const [day, month, year] = string.split('/');
-	const date = new Date(+year, +month - 1, +day);
-	return date.toISOString().split('T')[0];
+const cancelContract = async (id) => {
+	try {
+		const res = await patchDataAPI(`contract/${id}`);
+		if (res.data.status === 'success') {
+			return true;
+		}
+	} catch (error) {
+		Toastify({
+			text: 'Huỷ hợp đồng không thành công',
+			duration: 3000,
+			style: {
+				// background: '#5cb85c', //success
+				background: '#d9534f', // danger
+			},
+		}).showToast();
+	}
 };
 
 const renderContract = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
-		const { data } = await getDataAPI(`contract?sort=studentID`);
-		const listAuthor = data.data;
-		const listRender = listAuthor;
+	const { data } = await getDataAPI(`contract?sort=studentID`);
+
+	const BuildPage = async (data) => {
+		const dataSelect = await getDataAPI('contract/data');
+		const { studentNoContract, studentContract } = dataSelect.data;
+		const studentSelect = document.querySelector('#studentSelect');
+		studentSelect.innerHTML =
+			`<option value="">------Chọn Sinh Viên---------</option>` +
+			studentNoContract.map((el) => {
+				return `<option value="${el._id}">${el.name} - ${el.studentID}</option>`;
+			});
+
+		const studentSelectExtend = document.querySelector('#studentSelectExtend');
+
+		studentSelectExtend.innerHTML =
+			`<option value="">------Chọn Sinh Viên---------</option>` +
+			studentContract.map((el) => {
+				return `<option value="${el._id}">${el.name} - ${el.studentID}</option>`;
+			});
+
+		const studentSelectCancel = document.querySelector('#studentSelectCancel');
+
+		studentSelectCancel.innerHTML =
+			`<option value="">------Chọn Sinh Viên---------</option>` +
+			studentContract.map((el) => {
+				return `<option value="${el._id}">${el.name} - ${el.studentID}</option>`;
+			});
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
+		const listContract = data.data;
+		const listRender = listContract.filter((item) =>
+			item.student.studentID.includes(search),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -136,7 +175,8 @@ const renderContract = async () => {
 				document.querySelector('#startDate').value = '';
 				document.querySelector('#dueDate').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`contract?sort=studentID`);
+				BuildPage(data);
 				Toastify({
 					text: 'Tạo hợp đồng thành công',
 					duration: 3000,
@@ -164,7 +204,9 @@ const renderContract = async () => {
 				document.querySelector('#studentSelectExtend').value = '';
 				document.querySelector('#dueDateExtend').value = '';
 				$('#extendModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`contract?sort=studentID`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Gia hạn hợp đồng thành công',
 					duration: 3000,
@@ -177,20 +219,36 @@ const renderContract = async () => {
 		};
 	});
 
-	$('#infoModal').on('show.bs.modal', function (e) {
+	$('#cancelModal').on('show.bs.modal', function (e) {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
-		const itemStudentName = item.find('.student').attr('data-id');
-		const itemStartDate = item.find('.startDate')[0].innerText;
-		const itemDueDate = item.find('.dueDate')[0].innerText;
 
-		// Set giá trị khi hiện modal update
-		$('#studentSelectInfo')[0].value = itemStudentName;
-		$('#startDateInfo')[0].value = convertStrToDate(itemStartDate);
-		$('#dueDateInfo')[0].value = convertStrToDate(itemDueDate);
+		const btnCancel = $('.btn-cancel')[0];
+
+		btnCancel.onclick = async (e) => {
+			const cancelID = document.querySelector('#studentSelectCancel').value;
+			const isSuccess = await cancelContract(cancelID);
+
+			if (isSuccess) {
+				$('#cancelModal').modal('hide');
+				const { data } = await getDataAPI(`contract?sort=studentID`);
+
+				BuildPage(data);
+				Toastify({
+					text: 'Huỷ hợp đồng thành công',
+					duration: 3000,
+					style: {
+						background: '#5cb85c', //success
+						// background: '#d9534f', // danger
+					},
+				}).showToast();
+			}
+		};
 	});
-
-	BuildPage();
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
+	BuildPage(data);
 };
 
 export { renderContract };

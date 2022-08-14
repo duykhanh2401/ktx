@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { convert } from '../util/convertString';
 
 const formatter = new Intl.NumberFormat('vi-VN', {
 	style: 'currency',
@@ -48,10 +49,16 @@ const updateInvoice = async (id, data) => {
 
 const renderInvoice = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
-		const { data } = await getDataAPI(`invoice`);
+	const { data } = await getDataAPI(`invoice`);
+	const BuildPage = async (data) => {
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const listInvoice = data.data;
-		const listRender = listInvoice;
+		const listRender = listInvoice.filter((item) =>
+			convert(item.room.roomNumber).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -139,7 +146,9 @@ const renderInvoice = async () => {
 				document.querySelector('#electricity').value = '';
 				document.querySelector('#water').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`invoice`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -166,7 +175,9 @@ const renderInvoice = async () => {
 			});
 
 			$('#updateModal').modal('hide');
-			BuildPage();
+			const { data } = await getDataAPI(`invoice`);
+
+			BuildPage(data);
 			Toastify({
 				text: 'Cập nhật thành công',
 				duration: 3000,
@@ -204,7 +215,10 @@ const renderInvoice = async () => {
 		$('#water-totalInfo')[0].value = formatter.format(waterTotal);
 	});
 
-	BuildPage();
+	BuildPage(data);
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 };
 
 export { renderInvoice };

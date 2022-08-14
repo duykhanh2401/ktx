@@ -16,6 +16,7 @@ import { renderContract } from './contract';
 import { renderRoom } from './room';
 import { renderInvoice } from './invoice';
 import { renderReflect } from './reflect';
+import { getDataAPI } from '../util/fetchAPI';
 
 $(document).ready(function () {
 	const path = window.location.pathname;
@@ -31,7 +32,17 @@ $(document).ready(function () {
 	const room = document.querySelector('#room');
 	const invoice = document.querySelector('#invoice');
 	const reflect = document.querySelector('#reflect');
+	if (!login) {
+		document
+			.querySelector('.logout-btn')
+			.addEventListener('click', async () => {
+				const res = await getDataAPI('student/logout');
 
+				if (res.status === 200) {
+					location.reload();
+				}
+			});
+	}
 	if (login) {
 		renderLogin();
 	}

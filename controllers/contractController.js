@@ -93,7 +93,7 @@ exports.extendContract = catchAsync(async (req, res, next) => {
 });
 
 exports.cancelContract = catchAsync(async (req, res, next) => {
-	const { student } = req.body;
+	const student = req.params.id;
 	await Contract.updateMany(
 		{ student },
 		{
@@ -102,8 +102,11 @@ exports.cancelContract = catchAsync(async (req, res, next) => {
 	);
 
 	const studentSelect = await Student.findById(student);
-	studentSelect.room = undefined;
-	await studentSelect.save();
+	if (studentSelect.room) {
+		console.log(studentSelect.room);
+		studentSelect.room = undefined;
+		await studentSelect.save();
+	}
 	return res.status(200).json({
 		status: 'success',
 		data: 'Hợp đồng đã được huỷ',
@@ -146,7 +149,6 @@ exports.getDashboardData = catchAsync(async (req, res, next) => {
 			data.inactive++;
 		}
 	});
-	console.log(data);
 	return res.status(200).json({
 		status: 'success',
 		data,
@@ -154,6 +156,62 @@ exports.getDashboardData = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.getAllContractsUpdate = catchAsync(async (req, res, next) => {
+	const studentNoContract = await Student.aggregate([
+		{
+			$lookup: {
+				localField: '_id',
+				foreignField: 'student',
+				from: 'contracts',
+				as: 'contract',
+			},
+		},
+		{
+			$unwind: {
+				path: '$contract',
+				preserveNullAndEmptyArrays: true,
+			},
+		},
+		{
+			$match: {
+				contract: null,
+				discipline: false,
+			},
+		},
+	]);
+
+	const studentContract = await Student.aggregate([
+		{
+			$lookup: {
+				localField: '_id',
+				foreignField: 'student',
+				from: 'contracts',
+				as: 'contract',
+			},
+		},
+		{
+			$unwind: '$contract',
+		},
+		{
+			$match: {
+				discipline: false,
+				'contract.isCancel': null,
+			},
+		},
+		{
+			$group: {
+				_id: '$_id',
+				name: { $first: '$name' },
+				studentID: { $first: '$studentID' },
+			},
+		},
+	]);
+	return res.status(200).json({
+		status: 'success',
+		studentNoContract,
+		studentContract,
+	});
+});
 exports.getContract = factory.getOne(Contract);
 exports.updateContract = factory.updateOne(Contract);
 exports.deleteContract = factory.deleteOne(Contract);

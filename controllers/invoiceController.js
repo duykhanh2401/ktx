@@ -5,6 +5,7 @@ const Electricity = require(`../models/electricityModels`);
 const catchAsync = require(`../utils/catchAsync`);
 const AppError = require(`../utils/appError`);
 const factory = require(`./factoryHandle`);
+const Building = require('../models/buildingModels');
 
 exports.createInvoice = catchAsync(async (req, res, next) => {
 	const { room, month, year, electricity, water } = req.body;
@@ -75,7 +76,7 @@ exports.getInvoiceByRoom = catchAsync(async (req, res, next) => {
 
 exports.getDashboardData = catchAsync(async (req, res, next) => {
 	const { month, year } = req.body;
-	const data = await Invoice.aggregate([
+	let data = await Invoice.aggregate([
 		{
 			$match: {
 				month,
@@ -146,7 +147,20 @@ exports.getDashboardData = catchAsync(async (req, res, next) => {
 			},
 		},
 	]);
-
+	const buildings = await Building.find().select('name');
+	console.log(buildings);
+	buildings.forEach((obj) => {
+		const check = data.find((el) => {
+			return el.building == obj.name;
+		});
+		if (!check) {
+			data.push({
+				building: obj.name,
+				water: 0,
+				electricity: 0,
+			});
+		}
+	});
 	res.status(200).json({
 		status: 'success',
 		data,

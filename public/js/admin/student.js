@@ -5,6 +5,8 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { convert } from '../util/convertString';
+
 const createStudent = async (data) => {
 	try {
 		const res = await postDataAPI('student', data);
@@ -61,16 +63,18 @@ const disciplineStudent = async (data) => {
 
 const renderStudent = async () => {
 	const tableList = $('#table')[0];
-	const BuildPage = async () => {
+	const { data } = await getDataAPI(`student`);
+	const BuildPage = async (data) => {
 		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 
-		const { data } = await getDataAPI(`student`);
 		const listStudent = data.data;
-		const listRender = listStudent;
+		const listRender = listStudent.filter((item) =>
+			convert(item.name).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -104,6 +108,7 @@ const renderStudent = async () => {
                     <td class="d-none address">${student.address}</td>   
                     <td class="d-none father">${student.father}</td>   
                     <td class="d-none mother">${student.mother}</td>   
+                    <td class="d-none phone">${student.phone}</td>   
                     <td class="dropleft"><i class="bx bx-dots-vertical-rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="${
 											student._id
 										}"></i>
@@ -144,6 +149,7 @@ const renderStudent = async () => {
 			const dateOfBirth = document.querySelector('#dateOfBirth').value;
 			const father = document.querySelector('#father').value;
 			const mother = document.querySelector('#mother').value;
+			const phone = document.querySelector('#phone').value;
 			const gender = document.querySelector(
 				'input[name="gender"]:checked',
 			).value;
@@ -158,6 +164,7 @@ const renderStudent = async () => {
 				gender,
 				father,
 				mother,
+				phone,
 				password: studentID,
 			});
 			if (isSuccess) {
@@ -170,7 +177,9 @@ const renderStudent = async () => {
 				document.querySelector('#father').value = '';
 				document.querySelector('#mother').value = '';
 				$('#addNewModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`student`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Thêm mới thành công',
 					duration: 3000,
@@ -195,6 +204,7 @@ const renderStudent = async () => {
 		const dateOfBirth = item.find('.dateOfBirth')[0].innerText;
 		const father = item.find('.father')[0].innerText;
 		const mother = item.find('.mother')[0].innerText;
+		const phone = item.find('.phone')[0].innerText;
 		const gender = item.find('.gender')[0].innerText;
 
 		// Set giá trị khi hiện modal update
@@ -211,6 +221,7 @@ const renderStudent = async () => {
 		$('#dateOfBirthUpdate')[0].value = dateOfBirth;
 		$('#fatherUpdate')[0].value = father;
 		$('#motherUpdate')[0].value = mother;
+		$('#phoneUpdate')[0].value = phone;
 
 		const btnUpdate = $('.btn-update')[0];
 
@@ -226,6 +237,7 @@ const renderStudent = async () => {
 			const father = $('#fatherUpdate')[0].value;
 			const mother = $('#motherUpdate')[0].value;
 			const password = $('#passwordUpdate')[0].value;
+			const phone = $('#phoneUpdate')[0].value;
 			const gender = document.querySelector(
 				'input[name="genderUpdate"]:checked',
 			).value;
@@ -238,6 +250,7 @@ const renderStudent = async () => {
 				address,
 				dateOfBirth,
 				father,
+				phone,
 				mother,
 				password,
 				gender,
@@ -245,7 +258,9 @@ const renderStudent = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`student`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Cập nhật thành công',
 					duration: 3000,
@@ -270,6 +285,7 @@ const renderStudent = async () => {
 		const father = item.find('.father')[0].innerText;
 		const mother = item.find('.mother')[0].innerText;
 		const gender = item.find('.gender')[0].innerText;
+		const phone = item.find('.phone')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		if (gender == 'male') {
@@ -285,6 +301,7 @@ const renderStudent = async () => {
 		$('#dateOfBirthInfo')[0].value = dateOfBirth;
 		$('#fatherInfo')[0].value = father;
 		$('#motherInfo')[0].value = mother;
+		$('#phoneInfo')[0].value = phone;
 	});
 
 	$('#disciplineModal').on('show.bs.modal', function (e) {
@@ -304,7 +321,9 @@ const renderStudent = async () => {
 			const isSuccess = await disciplineStudent({ student: updateId, note });
 			if (isSuccess) {
 				$('#disciplineModal').modal('hide');
-				BuildPage();
+				const { data } = await getDataAPI(`student`);
+
+				BuildPage(data);
 				Toastify({
 					text: 'Sinh viên đã bị kỷ luật',
 					duration: 3000,
@@ -316,8 +335,11 @@ const renderStudent = async () => {
 			}
 		};
 	});
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage(data);
+	});
 
-	BuildPage();
+	BuildPage(data);
 };
 
 export { renderStudent };

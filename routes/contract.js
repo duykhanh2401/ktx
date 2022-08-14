@@ -9,6 +9,7 @@ router.get(
 );
 
 router.use(authController.protectAdmin);
+router.get('/data', contractController.getAllContractsUpdate);
 router.post('/data-dashboard', contractController.getDashboardData);
 
 router
@@ -24,7 +25,7 @@ router.post(
 router
 	.route('/:id')
 	.get(contractController.getContract)
-	.patch(contractController.updateContract)
+	.patch(contractController.cancelContract)
 	.delete(contractController.deleteContract);
 
 module.exports = router;

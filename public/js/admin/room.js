@@ -61,11 +61,6 @@ const renderRoom = async () => {
 	const BuildPage = async () => {
 		const id = document.querySelector('#room-child').getAttribute('data-id');
 
-		// const sort = document.querySelector('.filter').value;
-		// let search = document.querySelector('.search').value;
-		// if (!search) {
-		// 	search = '';
-		// }
 		const { data } = await getDataAPI(`room/${id}`);
 		const listStudent = data.data;
 		$('.value-presentStudent')[0].innerHTML = listStudent.length;
@@ -129,7 +124,6 @@ const renderRoom = async () => {
 
 		const { data } = await getDataAPI(`student/no-room`);
 		const studentSelectElement = document.querySelector('#studentSelect');
-		console.log(studentSelectElement, data);
 		studentSelectElement.innerHTML =
 			`<option value="">------Chọn Sinh Viên---------</option>` +
 			data.data.map((el) => {

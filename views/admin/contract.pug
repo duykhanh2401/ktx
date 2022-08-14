@@ -10,14 +10,13 @@ block content
     .container-navigation
         .container-search
             .container-find
-            //- input(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
-            // <div class="container-filter">Bộ lọc</div>
+            input.search(type='text' placeholder='Tìm kiếm theo mã số sinh viên')
         button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#addNewModal' type='button') Tạo hợp đồng
         button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#extendModal' type='button') Gia hạn hợp đồng
-        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#cancelNewModal' type='button') Huỷ hợp đồng
+        button.btn.btn-primary.btn-new(data-toggle='modal' data-target='#cancelModal' type='button') Huỷ hợp đồng
     .table#contract
         .table-header
-            //- .table-header-title 4 K&#x1EBF;t qu&#x1EA3;
+            //- .table-header-title 
             //- .table-pagination
         .table-body
             table#table
@@ -34,9 +33,7 @@ block content
                 .modal-body
                     label(for='') Sinh viên
                     select#studentSelect.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each student in studentsNoContract
-                            option(value= student.id)= `${student.name} - ${student.studentID}`
+                        option(value='') Chọn sinh viên
                     label(for='') Ngày bắt đầu
                     input.input-text#startDate(type='date' placeholder='Nhập số phòng')
                     label(for='') Ngày kết thúc
@@ -56,9 +53,7 @@ block content
                 .modal-body
                     label(for='') Sinh viên
                     select#studentSelectExtend.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
-                        option(value='')
-                        each student in studentsContract
-                            option(value= student.id)= `${student.name} - ${student.studentID}`
+                        option(value='') Chọn sinh viên
                     label(for='') Ngày kết thúc
                     input.input-text#dueDateExtend(type='date' placeholder='Nhập số sinh viên tối đa')
 
@@ -66,14 +61,17 @@ block content
                     button.btn.btn-primary.btn-extend(type='button') Tạo
                     button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
 
-    #cancelNewModal.modal.modal-center.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-        .modal-dialog(role='document')
+    #cancelModal.modal.fixed-left.fade(tabindex='-1' role='dialog')
+        .modal-dialog.modal-dialog-aside.modal-dialog-scrollable(role='document')
             .modal-content
                 .modal-header
-                    h5#exampleModalLabel.modal-title Bạn có muốn huỷ toàn bộ hợp đồng của sinh viên này không
+                    h5.modal-title  Huỷ hợp đồng
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
+                .modal-body
+                    label(for='') Sinh viên
+                    select#studentSelectCancel.custom-select.custom-select-lg.mb-3(data-placeholder='Chọn tên phân loại')
 
                 .modal-footer
-                    button.btn.btn-primary.btn-remove(type='button') Huỷ hợp đồng
-                    button.btn.btn-secondary(type='button' data-dismiss='modal') Đóng
+                    button.btn.btn-primary.btn-cancel(type='button') Tạo
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') &Dstrok;&oacute;ng
